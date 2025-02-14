@@ -11,42 +11,42 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Robot {
-    public Intake intake = new Intake();
-    public Scoring scoring = new Scoring();
+//    public Intake intake = new Intake();
+//    public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
-    static ScheduledExecutorService executor;
+//    static ScheduledExecutorService executor;
 
     public Robot() {}
 
     public void init(HardwareMap hardwareMap) {
-        executor = Executors.newScheduledThreadPool(5);
-        intake.init(hardwareMap);
-        scoring.init(hardwareMap);
+//        executor = Executors.newScheduledThreadPool(5);
+//        intake.init(hardwareMap);
+//        scoring.init(hardwareMap);
         drivetrain.init(hardwareMap);
     }
 
-    public void autoInit(HardwareMap hardwareMap) {
-        executor = Executors.newScheduledThreadPool(5);
-        intake.init(hardwareMap);
-        scoring.autoInit(hardwareMap);
-//        drivetrain.init(hardwareMap);
-    }
+//    public void autoInit(HardwareMap hardwareMap) {
+//        executor = Executors.newScheduledThreadPool(5);
+////        intake.init(hardwareMap);
+////        scoring.autoInit(hardwareMap);
+////        drivetrain.init(hardwareMap);
+//    }
 
-    public void trans() {
-        intake.intakeClawTrans();
-        intake.extendTo(5);
-        scoring.scoreOpen();
-        executor.schedule(() -> intake.intakeStop(), 250, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.scoreClose(), 700, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 400, TimeUnit.MILLISECONDS);
-    }
+//    public void trans() {
+////        intake.intakeClawTrans();
+////        intake.extendTo(5);
+////        scoring.scoreOpen();
+//        executor.schedule(() -> intake.intakeStop(), 250, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> scoring.scoreClose(), 700, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.intakeClawOpen(), 400, TimeUnit.MILLISECONDS);
+//    }
 
-    public void collect(int length) {
-        intake.prepareToCollect();
-        executor.schedule(() -> intake.intakeClawOpen(), 0, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.extendTo(length), 400, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawClose(), 600, TimeUnit.MILLISECONDS);
-    }
+//    public void collect(int length) {
+//        intake.prepareToCollect();
+//        executor.schedule(() -> intake.intakeClawOpen(), 0, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.extendTo(length), 400, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.intakeClawClose(), 600, TimeUnit.MILLISECONDS);
+//    }
 
 
 
@@ -71,9 +71,9 @@ public class Robot {
 //        collect(YELLOW_THIRD_EXTEND);
 //    }
 
-    public void transToScore(){
-        trans();
-    }
+//    public void transToScore(){
+//        trans();
+//    }
 
 //    public class collectFirstAlliance implements Action {
 //        @Override

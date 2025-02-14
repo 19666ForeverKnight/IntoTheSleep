@@ -54,4 +54,8 @@ public class RobotConstants {
     public static final double SPECIMEN_CLAW_CLOSE = 0.261;
 
     //Vision Constants
+    public static final double CVSmoothing = 1.0;
+    public enum AllianceColour{
+        Red, Blue
+    }
 } 
