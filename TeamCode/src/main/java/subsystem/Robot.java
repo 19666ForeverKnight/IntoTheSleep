@@ -4,6 +4,15 @@ package subsystem;
 //import static constants.AutoConst.YELLOW_SECOND_EXTEND;
 //import static constants.AutoConst.YELLOW_THIRD_EXTEND;
 
+import static constants.RobotConstants.EXTEND_LEFT_TRANS;
+import static constants.RobotConstants.EXTEND_LEFT_TRANS_PREP;
+import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
+import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
+import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_CLOSE;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_OPEN;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.concurrent.Executors;
@@ -11,18 +20,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Robot {
-//    public Intake intake = new Intake();
-//    public Scoring scoring = new Scoring();
+    public Intake intake = new Intake();
+    public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
-//    static ScheduledExecutorService executor;
+    ScheduledExecutorService executor;
 
     public Robot() {}
 
     public void init(HardwareMap hardwareMap) {
-//        executor = Executors.newScheduledThreadPool(5);
-//        intake.init(hardwareMap);
-//        scoring.init(hardwareMap);
+        executor = Executors.newScheduledThreadPool(5);
+        intake.init(hardwareMap);
+        scoring.init(hardwareMap);
         drivetrain.init(hardwareMap);
+    }
+
+    public void trans() {
+        scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS);
+        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP), 100, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.toTransPos(), 600, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 1200, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 1800, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 2000, TimeUnit.MILLISECONDS);
     }
 
 //    public void autoInit(HardwareMap hardwareMap) {
