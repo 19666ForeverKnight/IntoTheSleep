@@ -2,49 +2,53 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.50; //0.62
-    public static final double INTAKE_CLAW_INTAKE = 0.42;
-    public static final double INTAKE_CLAW_CLOSE = 0.36;
+    public static final double INTAKE_CLAW_OPEN = 0.374; //0.62
+    public static final double INTAKE_CLAW_CLOSE = 0.250;
 
-    public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.339;
-    public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.63;
-    public static final double INTAKE_CLAW_YAW_MID = 0.48;
+    public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
+    public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
+    public static final double INTAKE_CLAW_YAW_MID = 0.49;
 
-    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.815;
-    public static final double INTAKE_CLAW_PITCH_TRANS = 0.102;
-    public static final double INTAKE_CLAW_PITCH_TRANS_PREP = 0.6;
+    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.62;
+    public static final double INTAKE_CLAW_PITCH_TRANS = 0.0;
+    public static final double INTAKE_CLAW_PITCH_AVOID = 0.14;
 
-    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.426;
-    public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.187;
-    public static final double INTAKE_CLAW_ARM_TRANS = 0.8;
+    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.47;
+    public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.26;
+    public static final double INTAKE_CLAW_ARM_TRANS = 0.678;
+    public static final double INTAKE_CLAW_ARM_AVOID = 0.5;
 
-    public static final double EXTEND_LEFT_IN = 0;
-    public static final double EXTEND_LEFT_OUT = 0;
-    public static final double EXTEND_RIGHT_IN = 0;
-    public static final double EXTEND_RIGHT_OUT = 0;
+    public static final double EXTEND_LEFT_IN = 0.487;
+    public static final double EXTEND_LEFT_OUT = 0.193;
+    public static final double EXTEND_LEFT_TRANS = 0.426;
+    public static final double EXTEND_LEFT_TRANS_PREP = 0.4;
+    public static final double EXTEND_RIGHT_IN = 0.48;
+    public static final double EXTEND_RIGHT_OUT = 0.767;
+    public static final double EXTEND_RIGHT_TRANS = 0.553;
+    public static final double EXTEND_RIGHT_TRANS_PREP = 0.545;
+
 
     // TeleOp Scoring Constants
-    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.80;
-
-    // Auto Scoring Constants  
-    public static final double SCORE_CLAW_ARM_DROP_AUTO = 0.90;
-
-    public static final double SCORE_CLAW_ARM_TRANS = 0.04;
+    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.635;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.02;
+    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.96;
+    public static final double SCORE_CLAW_ARM_HANG = 0.455;
 
     // Common Scoring Constants
-    public static final double SCORE_CLAW_FLIP_DROP = 0.51;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.756;
+    public static final double SCORE_CLAW_FLIP_DROP = 0.653;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.73;
+    public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
+    public static final double SCORE_CLAW_FLIP_HANG = 0.257;
 
-    public static final double SCORE_CLAW_OPEN = 0.613;
-    public static final double SCORE_CLAW_OPEN_Auto = 0.9;
-    public static final double SCORE_CLAW_CLOSE = 0.195;
+    public static final double SCORE_CLAW_OPEN = 0.682;
+    public static final double SCORE_CLAW_CLOSE = 0.25;
 
-    public static final int LIFT_HIGH_CHAMBER = -1550;
-    public static final int LIFT_LOW_CHAMBER = -360;
-    public static final int LIFT_HIGH_BASKET = -2050;
-    public static final int LIFT_LOW_BASKET = -500;
+    public static final int LIFT_HIGH_CHAMBER = 50;
+    public static final int LIFT_LOW_CHAMBER = 0;
+    public static final int LIFT_HIGH_BASKET = 1800;
+    public static final int LIFT_LOW_BASKET = 400;
 
-    public static final int LIFT_OPEN_SPECIMEN_CLAW = -1270;
+    public static final int LIFT_OPEN_SPECIMEN_CLAW = 330;
 
     // Other Constants
     public static final double RATCHET_LOCK = 0.165;
@@ -53,7 +57,14 @@ public class RobotConstants {
     public static final double SPECIMEN_CLAW_OPEN = 0.608;
     public static final double SPECIMEN_CLAW_CLOSE = 0.261;
 
+    public static final double SWEEPING_INIT = 0.488;
+    public static final double SWEEPING_APPLE = 0.05;
+
+    public static final double EXTEND_DELTA = 0.0085;
+
     //Vision Constants
     public static final double CVSmoothing = 1.0;
-    public enum AllianceColour { Red, Blue }
+    public enum AllianceColour{
+        Red, Blue
+    }
 } 

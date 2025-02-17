@@ -19,20 +19,23 @@ public class Configs {
 
     // Servo
     public static String INTAKE_CLAW = "ic";
-    public static String INTAKE_CLAW_LEFT = "icl";
-    public static String INTAKE_CLAW_RIGHT = "icr";
-    public static String INTAKE_CLAW_YAW = "icy";
-    public static String INTAKE_CLAW_PITCH = "icp";
-    public static String INTAKE_CLAW_ARM = "ica";
-    public static String EXTEND_LEFT = "etl";
-    public static String EXTEND_RIGHT = "etr";
+    public static String INTAKE_CLAW_LEFT = "li";
+    public static String INTAKE_CLAW_RIGHT = "ri";
+    public static String INTAKE_CLAW_YAW = "cl";
+    public static String INTAKE_CLAW_PITCH = "cp";
+    public static String INTAKE_CLAW_ARM = "cap";
+    public static String EXTEND_LEFT = "el";
+    public static String EXTEND_RIGHT = "er";
 
     public static String SCORE_CLAW = "sc";
-    public static String SCORE_CLAW_ARM = "sca";
-    public static String SCORE_CLAW_FLIP = "scf";
+    public static String SCORE_CLAW_ARM = "sa";
+    public static String SCORE_CLAW_FLIP = "sap";
+
+    public static String SWEEP = "sw";
 
     //Sensor
     public static String Pinpoint = "pp";
     public static String Limelight = "ll";
-    public static String LIFT_TOUCH = "lt";
+    public static String LIFT_TOUCH_LEFT = "ltl";
+    public static String LIFT_TOUCH_RIGHT = "ltr";
 }
