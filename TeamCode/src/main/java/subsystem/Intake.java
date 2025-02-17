@@ -2,12 +2,14 @@ package subsystem;
 
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_AVOID;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
-import static constants.RobotConstants.INTAKE_CLAW_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
+import static constants.RobotConstants.INTAKE_CLAW_OPEN;
+import static constants.RobotConstants.INTAKE_CLAW_PITCH_AVOID;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
@@ -24,7 +26,7 @@ public class Intake {
     private Servo intakeClawLeft;
     private Servo intakeClawRight;
     private Servo intakeClawYaw;
-    private static Servo intakeClawPitch;
+    private Servo intakeClawPitch;
     private Servo intakeClawArm;
     private Servo extendLeft;
     private Servo extendRight;
@@ -37,16 +39,24 @@ public class Intake {
         intakeClawPitch = hardwareMap.get(Servo.class, Configs.INTAKE_CLAW_PITCH);
         intakeClawArm = hardwareMap.get(Servo.class, Configs.INTAKE_CLAW_ARM);
         extendLeft = hardwareMap.get(Servo.class, Configs.EXTEND_LEFT);
-        extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_LEFT);
+        extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_RIGHT);
 
         // Initialize positions
+        extendLeft.setPosition(EXTEND_LEFT_IN);
+        extendRight.setPosition(EXTEND_RIGHT_IN);
+        toTransPos();
+    }
+
+    public void toTransPos() {
         intakeClawLeft.setPosition(0.5);
         intakeClawRight.setPosition(0.5);
         intakeClawYaw.setPosition(INTAKE_CLAW_YAW_MID);
         intakeClawPitch.setPosition(INTAKE_CLAW_PITCH_TRANS);
         intakeClawArm.setPosition(INTAKE_CLAW_ARM_TRANS);
-        extendLeft.setPosition(EXTEND_LEFT_IN);
-        extendRight.setPosition(EXTEND_RIGHT_IN);
+    }
+
+    public double getClawPitchPos() {
+        return intakeClawPitch.getPosition();
     }
 
     public void setClawPosition(double position) {
@@ -65,28 +75,17 @@ public class Intake {
         intakeClawYaw.setPosition(position);
     }
 
-    public void setExtendPosition(double position) {extendLeft.setPosition(position); extendRight.setPosition(position);}
-
-    public double getExtendPosition() {
-        return extendLeft.getPosition() + extendRight.getPosition() / 2;
-    }
-//    public void setExtendPower(double power) {
-//        extend.setPower(power);
-//    }
+    public void setExtendPosition(double positionR, double positionL) {extendLeft.setPosition(positionL); extendRight.setPosition(positionR);}
 
     public void setLeftRightPosition(double left, double right) {
         intakeClawLeft.setPosition(left);
         intakeClawRight.setPosition(right);
     }
 
-    public boolean anyTouched() {
-        return !(extendTouchLeft.getState() && extendTouchRight.getState());
-    }
-
-    public void extendTo(int targetPos) {
-        extendLeft.setPosition(targetPos);
-        extendRight.setPosition(targetPos);
-    }
+//    public void extendTo(int targetPos) {
+//        extendLeft.setPosition(targetPos);
+//        extendRight.setPosition(targetPos);
+//    }
 
     public void intakeClawTrans() {
         intakeClawArm.setPosition(INTAKE_CLAW_ARM_TRANS);
@@ -107,6 +106,12 @@ public class Intake {
         intakeClawYaw.setPosition(INTAKE_CLAW_YAW_MID);
     }
 
+    public void intakeClawAvoid() {
+        intakeClawArm.setPosition(INTAKE_CLAW_ARM_AVOID);
+        intakeClawPitch.setPosition(INTAKE_CLAW_PITCH_AVOID);
+        intakeClawYaw.setPosition(INTAKE_CLAW_YAW_MID);
+    }
+
     public void intakeClawIntakeDown() {
         intakeClawArm.setPosition(INTAKE_CLAW_ARM_INTAKE_DOWN);
         intakeClawPitch.setPosition(INTAKE_CLAW_PITCH_INTAKE);
@@ -122,7 +127,7 @@ public class Intake {
     }
 
     public void intakeClawIntake() {
-        intakeClaw.setPosition(INTAKE_CLAW_INTAKE);
+        intakeClaw.setPosition(INTAKE_CLAW_OPEN);
     }
 
     public void intakeIntake() {
@@ -146,16 +151,16 @@ public class Intake {
         intakeStop();
     }
 
-    public void extendOut() {
-        extendTo(-350);
-    }
-
-    public void extendBack() {
-        extendTo(5);
-    }
-
-    public void everythingBack() {
-        extendTo(5);
-        intakeClawTrans();
-    }
+//    public void extendOut() {
+//        extendTo(-350);
+//    }
+//
+//    public void extendBack() {
+//        extendTo(5);
+//    }
+//
+//    public void everythingBack() {
+//        extendTo(5);
+//        intakeClawTrans();
+//    }
 }

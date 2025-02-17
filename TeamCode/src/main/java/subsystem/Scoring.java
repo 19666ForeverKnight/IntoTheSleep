@@ -1,7 +1,12 @@
 package subsystem;
 
 import static constants.RobotConstants.RATCHET_RELEASE;
+import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
+import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
+import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_HANG;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_READY_FOR_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 import static constants.RobotConstants.SPECIMEN_CLAW_OPEN;
@@ -10,13 +15,13 @@ import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW;
 import static constants.RobotConstants.RATCHET_LOCK;
 import static constants.RobotConstants.RATCHET_RELEASE;
-import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_AUTO;
+//import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_AUTO;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
-import static constants.RobotConstants.SCORE_CLAW_OPEN_Auto;
+//import static constants.RobotConstants.SCORE_CLAW_OPEN_Auto;
 import static constants.RobotConstants.SPECIMEN_CLAW_CLOSE;
 import static constants.RobotConstants.SPECIMEN_CLAW_OPEN;
 
@@ -41,12 +46,10 @@ public class Scoring {
     private Servo scoreClaw;
     private Servo scoreClawArm;
     private Servo scoreClawFlip;
-    private Servo specimenClaw;
-    private static Servo hangRatchet;
     private DigitalChannel liftTouch;
     private double error = 0, lastError = 0, integral = 0, derivative = 0;
     //    public static double Kp = 0.015, Ki = 0.00005, Kd = 0.00003, power;
-    public static double Kp = 0.015, Ki = 0, Kd = 0, power;
+    public static double Kp = 0.006, Ki = 0, Kd = 0, power;
     public int liftTargetPos = 0, liftTor = 20;
     private ElapsedTime dt = new ElapsedTime();
 
@@ -61,28 +64,27 @@ public class Scoring {
         scoreClaw = hardwareMap.get(Servo.class, Configs.SCORE_CLAW);
         scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_ARM);
         scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_FLIP);
-        liftTouch = hardwareMap.get(DigitalChannel.class, Configs.LIFT_TOUCH);
-        // TODO Add rightTouch to Configs
+//        liftTouch = hardwareMap.get(DigitalChannel.class, Configs.LIFT_TOUCH);
+//         TODO Add rightTouch to Configs
 
-        liftTouch.setMode(DigitalChannel.Mode.INPUT);
+//        liftTouch.setMode(DigitalChannel.Mode.INPUT);
 
         liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMiddle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Initialize lift motors
-        liftMiddle.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        liftLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        liftRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        liftLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        liftRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         liftMiddle.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         // Initialize servo positions
         scoreClaw.setPosition(SCORE_CLAW_OPEN);
-        scoreClawArm.setPosition(SCORE_CLAW_ARM_TRANS);
-        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_TRANS);
-        specimenClaw.setPosition(SPECIMEN_CLAW_OPEN);
-        hangRatchet.setPosition(RATCHET_RELEASE);
+        scoreClawArm.setPosition(SCORE_CLAW_ARM_SPECIMEN);
+        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
     }
 
 //    public void autoInit (HardwareMap hardwareMap) {
@@ -119,12 +121,12 @@ public class Scoring {
 
     public void setLiftPower(double power) {
         liftLeft.setPower(power); //TODO check if this is correct
-        liftRight.setPower(-power); //TODO check if this is correct
+        liftRight.setPower(power); //TODO check if this is correct
         liftMiddle.setPower(power); //TODO check if this is correct
     }
 
     public void runToPosition(int targetPosition) {
-        error = targetPosition - liftMiddle.getCurrentPosition();
+        error = targetPosition - (liftLeft.getCurrentPosition() + liftRight.getCurrentPosition()) / 2.0;
         integral += error * dt.seconds();
         derivative = (error - lastError) / dt.seconds();
         power = error * Kp + integral * Ki + derivative * Kd;
@@ -142,8 +144,17 @@ public class Scoring {
         scoreClawFlip.setPosition(flipPos);
     }
 
-    public void setSpecimenClawPosition(double position) {
-        specimenClaw.setPosition(position);
+    public void armToBasket() {
+        setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP);
+    }
+    public void armToChamber() {
+        setScoreArmPosition(SCORE_CLAW_ARM_HANG, SCORE_CLAW_FLIP_HANG);
+    }
+    public void armToCollect() {
+        setScoreArmPosition(SCORE_CLAW_ARM_SPECIMEN, SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
+    }
+    public void armToTrans() {
+        setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS);
     }
 
     public int getLiftPosition() {
@@ -151,7 +162,7 @@ public class Scoring {
     }
 
     public void scoreOpen() {
-        scoreClaw.setPosition(SCORE_CLAW_OPEN_Auto);
+        scoreClaw.setPosition(SCORE_CLAW_OPEN);
     }
 
     public void scoreClose() {
@@ -168,7 +179,7 @@ public class Scoring {
     }
     public void liftMornitor(){
         while(isRunning){
-            int currPos = liftMiddle.getCurrentPosition();
+            int currPos = (liftLeft.getCurrentPosition() + liftRight.getCurrentPosition()) /2 ;
             double powerRate = Math.abs(currPos-liftTargetPos)/300.0;
             powerRate = Math.min(powerRate, 1);
             powerRate = Math.max(powerRate, 0.45);
@@ -212,38 +223,34 @@ public class Scoring {
         liftLeft.setPower(0);
     }
 
-    public void liftBack(){
-        liftToAuto(35);
-        armTrans();
+//    public void liftBack(){
+//        liftToAuto(35);
+//        armTrans();
+//    }
+
+    public double getrightliftheight() {
+        return liftRight.getCurrentPosition();
     }
 
-    public void armDrop() {
-        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_DROP);
-        scoreClawArm.setPosition(SCORE_CLAW_ARM_DROP_AUTO);
+    public double getleftliftheight() {
+        return liftLeft.getCurrentPosition();
     }
 
-    public void armTrans() {
-        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_TRANS);
-        scoreClawArm.setPosition(SCORE_CLAW_ARM_TRANS);
+    public double getmiddleliftheight() {
+        return liftMiddle.getCurrentPosition();
     }
 
-    public void armOut(){
-        armDrop();
-    }
+//    public void armDrop() {
+//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_DROP);
+//        scoreClawArm.setPosition(SCORE_CLAW_ARM_DROP_TELEOP);
+//    }
+//
+//    public void armTrans() {
+//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_TRANS);
+//        scoreClawArm.setPosition(SCORE_CLAW_ARM_TRANS);
+//    }
 
-    public void specimenClawOpen() {
-        specimenClaw.setPosition(SPECIMEN_CLAW_OPEN);
-    }
-
-    public void specimenClawClose() {
-        specimenClaw.setPosition(SPECIMEN_CLAW_CLOSE);
-    }
-
-    public void specimenOpen(){
-        specimenClawOpen();
-    }
-
-    public void specimenClose(){
-        specimenClawClose();
-    }
+//    public void armOut(){
+//        armDrop();
+//    }
 }
