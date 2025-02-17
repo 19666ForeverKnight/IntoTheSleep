@@ -24,8 +24,8 @@ public class ServoPositionTest extends LinearOpMode {
     private DcMotorEx leftBack = null;
     private DcMotorEx rightFront = null;
     private DcMotorEx rightBack = null;
-    private double x, y, rx, p, posDelta = 0.0003;
-    private String[] names = {"cp", "li", "cap", "ic", "ri", "cl", "er", "sa", "sap", "sw", "sc", "el"};
+    private double x, y, rx, p, posDelta = 0.0001;
+    private String[] names = {"cp", "li", "cap", "ic", "ri", "cl", "er", "el", "sa", "sap", "sw", "sc"};
     private int index = 0, servoNum = names.length;
     private Servo[] servos = new Servo[servoNum];
     private double[] poses = new double[servoNum];
@@ -83,7 +83,8 @@ public class ServoPositionTest extends LinearOpMode {
                 downHold = false;
             }
 
-            poses[index] = Math.min(1.0, Math.max(0.0, (gamepad1.right_trigger - gamepad1.left_trigger) / 600 + poses[index]));
+            poses[index] = Math.min(1.0, Math.max(0.0, (gamepad1.right_trigger - gamepad1.left_trigger) / 1300 + poses[index]));
+
 
             if (gamepad1.right_bumper)
                 servos[index].setPosition(poses[index]);

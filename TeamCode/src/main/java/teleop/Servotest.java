@@ -14,8 +14,8 @@ public class Servotest extends OpMode {
     @Override
     public void init() {
         // 0 = claw pitch          Control hub 1    - cp
-        // 1 = left intake         Control hub 2    - li
-        // 2 = claw arm pitch      Control hub 3    - cap
+        // 2 = left intake         Control hub 2    - li
+        // 1 = claw arm pitch      Control hub 3    - cap
         // 3 = intake claw         Control hub 4    - ic
         // 4 = right intake        Control hub 5    - ri
         // 5 = claw rorate         Control Hub 6    - cl

@@ -4,18 +4,15 @@ import static constants.RobotConstants.EXTEND_DELTA;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS;
-import static constants.RobotConstants.EXTEND_LEFT_TRANS_PREP;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
-import static constants.RobotConstants.INTAKE_CLAW_PITCH_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
 //import static constants.RobotConstants.INTAKE_CLAW_INTAKE;
@@ -31,32 +28,40 @@ import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
-import static constants.RobotConstants.SPECIMEN_CLAW_CLOSE;
-import static constants.RobotConstants.SPECIMEN_CLAW_OPEN;
 
 //import com.pedropathing.follower.Follower;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.util.Constants;
+import com.pedropathing.util.DashboardPoseTracker;
+import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.util.concurrent.TimeUnit;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 import subsystem.Robot;
 
 
 @TeleOp(name = "Competition TaleOp", group = "Experiment")
 public class Competition extends OpMode {
+    private Telemetry telemetryA;
+    private PoseUpdater poseUpdater;
+    private DashboardPoseTracker dashboardPoseTracker;
+
     Robot robot = new Robot();
-    //    private Follower follower;
     private final Pose startPose = new Pose(0,0,0); // add limelight init pos reading support
 
     private ElapsedTime timer = new ElapsedTime();
-    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false;
+    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false;
     private double intakeArmPos = INTAKE_CLAW_ARM_TRANS;
     public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN;
-    private double intakeYaw = INTAKE_CLAW_YAW_MID;
+    private double intakeYaw = INTAKE_CLAW_YAW_MID, prevRT = 0;
     private int basketIndex=0, chamberIndex=0,liftPos = 0;
     private final int[] basketPos = {LIFT_HIGH_BASKET, LIFT_LOW_BASKET};
     private final int[] chamberPos = {LIFT_HIGH_CHAMBER, LIFT_LOW_CHAMBER};
@@ -66,8 +71,19 @@ public class Competition extends OpMode {
     /** This method is call once when init is played, it initializes the follower **/
     @Override
     public void init() {
+        telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        Constants.setConstants(FConstants.class, LConstants.class);
+        poseUpdater = new PoseUpdater(hardwareMap);
+        startPose.setX(-8.99196234275037);
+        startPose.setY(73.80454236128199);
+        startPose.setHeading(0);
+        dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
+
         robot.init(hardwareMap);
         timer.reset();
+        telemetryA.update();
+        Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
+        Drawing.sendPacket();
     }
 
     /** This method is called continuously after Init while waiting to be started. **/
@@ -84,12 +100,14 @@ public class Competition extends OpMode {
     /** This is the main loop of the opmode and runs continuously after play **/
     @Override
     public void loop() {
+        poseUpdater.update();
+        dashboardPoseTracker.update();
 
         //Drivetrain
         y = gamepad1.left_stick_y;
         x = -gamepad1.left_stick_x;
         rx = -gamepad1.right_stick_x;
-        if (Math.abs(robot.intake.getClawPitchPos() - INTAKE_CLAW_PITCH_INTAKE) < 0.05) p = 0.3;
+        if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.3;
         else p = 1;
         robot.drivetrain.drive(y, x, rx, p);
 
@@ -115,18 +133,17 @@ public class Competition extends OpMode {
                 intaking = true;
             } else {
                 robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
-                robot.intake.setClawPosition(INTAKE_CLAW_OPEN);
                 intakeYaw = INTAKE_CLAW_YAW_MID;
             }
         }
 
         if (intaking) {
-            if (gamepad2.right_trigger > 0) {
+            if (gamepad2.right_trigger - prevRT > 0 || gamepad2.right_trigger > 0.95) {
                 robot.intake.setClawPosition(INTAKE_CLAW_OPEN);
             } else {
                 robot.intake.setClawPosition(INTAKE_CLAW_CLOSE);
             }
-
+            prevRT = gamepad2.right_trigger;
             // Left/Right control
             if (gamepad1.right_trigger > 0) {
                 robot.intake.setLeftRightPosition(0, 1);
@@ -192,7 +209,6 @@ public class Competition extends OpMode {
 //         Scoring Control
         if (gamepad2.y && !yHold && !locked) {
             robot.intake.intakeClawAvoid();
-            robot.scoring.armToBasket();
             if (!basket) basketIndex = 1;
             basket = true;
             manual = false;
@@ -244,8 +260,8 @@ public class Competition extends OpMode {
                 }
             } else if (basket) {
                 liftPos = basketPos[basketIndex];
-                if (Math.abs(robot.scoring.getLiftPosition() - liftPos) < 350) {
-                    robot.scoring.setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP);
+                if (Math.abs(robot.scoring.getLiftPosition() - liftPos) < 230) {
+                    robot.scoring.armToBasket();
                 }
             } else {
                 if (chamberIndex == 0) robot.scoring.armToChamber();
@@ -281,13 +297,21 @@ public class Competition extends OpMode {
             pad = false;
         }
 
-        telemetry.addData("liftrightheight", robot.scoring.getrightliftheight());
-        telemetry.addData("liftleftheight", robot.scoring.getleftliftheight());
-        telemetry.addData("liftmiddleheight", robot.scoring.getmiddleliftheight());
-        telemetry.addData("left", intakeExtendPosLeft);
-        telemetry.addData("right", intakeExtendPosRight);
-        telemetry.update();
+        telemetryA.addData("liftrightheight", robot.scoring.getrightliftheight());
+        telemetryA.addData("liftleftheight", robot.scoring.getleftliftheight());
+        telemetryA.addData("liftmiddleheight", robot.scoring.getmiddleliftheight());
+        telemetryA.addData("left", intakeExtendPosLeft);
+        telemetryA.addData("right", intakeExtendPosRight);
+        telemetryA.addData("x", poseUpdater.getPose().getX());
+        telemetryA.addData("y", poseUpdater.getPose().getY());
+        telemetryA.addData("heading", poseUpdater.getPose().getHeading());
+        telemetryA.addData("total heading", poseUpdater.getTotalHeading());
 
+        telemetryA.update();
+
+        Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
+        Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
+        Drawing.sendPacket();
     }
 
     /** We do not use this because everything automatically should disable **/

@@ -8,14 +8,11 @@ import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
-import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_AVOID;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -55,8 +52,12 @@ public class Intake {
         intakeClawArm.setPosition(INTAKE_CLAW_ARM_TRANS);
     }
 
-    public double getClawPitchPos() {
-        return intakeClawPitch.getPosition();
+    public double getClawArmPos() {
+        return intakeClawArm.getPosition();
+    }
+
+    public double getClawPosition() {
+        return intakeClaw.getPosition();
     }
 
     public void setClawPosition(double position) {

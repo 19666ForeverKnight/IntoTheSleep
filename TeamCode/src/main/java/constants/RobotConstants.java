@@ -3,7 +3,7 @@ package constants;
 public class RobotConstants {
     // Intake Constants
     public static final double INTAKE_CLAW_OPEN = 0.374; //0.62
-    public static final double INTAKE_CLAW_CLOSE = 0.250;
+    public static final double INTAKE_CLAW_CLOSE = 0.24;
 
     public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
@@ -18,21 +18,21 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_ARM_TRANS = 0.678;
     public static final double INTAKE_CLAW_ARM_AVOID = 0.5;
 
-    public static final double EXTEND_LEFT_IN = 0.487;
-    public static final double EXTEND_LEFT_OUT = 0.193;
-    public static final double EXTEND_LEFT_TRANS = 0.426;
+    public static final double EXTEND_LEFT_IN = 0.494;
+    public static final double EXTEND_LEFT_OUT = 0.194;
+    public static final double EXTEND_LEFT_TRANS = 0.427;
     public static final double EXTEND_LEFT_TRANS_PREP = 0.4;
-    public static final double EXTEND_RIGHT_IN = 0.48;
-    public static final double EXTEND_RIGHT_OUT = 0.767;
-    public static final double EXTEND_RIGHT_TRANS = 0.553;
-    public static final double EXTEND_RIGHT_TRANS_PREP = 0.545;
+    public static final double EXTEND_RIGHT_IN = 0.703;
+    public static final double EXTEND_RIGHT_OUT = 1;
+    public static final double EXTEND_RIGHT_TRANS = 0.785;
+    public static final double EXTEND_RIGHT_TRANS_PREP = 0.8;
 
 
     // TeleOp Scoring Constants
     public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.635;
     public static final double SCORE_CLAW_ARM_TRANS = 0.02;
     public static final double SCORE_CLAW_ARM_SPECIMEN = 0.96;
-    public static final double SCORE_CLAW_ARM_HANG = 0.455;
+    public static final double SCORE_CLAW_ARM_HANG = 0.450;
 
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.653;
@@ -43,7 +43,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_OPEN = 0.682;
     public static final double SCORE_CLAW_CLOSE = 0.25;
 
-    public static final int LIFT_HIGH_CHAMBER = 50;
+    public static final int LIFT_HIGH_CHAMBER = 110;
     public static final int LIFT_LOW_CHAMBER = 0;
     public static final int LIFT_HIGH_BASKET = 1800;
     public static final int LIFT_LOW_BASKET = 400;

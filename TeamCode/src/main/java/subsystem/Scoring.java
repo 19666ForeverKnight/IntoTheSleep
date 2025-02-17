@@ -158,7 +158,7 @@ public class Scoring {
     }
 
     public int getLiftPosition() {
-        return liftMiddle.getCurrentPosition();
+        return (liftLeft.getCurrentPosition() + liftRight.getCurrentPosition()) / 2;
     }
 
     public void scoreOpen() {
