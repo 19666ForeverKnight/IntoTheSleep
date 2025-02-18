@@ -16,7 +16,6 @@ public class Drivetrain {
     private DcMotorEx leftBack;
     private DcMotorEx rightFront;
     private DcMotorEx rightBack;
-    private Servo sweep;
     public GoBildaPinpointDriver pinPoint;
     private double theta, power, turn, realTheta;
 
@@ -26,7 +25,6 @@ public class Drivetrain {
         leftBack = hardwareMap.get(DcMotorEx.class, Configs.LEFT_BACK);
         rightFront = hardwareMap.get(DcMotorEx.class, Configs.RIGHT_FRONT);
         rightBack = hardwareMap.get(DcMotorEx.class, Configs.RIGHT_BACK);
-        sweep = hardwareMap.get(Servo.class, Configs.SWEEP);
 
         leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         leftBack.setDirection(DcMotorEx.Direction.REVERSE);
@@ -36,7 +34,6 @@ public class Drivetrain {
         rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        sweepIn();
     }
 
     public void drive(double y, double x, double rx, double powerScale) {
@@ -48,14 +45,6 @@ public class Drivetrain {
 
     public double getHeading() {
         return Math.toDegrees(pinPoint.getHeading());
-    }
-
-    public void sweepIn() {
-        sweep.setPosition(SWEEPING_INIT);
-    }
-
-    public void sweepOut() {
-        sweep.setPosition(SWEEPING_APPLE);
     }
 
     public void driveFieldOriented(double y, double x, double rx, double p) {

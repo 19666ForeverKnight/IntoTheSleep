@@ -30,8 +30,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import com.pedropathing.localization.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Locale;
+
+import constants.Configs;
 
 /*
 This opmode shows how to use the goBILDA® Pinpoint Odometry Computer.
@@ -68,6 +72,14 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
 
     double oldTime = 0;
 
+    private DcMotorEx leftFront;
+    private DcMotorEx leftRear;
+    private DcMotorEx rightFront;
+    private DcMotorEx rightRear;
+
+    int xInit = 0, yInit = 0, rev = 0, tickPerInch = 500;
+    boolean counted = false, downHold = false, upHold = false;
+
 
     @Override
     public void runOpMode() {
@@ -75,7 +87,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
 
-        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"pp");
 
         /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
@@ -123,6 +135,22 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         telemetry.addData("Device Scalar", odo.getYawScalar());
         telemetry.update();
 
+        xInit = odo.getEncoderX();
+        yInit = odo.getEncoderY();
+
+        leftFront = hardwareMap.get(DcMotorEx.class, Configs.LEFT_FRONT);
+        leftRear = hardwareMap.get(DcMotorEx.class, Configs.LEFT_BACK);
+        rightFront = hardwareMap.get(DcMotorEx.class, Configs.RIGHT_FRONT);
+        rightRear = hardwareMap.get(DcMotorEx.class, Configs.RIGHT_BACK);
+
+        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftRear.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
         // Wait for the game to start (driver presses START)
         waitForStart();
         resetRuntime();
@@ -130,7 +158,20 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+            double x = gamepad1.left_stick_x; // this is strafing
+            double rx = gamepad1.right_stick_x;
 
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double leftFrontPower = (y + x + rx) / denominator;
+            double leftRearPower = (y - x + rx) / denominator;
+            double rightFrontPower = (y - x - rx) / denominator;
+            double rightRearPower = (y + x - rx) / denominator;
+
+            leftFront.setPower(leftFrontPower);
+            leftRear.setPower(leftRearPower);
+            rightFront.setPower(rightFrontPower);
+            rightRear.setPower(rightRearPower);
             /*
             Request an update from the Pinpoint odometry computer. This checks almost all outputs
             from the device in a single I2C read.

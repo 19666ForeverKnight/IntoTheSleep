@@ -34,6 +34,12 @@ public class Robot {
         drivetrain.init(hardwareMap);
     }
 
+    public void autoInit(HardwareMap hardwareMap) {
+        executor = Executors.newScheduledThreadPool(5);
+        intake.init(hardwareMap);
+        scoring.init(hardwareMap);
+    }
+
     public void trans() {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.intakeClawAvoid();
@@ -45,8 +51,8 @@ public class Robot {
     }
 
     public void sweep() {
-        drivetrain.sweepOut();
-        executor.schedule(() -> drivetrain.sweepIn(), 270, TimeUnit.MILLISECONDS);
+        intake.sweepOut();
+        executor.schedule(() -> intake.sweepIn(), 270, TimeUnit.MILLISECONDS);
     }
 
 //    public void autoInit(HardwareMap hardwareMap) {

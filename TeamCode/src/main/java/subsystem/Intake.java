@@ -12,6 +12,8 @@ import static constants.RobotConstants.INTAKE_CLAW_PITCH_AVOID;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
+import static constants.RobotConstants.SWEEPING_APPLE;
+import static constants.RobotConstants.SWEEPING_INIT;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -27,6 +29,7 @@ public class Intake {
     private Servo intakeClawArm;
     private Servo extendLeft;
     private Servo extendRight;
+    private Servo sweep;
 
     public void init(HardwareMap hardwareMap) {
         intakeClaw = hardwareMap.get(Servo.class, Configs.INTAKE_CLAW);
@@ -37,11 +40,21 @@ public class Intake {
         intakeClawArm = hardwareMap.get(Servo.class, Configs.INTAKE_CLAW_ARM);
         extendLeft = hardwareMap.get(Servo.class, Configs.EXTEND_LEFT);
         extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_RIGHT);
+        sweep = hardwareMap.get(Servo.class, Configs.SWEEP);
 
         // Initialize positions
         extendLeft.setPosition(EXTEND_LEFT_IN);
         extendRight.setPosition(EXTEND_RIGHT_IN);
         toTransPos();
+        sweepIn();
+    }
+
+    public void sweepIn() {
+        sweep.setPosition(SWEEPING_INIT);
+    }
+
+    public void sweepOut() {
+        sweep.setPosition(SWEEPING_APPLE);
     }
 
     public void toTransPos() {
