@@ -5,6 +5,7 @@ import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
 import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP_DIVE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_HANG;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_READY_FOR_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
@@ -147,6 +148,9 @@ public class Scoring {
     public void armToBasket() {
         setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP);
     }
+    public void armToBasketDive() {
+        setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP_DIVE);
+    }
     public void armToChamber() {
         setScoreArmPosition(SCORE_CLAW_ARM_HANG, SCORE_CLAW_FLIP_HANG);
     }
@@ -223,10 +227,9 @@ public class Scoring {
         liftLeft.setPower(0);
     }
 
-//    public void liftBack(){
-//        liftToAuto(35);
-//        armTrans();
-//    }
+    public void liftBack(){
+        liftToAuto(0);
+    }
 
     public double getrightliftheight() {
         return liftRight.getCurrentPosition();

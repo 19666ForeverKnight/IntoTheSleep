@@ -15,23 +15,20 @@ import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
-//import static constants.RobotConstants.INTAKE_CLAW_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_YAW_RIGHT_LIMIT;
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_LOW_BASKET;
 import static constants.RobotConstants.LIFT_LOW_CHAMBER;
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW;
-import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
-import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
-//import com.pedropathing.follower.Follower;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.util.Constants;
@@ -48,8 +45,8 @@ import pedroPathing.constants.LConstants;
 import subsystem.Robot;
 
 
-@TeleOp(name = "Competition TaleOp", group = "Experiment")
-public class Competition extends OpMode {
+@TeleOp(name = "RR Competition TaleOp", group = "Experiment")
+public class CompetitionRR extends OpMode {
     private Telemetry telemetryA;
     private PoseUpdater poseUpdater;
     private DashboardPoseTracker dashboardPoseTracker;
@@ -65,10 +62,11 @@ public class Competition extends OpMode {
     private int basketIndex=0, chamberIndex=0,liftPos = 0;
     private final int[] basketPos = {LIFT_HIGH_BASKET, LIFT_LOW_BASKET};
     private final int[] chamberPos = {LIFT_HIGH_CHAMBER, LIFT_LOW_CHAMBER};
-    private boolean prevRB = false;
+    private boolean clawClose = false;
     private double x, y, rx, p;
 
-    private int counthighbasket = 0;
+    private Follower follower;
+
     /** This method is call once when init is played, it initializes the follower **/
     @Override
     public void init() {
@@ -85,6 +83,9 @@ public class Competition extends OpMode {
         telemetryA.update();
         Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
+
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(startPose);
     }
 
     /** This method is called continuously after Init while waiting to be started. **/
@@ -95,7 +96,7 @@ public class Competition extends OpMode {
     /** This method is called once at the start of the OpMode. **/
     @Override
     public void start() {
-//        follower.startTeleopDrive();
+        follower.startTeleopDrive();
     }
 
     /** This is the main loop of the opmode and runs continuously after play **/
@@ -105,12 +106,14 @@ public class Competition extends OpMode {
         dashboardPoseTracker.update();
 
         //Drivetrain
-        y = gamepad1.left_stick_y * 0.8;
-        x = -gamepad1.left_stick_x * 0.8;
-        rx = -gamepad1.right_stick_x * 0.8;
-        if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.45;
-        else p = 1;
-        robot.drivetrain.drive(y, x, rx, p);
+//        y = gamepad1.left_stick_y * 0.8;
+//        x = -gamepad1.left_stick_x * 0.8;
+//        rx = -gamepad1.right_stick_x * 0.8;
+//        if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.3;
+//        else p = 1;
+//        robot.drivetrain.drive(y, x, rx, p);
+        follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, true);
+        follower.update();
 
         if (gamepad1.left_bumper) {
             robot.sweep();
@@ -120,6 +123,7 @@ public class Competition extends OpMode {
         if (gamepad2.left_bumper) {
             intakeOut = true;
             intaking = false;
+            clawClose = false;
             back = true;
             timer.reset();
             robot.scoring.armToTrans();
@@ -226,8 +230,6 @@ public class Competition extends OpMode {
             back = false;
             xHold = true;
             chamberIndex = (chamberIndex + 3) % 2;
-            intakeExtendPosRight = EXTEND_RIGHT_IN;
-            intakeExtendPosLeft = EXTEND_LEFT_IN;
         } else if (!gamepad2.a && xHold) {
             xHold = false;
         }
@@ -262,12 +264,8 @@ public class Competition extends OpMode {
                 }
             } else if (basket) {
                 liftPos = basketPos[basketIndex];
-                if (Math.abs(robot.scoring.getLiftPosition() - liftPos) < 350){
-                    if (counthighbasket > 6 && basketIndex == 0) {
-                        robot.scoring.armToBasket();
-                    } else {
-                        robot.scoring.armToBasketDive();
-                    }
+                if (Math.abs(robot.scoring.getLiftPosition() - liftPos) < 230) {
+                    robot.scoring.armToBasket();
                 }
             } else {
                 if (chamberIndex == 0) robot.scoring.armToChamber();
@@ -277,12 +275,10 @@ public class Competition extends OpMode {
             robot.scoring.runToPosition(liftPos);
         }
 
-        if (gamepad1.right_bumper && !prevRB) {
+        if (gamepad1.right_bumper) {
             specimenOpen = true;
             gamepad1.rumble(0, 1, 100);
-            counthighbasket++;
         }
-        prevRB = gamepad1.right_bumper;
 
         if (gamepad2.right_bumper && !rbHold) {
             rbHold = true;
@@ -305,18 +301,15 @@ public class Competition extends OpMode {
             pad = false;
         }
 
-//        telemetryA.addData("liftrightheight", robot.scoring.getrightliftheight());
-//        telemetryA.addData("liftleftheight", robot.scoring.getleftliftheight());
-//        telemetryA.addData("liftmiddleheight", robot.scoring.getmiddleliftheight());
-//        telemetryA.addData("left", intakeExtendPosLeft);
-//        telemetryA.addData("right", intakeExtendPosRight);
-//        telemetryA.addData("x", poseUpdater.getPose().getX());
-//        telemetryA.addData("y", poseUpdater.getPose().getY());
-//        telemetryA.addData("heading", poseUpdater.getPose().getHeading());
-//        telemetryA.addData("total heading", poseUpdater.getTotalHeading());
-        telemetryA.addData("", "--------------------");
-        telemetryA.addData("High Basket:", counthighbasket);
-        telemetryA.addData("", "--------------------");
+        telemetryA.addData("liftrightheight", robot.scoring.getrightliftheight());
+        telemetryA.addData("liftleftheight", robot.scoring.getleftliftheight());
+        telemetryA.addData("liftmiddleheight", robot.scoring.getmiddleliftheight());
+        telemetryA.addData("left", intakeExtendPosLeft);
+        telemetryA.addData("right", intakeExtendPosRight);
+        telemetryA.addData("x", poseUpdater.getPose().getX());
+        telemetryA.addData("y", poseUpdater.getPose().getY());
+        telemetryA.addData("heading", poseUpdater.getPose().getHeading());
+        telemetryA.addData("total heading", poseUpdater.getTotalHeading());
 
         telemetryA.update();
 

@@ -8,6 +8,7 @@ import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS_PREP;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
+import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
@@ -38,10 +39,12 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
+        scoring.scoreClose();
     }
 
     public void trans() {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
+        intake.setClawPosition(INTAKE_CLAW_CLOSE);
         intake.intakeClawAvoid();
         intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
         executor.schedule(() -> intake.toTransPos(), 300, TimeUnit.MILLISECONDS);

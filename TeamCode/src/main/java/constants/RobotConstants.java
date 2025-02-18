@@ -2,12 +2,12 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.374; //0.62
+    public static final double INTAKE_CLAW_OPEN = 0.35; //0.62
     public static final double INTAKE_CLAW_CLOSE = 0.24;
 
     public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
-    public static final double INTAKE_CLAW_YAW_MID = 0.49;
+    public static final double INTAKE_CLAW_YAW_MID = 0.482;
 
     public static final double INTAKE_CLAW_PITCH_INTAKE = 0.62;
     public static final double INTAKE_CLAW_PITCH_TRANS = 0.0;
@@ -18,14 +18,14 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_ARM_TRANS = 0.678;
     public static final double INTAKE_CLAW_ARM_AVOID = 0.5;
 
-    public static final double EXTEND_LEFT_IN = 0.494;
-    public static final double EXTEND_LEFT_OUT = 0.194;
-    public static final double EXTEND_LEFT_TRANS = 0.427;
-    public static final double EXTEND_LEFT_TRANS_PREP = 0.4;
+    public static final double EXTEND_LEFT_IN = 0.948;
+    public static final double EXTEND_LEFT_OUT = 0.635;
+    public static final double EXTEND_LEFT_TRANS = 0.877;
+    public static final double EXTEND_LEFT_TRANS_PREP = 0.839;
     public static final double EXTEND_RIGHT_IN = 0.703;
     public static final double EXTEND_RIGHT_OUT = 1;
     public static final double EXTEND_RIGHT_TRANS = 0.785;
-    public static final double EXTEND_RIGHT_TRANS_PREP = 0.8;
+    public static final double EXTEND_RIGHT_TRANS_PREP = 0.800;
 
 
     // TeleOp Scoring Constants
@@ -36,6 +36,7 @@ public class RobotConstants {
 
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.653;
+    public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.774;
     public static final double SCORE_CLAW_FLIP_TRANS = 0.73;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
     public static final double SCORE_CLAW_FLIP_HANG = 0.257;
@@ -60,7 +61,7 @@ public class RobotConstants {
     public static final double SWEEPING_INIT = 0.488;
     public static final double SWEEPING_APPLE = 0.05;
 
-    public static final double EXTEND_DELTA = 0.0085;
+    public static final double EXTEND_DELTA = 0.004;
 
     //Vision Constants
     public static final double CVSmoothing = 1.0;

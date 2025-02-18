@@ -20,7 +20,7 @@ public class Servotest extends OpMode {
         // 4 = right intake        Control hub 5    - ri
         // 5 = claw rorate         Control Hub 6    - cl
         // 6 = extend right        Exp Hub 1   - er
-        // 7 = scoring arm         Exp hub 2   - sa
+        // 7 = scoring arm          Exp hub 2   - sa
         // 8 = scoring arm pitch (flip)   Exp hub 3   - sap
         // 9 = sweeping            Exp hub 4   - sw
         // 10 = scoring claw       Exp hub 5   - sc
