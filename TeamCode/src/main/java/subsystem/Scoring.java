@@ -1,6 +1,6 @@
 package subsystem;
 
-import static constants.RobotConstants.RATCHET_RELEASE;
+import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW_AUTO;
 import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
 import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
@@ -10,21 +10,13 @@ import static constants.RobotConstants.SCORE_CLAW_FLIP_HANG;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_READY_FOR_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
-import static constants.RobotConstants.SPECIMEN_CLAW_OPEN;
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW;
-import static constants.RobotConstants.RATCHET_LOCK;
-import static constants.RobotConstants.RATCHET_RELEASE;
 //import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_AUTO;
-import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP;
-import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
-import static constants.RobotConstants.SCORE_CLAW_OPEN;
 //import static constants.RobotConstants.SCORE_CLAW_OPEN_Auto;
-import static constants.RobotConstants.SPECIMEN_CLAW_CLOSE;
-import static constants.RobotConstants.SPECIMEN_CLAW_OPEN;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -86,6 +78,8 @@ public class Scoring {
         scoreClaw.setPosition(SCORE_CLAW_OPEN);
         scoreClawArm.setPosition(SCORE_CLAW_ARM_SPECIMEN);
         scoreClawFlip.setPosition(SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
+
+
     }
 
 //    public void autoInit (HardwareMap hardwareMap) {
@@ -173,12 +167,12 @@ public class Scoring {
         scoreClaw.setPosition(SCORE_CLAW_CLOSE);
     }
 
-    public void liftAuto(){
+    public void threadStart(){
         if(isRunning) return;
         isRunning = true;
         sch.schedule(this::liftMornitor,0,TimeUnit.MILLISECONDS);
     }
-    public void stop(){
+    public void threadStop(){
         isRunning = false;
     }
     public void liftMornitor(){
@@ -186,7 +180,7 @@ public class Scoring {
             int currPos = (liftLeft.getCurrentPosition() + liftRight.getCurrentPosition()) /2 ;
             double powerRate = Math.abs(currPos-liftTargetPos)/300.0;
             powerRate = Math.min(powerRate, 1);
-            powerRate = Math.max(powerRate, 0.45);
+            powerRate = Math.max(powerRate, 0.3);
             if(Math.abs(currPos-liftTargetPos)>liftTor)
                 if(currPos<liftTargetPos){
                     setLiftPower(powerRate);
@@ -201,8 +195,8 @@ public class Scoring {
         isRunning = false;
     }
     public void liftToAuto(int pos){
-        if(pos<LIFT_HIGH_BASKET) pos = LIFT_HIGH_BASKET;
-        if(pos>0) pos = 0;
+        if(pos>LIFT_HIGH_BASKET) pos = LIFT_HIGH_BASKET;
+        if(pos<0) pos = 0;
         liftTargetPos = pos;
     }
 
@@ -216,6 +210,10 @@ public class Scoring {
 
     public void liftToChamberOpen(){
         liftToAuto(LIFT_OPEN_SPECIMEN_CLAW);
+    }
+
+    public void liftToChamberOpenAuto(){
+        liftToAuto(LIFT_OPEN_SPECIMEN_CLAW_AUTO);
     }
 
     public void extandTo(){

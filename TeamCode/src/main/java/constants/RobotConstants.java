@@ -2,8 +2,8 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.35; //0.62
-    public static final double INTAKE_CLAW_CLOSE = 0.24;
+    public static final double INTAKE_CLAW_OPEN = 0.313; //0.62
+    public static final double INTAKE_CLAW_CLOSE = 0.124;
 
     public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
@@ -26,6 +26,15 @@ public class RobotConstants {
     public static final double EXTEND_RIGHT_OUT = 1;
     public static final double EXTEND_RIGHT_TRANS = 0.785;
     public static final double EXTEND_RIGHT_TRANS_PREP = 0.800;
+
+    // Extend Auto
+    public static final double EXTEND_LEFT_AUTO_COLLECT1 = 0;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT1 = 0;
+    public static final double EXTEND_LEFT_AUTO_COLLECT2 = 0;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT2 = 0;
+    public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0;
+
 
 
     // TeleOp Scoring Constants
@@ -50,6 +59,8 @@ public class RobotConstants {
     public static final int LIFT_LOW_BASKET = 400;
 
     public static final int LIFT_OPEN_SPECIMEN_CLAW = 330;
+    public static final int LIFT_OPEN_SPECIMEN_CLAW_AUTO = 500;
+
 
     // Other Constants
     public static final double RATCHET_LOCK = 0.165;
@@ -59,7 +70,7 @@ public class RobotConstants {
     public static final double SPECIMEN_CLAW_CLOSE = 0.261;
 
     public static final double SWEEPING_INIT = 0.488;
-    public static final double SWEEPING_APPLE = 0.05;
+    public static final double SWEEPING_APPLE = 0.128;
 
     public static final double EXTEND_DELTA = 0.004;
 

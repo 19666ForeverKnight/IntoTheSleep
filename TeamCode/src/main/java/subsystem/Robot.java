@@ -4,8 +4,14 @@ package subsystem;
 //import static constants.AutoConst.YELLOW_SECOND_EXTEND;
 //import static constants.AutoConst.YELLOW_THIRD_EXTEND;
 
+import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
+import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
+import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS_PREP;
+import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
+import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
+import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
@@ -40,6 +46,7 @@ public class Robot {
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
         scoring.scoreClose();
+        scoring.threadStart();
     }
 
     public void trans() {
@@ -58,6 +65,17 @@ public class Robot {
         executor.schedule(() -> intake.sweepIn(), 270, TimeUnit.MILLISECONDS);
     }
 
+    public void autoextendtocollect(int sampleindex) {
+        if(sampleindex == 1) {
+            intake.setExtendPosition(EXTEND_RIGHT_AUTO_COLLECT1, EXTEND_LEFT_AUTO_COLLECT1);
+        }
+        else if(sampleindex == 2) {
+            intake.setExtendPosition(EXTEND_RIGHT_AUTO_COLLECT2, EXTEND_LEFT_AUTO_COLLECT2);
+        }
+        else if(sampleindex == 3) {
+            intake.setExtendPosition(EXTEND_RIGHT_AUTO_COLLECT3, EXTEND_LEFT_AUTO_COLLECT3);
+        }
+    }
 //    public void autoInit(HardwareMap hardwareMap) {
 //        executor = Executors.newScheduledThreadPool(5);
 ////        intake.init(hardwareMap);

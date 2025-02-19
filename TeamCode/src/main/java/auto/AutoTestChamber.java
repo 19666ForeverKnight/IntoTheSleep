@@ -1,14 +1,13 @@
 package auto;
 
-import static java.lang.Boolean.TRUE;
-
-import static constants.RobotConstants.EXTEND_LEFT_OUT;
-import static constants.RobotConstants.EXTEND_LEFT_TRANS;
-import static constants.RobotConstants.EXTEND_RIGHT_OUT;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
@@ -18,9 +17,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import subsystem.Robot;
@@ -29,142 +26,319 @@ import subsystem.Robot;
 public class AutoTestChamber extends OpMode {
     private Telemetry telemetryA;
     private Follower follower;
-    private PathChain pathChain;
-    private int pathState;
+    private PathChain preload, pushsample, spec1_collect, spec1_score, spec2_collect, spec2_score, spec3_collect, spec3_score, spec4_collect, spec4_score;
     Robot robot = new Robot();
 
     @Override
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(new Pose(7.00, 80, Math.toRadians(0)));
         robot.autoInit(hardwareMap);
+        robot.scoring.threadStart();
+        follower.setStartingPose(new Pose(7, 63, Math.toRadians(0)));
 
-        pathChain = follower.pathBuilder()
+        preload = follower.pathBuilder()
                 .addPath(
                         // Line 1
                         new BezierLine(
-                                new Point(7, 77.000, Point.CARTESIAN),
-                                new Point(30.000, 77.000, Point.CARTESIAN)
+                                new Point(7, 63, Point.CARTESIAN),
+                                new Point(38, 76.5, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0)).build();
+
+        pushsample = follower.pathBuilder()
                 .addPath(
                         // Line 2
                         new BezierCurve(
-                                new Point(30.000, 77.000, Point.CARTESIAN),
-                                new Point(20.000, 26.000, Point.CARTESIAN),
-                                new Point(37.000, 39.800, Point.CARTESIAN)
+                                new Point(38.000, 76.500, Point.CARTESIAN),
+                                new Point(26.800, 33.000, Point.CARTESIAN),
+                                new Point(25.000, 33.000, Point.CARTESIAN),
+                                new Point(48.000, 34.700, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-37))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
-                        new BezierLine(
-                                new Point(37.000, 39.800, Point.CARTESIAN),
-                                new Point(21.943, 38.008, Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(-37), Math.toRadians(-117))
-                .addPath(
-                        new BezierLine(
-                                new Point(21.943, 38.008, Point.CARTESIAN),
-                                new Point(27.037, 28.016, Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(-117), Math.toRadians(-26))
-                .addPath(
-                        new BezierLine(
-                                new Point(27.037, 28.016, Point.CARTESIAN),
-                                new Point(20.767, 28.016, Point.CARTESIAN)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(-26), Math.toRadians(-117))
-                .addPath(
+                        // Line 3
                         new BezierCurve(
-                                new Point(20.767, 28.016, Point.CARTESIAN),
-                                new Point(50.155, 29.780, Point.CARTESIAN),
-                                new Point(61.714, 8.816, Point.CARTESIAN)
+                                new Point(48.000, 34.700, Point.CARTESIAN),
+                                new Point(63.000, 35.000, Point.CARTESIAN),
+                                new Point(59.000, 22.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-117), Math.toRadians(0))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
+                        // Line 4
                         new BezierLine(
-                                new Point(61.714, 8.816, Point.CARTESIAN),
-                                new Point(17.829, 8.229, Point.CARTESIAN)
+                                new Point(59.000, 22.000, Point.CARTESIAN),
+                                new Point(23.000, 22.000, Point.CARTESIAN)
                         )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                ).setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
-                        new BezierLine(
-                                new Point(17.829, 8.229, Point.CARTESIAN),
-                                new Point(10.971, 33.894, Point.CARTESIAN)
+                        // Line 5
+                        new BezierCurve(
+                                new Point(23.000, 24.000, Point.CARTESIAN),
+                                new Point(58.000, 31.000, Point.CARTESIAN),
+                                new Point(58.000, 13.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
+                        // Line 6
                         new BezierLine(
-                                new Point(10.971, 33.894, Point.CARTESIAN),
-                                new Point(7.837, 33.894, Point.CARTESIAN)
+                                new Point(58.000, 13.000, Point.CARTESIAN),
+                                new Point(23.000, 13.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
-                        new BezierLine(
-                                new Point(7.837, 33.894, Point.CARTESIAN),
-                                new Point(40.359, 69.355, Point.CARTESIAN)
+                        // Line 7
+                        new BezierCurve(
+                                new Point(23.000, 13.000, Point.CARTESIAN),
+                                new Point(59.000, 26.000, Point.CARTESIAN),
+                                new Point(58.000, 7.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
+                        // Line 8
                         new BezierLine(
-                                new Point(40.359, 69.355, Point.CARTESIAN),
-                                new Point(10.971, 33.894, Point.CARTESIAN)
+                                new Point(58.000, 7.000, Point.CARTESIAN),
+                                new Point(23.000, 7.000, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
-        follower.followPath(pathChain, TRUE);
+
+        spec1_collect = follower.pathBuilder()
+                .addPath(
+                        // Line 9
+                        new BezierCurve(
+                                new Point(23.000, 10.000, Point.CARTESIAN),
+                                new Point(24.000, 38.000, Point.CARTESIAN),
+                                new Point(9.000, 33.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec1_score = follower.pathBuilder()
+                .addPath(
+                        // Line 10
+                        new BezierLine(
+                                new Point(9.000, 33.000, Point.CARTESIAN),
+                                new Point(36.500, 73.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec2_collect = follower.pathBuilder()
+                .addPath(
+                        // Line 11
+                        new BezierCurve(
+                                new Point(36.500, 73.000, Point.CARTESIAN),
+                                new Point(20.000, 24.000, Point.CARTESIAN),
+                                new Point(9.000, 33.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec2_score = follower.pathBuilder()
+                .addPath(
+                        // Line 12
+                        new BezierLine(
+                                new Point(9.000, 33.000, Point.CARTESIAN),
+                                new Point(36.500, 69.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec3_collect = follower.pathBuilder()
+                .addPath(
+                        // Line 13
+                        new BezierCurve(
+                                new Point(36.500, 69.000, Point.CARTESIAN),
+                                new Point(17.000, 26.000, Point.CARTESIAN),
+                                new Point(9.000, 33.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec3_score = follower.pathBuilder()
+                .addPath(
+                        // Line 14
+                        new BezierLine(
+                                new Point(9.000, 33.000, Point.CARTESIAN),
+                                new Point(36.500, 67.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+
+        spec4_collect = follower.pathBuilder()
+                .addPath(
+                        // Line 15
+                        new BezierCurve(
+                                new Point(36.500, 66.000, Point.CARTESIAN),
+                                new Point(28.000, 24.000, Point.CARTESIAN),
+                                new Point(9.000, 33.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        spec4_score = follower.pathBuilder()
+                .addPath(
+                        // Line 16
+                        new BezierLine(
+                                new Point(9.000, 33.000, Point.CARTESIAN),
+                                new Point(36.500, 64.500, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetryA.update();
     }
-    private boolean preload_action1 = true;
-    private boolean preload_action2 = true;
-    private boolean preload_action3 = true;
 
-    private boolean get1st_action1 = true;
-    private boolean get1st_action2 = true;
     @Override
     public void loop() {
-        follower.update();
-        //preload upper action
-        if (follower.atParametricEnd()) {
-            follower.followPath(pathChain);
-        }
-        if(follower.getPose().getX() >= 7.00 && preload_action1){
-            preload_action1 = false;
-            robot.scoring.armToChamber();
-            robot.scoring.liftToHighChamber();
-        }
-        if(follower.getPose().getX() >= 30.00 && preload_action2 && !preload_action1){
-            preload_action2 = false;
-            robot.scoring.liftToChamberOpen();
-            robot.scoring.scoreOpen();
-        }
-        if(follower.getPose().getY() <= 70.00 && preload_action3 && !preload_action2){
-            preload_action3 = false;
-            robot.scoring.armToCollect();
-            robot.scoring.liftBack();
-        }
-        //get 1st action
-        if(follower.getPose().getY() <= 47 && get1st_action1 && !preload_action3){
-            get1st_action1 = false;
-            robot.intake.setExtendPosition(EXTEND_RIGHT_OUT, EXTEND_LEFT_OUT);
-        }
-        if(follower.getPose().getX() <= 23 && get1st_action2 && !get1st_action1){
-            get1st_action2 = false;
-            robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS);
-        }
+        CommandScheduler.getInstance().run();
         follower.telemetryDebug(telemetryA);
-        super.stop();
+        follower.update();
+    }
+
+    @Override
+    public void start() {
+        CommandScheduler.getInstance().schedule(
+                new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(preload, true)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitCommand(1000),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(400),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(pushsample, true)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.liftBack()),
+                                        new InstantCommand(() -> robot.scoring.armToCollect())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec1_collect)),
+                                new SequentialCommandGroup(
+                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
+                                        new InstantCommand(() -> robot.scoring.scoreClose())
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec1_score)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.liftBack()),
+                                                new InstantCommand(() -> robot.scoring.armToCollect())
+                                        )
+
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(100),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec2_collect)),
+                                new SequentialCommandGroup(
+                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
+                                        new InstantCommand(() -> robot.scoring.scoreClose())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec2_score)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.liftBack()),
+                                                new InstantCommand(() -> robot.scoring.armToCollect())
+                                        )
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(100),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec3_collect)),
+                                new SequentialCommandGroup(
+                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
+                                        new InstantCommand(() -> robot.scoring.scoreClose())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec3_score)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.liftBack()),
+                                                new InstantCommand(() -> robot.scoring.armToCollect())
+                                        )
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(100),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec4_collect)),
+                                new SequentialCommandGroup(
+                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
+                                        new InstantCommand(() -> robot.scoring.scoreClose())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> follower.followPath(spec4_score)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.liftBack()),
+                                                new InstantCommand(() -> robot.scoring.armToCollect())
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
+    @Override
+    public void stop() {
+        robot.scoring.threadStop();
     }
 }
