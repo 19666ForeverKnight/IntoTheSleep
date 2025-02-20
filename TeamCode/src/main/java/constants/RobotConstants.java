@@ -4,6 +4,7 @@ public class RobotConstants {
     // Intake Constants
     public static final double INTAKE_CLAW_OPEN = 0.313; //0.62
     public static final double INTAKE_CLAW_CLOSE = 0.124;
+    public static final double INTAKE_CLAW_OPEN_AUTO = 0.5;
 
     public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
@@ -28,12 +29,12 @@ public class RobotConstants {
     public static final double EXTEND_RIGHT_TRANS_PREP = 0.800;
 
     // Extend Auto
-    public static final double EXTEND_LEFT_AUTO_COLLECT1 = 0;
-    public static final double EXTEND_RIGHT_AUTO_COLLECT1 = 0;
+    public static final double EXTEND_LEFT_AUTO_COLLECT1 = 0.675;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT1 = 1;
     public static final double EXTEND_LEFT_AUTO_COLLECT2 = 0;
     public static final double EXTEND_RIGHT_AUTO_COLLECT2 = 0;
-    public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0;
-    public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0;
+    public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0.733;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0.967;
 
 
 
@@ -42,6 +43,8 @@ public class RobotConstants {
     public static final double SCORE_CLAW_ARM_TRANS = 0.02;
     public static final double SCORE_CLAW_ARM_SPECIMEN = 0.96;
     public static final double SCORE_CLAW_ARM_HANG = 0.450;
+    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.066;
+
 
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.653;
@@ -49,6 +52,8 @@ public class RobotConstants {
     public static final double SCORE_CLAW_FLIP_TRANS = 0.73;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
     public static final double SCORE_CLAW_FLIP_HANG = 0.257;
+    public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.628;
+
 
     public static final double SCORE_CLAW_OPEN = 0.682;
     public static final double SCORE_CLAW_CLOSE = 0.25;

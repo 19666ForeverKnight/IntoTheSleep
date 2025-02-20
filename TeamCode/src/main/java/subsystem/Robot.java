@@ -44,9 +44,7 @@ public class Robot {
     public void autoInit(HardwareMap hardwareMap) {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
-        scoring.init(hardwareMap);
-        scoring.scoreClose();
-        scoring.threadStart();
+        scoring.autoinit(hardwareMap);
     }
 
     public void trans() {

@@ -8,6 +8,7 @@ import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
+import static constants.RobotConstants.INTAKE_CLAW_OPEN_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_AVOID;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
 import static constants.RobotConstants.INTAKE_CLAW_PITCH_TRANS;
@@ -136,6 +137,10 @@ public class Intake {
         intakeClaw.setPosition(INTAKE_CLAW_OPEN);
     }
 
+    public void intakeClawOpenAuto() {
+        intakeClaw.setPosition(INTAKE_CLAW_OPEN_AUTO);
+    }
+
     public void intakeClawClose() {
         intakeClaw.setPosition(INTAKE_CLAW_CLOSE);
     }
@@ -145,11 +150,11 @@ public class Intake {
     }
 
     public void intakeIntake() {
-        setLeftRightPosition(1, 0);
+        setLeftRightPosition(0, 1);
     }
 
     public void intakeOuttake() {
-        setLeftRightPosition(0, 1);
+        setLeftRightPosition(1, 0);
     }
 
     public void intakeStop() {
