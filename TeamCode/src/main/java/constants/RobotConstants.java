@@ -21,12 +21,12 @@ public class RobotConstants {
 
     public static final double EXTEND_LEFT_IN = 0.948;
     public static final double EXTEND_LEFT_OUT = 0.635;
-    public static final double EXTEND_LEFT_TRANS = 0.877;
-    public static final double EXTEND_LEFT_TRANS_PREP = 0.839;
+    public static final double EXTEND_LEFT_TRANS = 0.895;
+    public static final double EXTEND_LEFT_TRANS_PREP = 0.886;
     public static final double EXTEND_RIGHT_IN = 0.703;
     public static final double EXTEND_RIGHT_OUT = 1;
-    public static final double EXTEND_RIGHT_TRANS = 0.785;
-    public static final double EXTEND_RIGHT_TRANS_PREP = 0.800;
+    public static final double EXTEND_RIGHT_TRANS = 0.776;
+    public static final double EXTEND_RIGHT_TRANS_PREP = 0.803;
 
     // Extend Auto
     public static final double EXTEND_LEFT_AUTO_COLLECT1 = 0.675;

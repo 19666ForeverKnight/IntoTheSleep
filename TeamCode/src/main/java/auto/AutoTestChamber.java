@@ -71,22 +71,23 @@ public class AutoTestChamber extends OpMode {
                         // Line 4
                         new BezierLine(
                                 new Point(59.000, 22.000, Point.CARTESIAN),
-                                new Point(23.000, 22.000, Point.CARTESIAN)
+                                new Point(25.000, 22.000, Point.CARTESIAN)
                         )
+
                 ).setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
                         // Line 5
                         new BezierCurve(
-                                new Point(23.000, 24.000, Point.CARTESIAN),
+                                new Point(25.000, 22.000, Point.CARTESIAN),
                                 new Point(58.000, 31.000, Point.CARTESIAN),
-                                new Point(58.000, 13.000, Point.CARTESIAN)
+                                new Point(65.000, 13.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
                         // Line 6
                         new BezierLine(
-                                new Point(58.000, 13.000, Point.CARTESIAN),
+                                new Point(65.000, 13.000, Point.CARTESIAN),
                                 new Point(23.000, 13.000, Point.CARTESIAN)
                         )
                 )
@@ -96,15 +97,15 @@ public class AutoTestChamber extends OpMode {
                         new BezierCurve(
                                 new Point(23.000, 13.000, Point.CARTESIAN),
                                 new Point(59.000, 26.000, Point.CARTESIAN),
-                                new Point(58.000, 7.000, Point.CARTESIAN)
+                                new Point(47.500, 6.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
                 .addPath(
                         // Line 8
                         new BezierLine(
-                                new Point(58.000, 7.000, Point.CARTESIAN),
-                                new Point(23.000, 7.000, Point.CARTESIAN)
+                                new Point(47.500, 6.500, Point.CARTESIAN),
+                                new Point(23.000, 6.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -114,7 +115,7 @@ public class AutoTestChamber extends OpMode {
                 .addPath(
                         // Line 9
                         new BezierCurve(
-                                new Point(23.000, 10.000, Point.CARTESIAN),
+                                new Point(23.000, 6.500, Point.CARTESIAN),
                                 new Point(24.000, 38.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
@@ -127,7 +128,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 10
                         new BezierLine(
                                 new Point(9.000, 33.000, Point.CARTESIAN),
-                                new Point(36.500, 73.000, Point.CARTESIAN)
+                                new Point(38.000, 73.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -137,7 +138,7 @@ public class AutoTestChamber extends OpMode {
                 .addPath(
                         // Line 11
                         new BezierCurve(
-                                new Point(36.500, 73.000, Point.CARTESIAN),
+                                new Point(38.000, 73.000, Point.CARTESIAN),
                                 new Point(20.000, 24.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
@@ -150,7 +151,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 12
                         new BezierLine(
                                 new Point(9.000, 33.000, Point.CARTESIAN),
-                                new Point(36.500, 69.000, Point.CARTESIAN)
+                                new Point(38.000, 69.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -160,7 +161,7 @@ public class AutoTestChamber extends OpMode {
                 .addPath(
                         // Line 13
                         new BezierCurve(
-                                new Point(36.500, 69.000, Point.CARTESIAN),
+                                new Point(38.000, 69.000, Point.CARTESIAN),
                                 new Point(17.000, 26.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
@@ -173,7 +174,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 14
                         new BezierLine(
                                 new Point(9.000, 33.000, Point.CARTESIAN),
-                                new Point(36.500, 67.000, Point.CARTESIAN)
+                                new Point(38.000, 67.000, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -184,7 +185,7 @@ public class AutoTestChamber extends OpMode {
                 .addPath(
                         // Line 15
                         new BezierCurve(
-                                new Point(36.500, 66.000, Point.CARTESIAN),
+                                new Point(38.000, 66.000, Point.CARTESIAN),
                                 new Point(28.000, 24.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
@@ -197,7 +198,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 16
                         new BezierLine(
                                 new Point(9.000, 33.000, Point.CARTESIAN),
-                                new Point(36.500, 64.500, Point.CARTESIAN)
+                                new Point(38.000, 64.500, Point.CARTESIAN)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -238,7 +239,7 @@ public class AutoTestChamber extends OpMode {
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec1_collect)),
+                                new InstantCommand(() -> follower.followPath(spec1_collect, true)),
                                 new SequentialCommandGroup(
                                         new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
                                         new InstantCommand(() -> robot.scoring.scoreClose())
@@ -247,7 +248,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitCommand(100),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec1_score)),
+                                new InstantCommand(() -> follower.followPath(spec1_score, true)),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
@@ -264,7 +265,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec2_collect)),
+                                new InstantCommand(() -> follower.followPath(spec2_collect, true)),
                                 new SequentialCommandGroup(
                                         new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
                                         new InstantCommand(() -> robot.scoring.scoreClose())
@@ -272,7 +273,7 @@ public class AutoTestChamber extends OpMode {
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec2_score)),
+                                new InstantCommand(() -> follower.followPath(spec2_score, true)),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
@@ -288,7 +289,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec3_collect)),
+                                new InstantCommand(() -> follower.followPath(spec3_collect, true)),
                                 new SequentialCommandGroup(
                                         new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
                                         new InstantCommand(() -> robot.scoring.scoreClose())
@@ -296,7 +297,7 @@ public class AutoTestChamber extends OpMode {
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec3_score)),
+                                new InstantCommand(() -> follower.followPath(spec3_score, true)),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
@@ -312,7 +313,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec4_collect)),
+                                new InstantCommand(() -> follower.followPath(spec4_collect, true)),
                                 new SequentialCommandGroup(
                                         new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
                                         new InstantCommand(() -> robot.scoring.scoreClose())
@@ -320,7 +321,7 @@ public class AutoTestChamber extends OpMode {
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(spec4_score)),
+                                new InstantCommand(() -> follower.followPath(spec4_score, true)),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
