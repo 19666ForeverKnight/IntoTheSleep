@@ -1,8 +1,10 @@
 package auto;
 
 import static constants.RobotConstants.EXTEND_LEFT_IN;
+import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.EXTEND_RIGHT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -33,7 +35,7 @@ import subsystem.Robot;
 public class AutoTestBasket extends OpMode {
     private Telemetry telemetryA;
     private Follower follower;
-    private PathChain preload, samp1_collect, samp1_score, samp2_collect, samp2_score, samp3_collect, samp3_score, park;
+    private PathChain preload, samp1_collect, samp1_score, samp2_collect, samp2_score, samp3_collect, samp3_score, park, cv;
     Robot robot = new Robot();
 
     @Override
@@ -118,7 +120,7 @@ public class AutoTestBasket extends OpMode {
                         // Line 7
                         new BezierLine(
                                 new Point(18.700, 133.800, Point.CARTESIAN),
-                                new Point(16.500, 127.500, Point.CARTESIAN)
+                                new Point(16.000, 128.000, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(12), Math.toRadians(-45))
@@ -130,10 +132,20 @@ public class AutoTestBasket extends OpMode {
                         new BezierCurve(
                                 new Point(16.000, 128.000, Point.CARTESIAN),
                                 new Point(67.000, 106.000, Point.CARTESIAN),
-                                new Point(65.000, 91.500, Point.CARTESIAN)
+                                new Point(65.000, 94.00, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(90))
+                .build();
+
+        cv = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Point(65.000, 94.000, Point.CARTESIAN),
+                                new Point(85.000, 94.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(90))
                 .build();
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -284,8 +296,37 @@ public class AutoTestBasket extends OpMode {
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(400),
-                        new InstantCommand(() -> robot.scoring.scoreOpen())
-
+                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                        // CV
+                        new ParallelCommandGroup(
+                            new InstantCommand(() -> follower.followPath(park)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.liftBack()),
+                                        new InstantCommand(() -> robot.scoring.armToTrans())
+                                )
+                        ),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.vision.start()),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.intake.sweepOut()),
+                                        new InstantCommand(() -> robot.intake.sweepIn()),
+                                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS)),
+                                        new InstantCommand(() -> robot.intake.intakeClawIntakeDown()),
+                                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+                                )
+                        ),
+                        new InstantCommand(() -> follower.followPath(cv)),
+                        new WaitUntilCommand(() -> robot.vision.thereIsAnApple()),
+                        new InstantCommand(() -> follower.breakFollowing()),
+                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_OUT, EXTEND_LEFT_OUT)),
+                        new WaitCommand(300),
+                        new InstantCommand(() -> robot.intake.intakeClawClose()),
+                        new InstantCommand(() -> robot.intake.toTransPos()),
+                        new InstantCommand(() -> robot.intake.intakeStop()),
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(400),
+                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+//                        new InstantCommand(follower.followPath()
                 )
 
         );

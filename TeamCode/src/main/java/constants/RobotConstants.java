@@ -10,12 +10,12 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
     public static final double INTAKE_CLAW_YAW_MID = 0.482;
 
-    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.62;
+    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.584;
     public static final double INTAKE_CLAW_PITCH_TRANS = 0.0;
     public static final double INTAKE_CLAW_PITCH_AVOID = 0.14;
 
     public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.47;
-    public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.26;
+    public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.250;
     public static final double INTAKE_CLAW_ARM_TRANS = 0.678;
     public static final double INTAKE_CLAW_ARM_AVOID = 0.5;
 
@@ -40,10 +40,10 @@ public class RobotConstants {
 
     // TeleOp Scoring Constants
     public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.635;
-    public static final double SCORE_CLAW_ARM_TRANS = 0.02;
-    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.96;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.018;
+    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.961;
     public static final double SCORE_CLAW_ARM_HANG = 0.450;
-    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.066;
+    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.060;
 
 
     // Common Scoring Constants

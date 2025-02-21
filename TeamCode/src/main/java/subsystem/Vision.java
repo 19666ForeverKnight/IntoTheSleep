@@ -18,14 +18,22 @@ public class Vision {
     public QuadrilateralTracker apple = new QuadrilateralTracker();
     List<Vector2d> appleFarm = new ArrayList<>();
 
-    public Vision(HardwareMap hardwaremap, AllianceColour colour){
+    public void Init(HardwareMap hardwaremap, AllianceColour colour){
         limelight = hardwaremap.get(Limelight3A.class, "limelight");
-        if (colour == AllianceColour.Red) limelight.pipelineSwitch(0);
-        if (colour == AllianceColour.Blue) limelight.pipelineSwitch(1);
+        if (colour == AllianceColour.Red) limelight.pipelineSwitch(1);
+        if (colour == AllianceColour.Blue) limelight.pipelineSwitch(2);
     }
 
     public void start(){ limelight.start(); }
     public void stop(){ limelight.stop(); }
+
+    public boolean thereIsAnApple(){
+        LLResult hxg = limelight.getLatestResult();
+        if(hxg.isValid()) {
+            return true;
+        }
+        return false;
+    }
 
     public LLResult appleGrowing() {
         LLResult hxg = limelight.getLatestResult();

@@ -116,7 +116,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 9
                         new BezierCurve(
                                 new Point(23.000, 6.500, Point.CARTESIAN),
-                                new Point(24.000, 38.000, Point.CARTESIAN),
+                                new Point(24.000, 34.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
                 )
@@ -139,7 +139,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 11
                         new BezierCurve(
                                 new Point(38.000, 73.000, Point.CARTESIAN),
-                                new Point(20.000, 24.000, Point.CARTESIAN),
+                                new Point(30.000, 33.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
                 )
@@ -162,7 +162,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 13
                         new BezierCurve(
                                 new Point(38.000, 69.000, Point.CARTESIAN),
-                                new Point(17.000, 26.000, Point.CARTESIAN),
+                                new Point(26.000, 31.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
                 )
@@ -186,7 +186,7 @@ public class AutoTestChamber extends OpMode {
                         // Line 15
                         new BezierCurve(
                                 new Point(38.000, 66.000, Point.CARTESIAN),
-                                new Point(28.000, 24.000, Point.CARTESIAN),
+                                new Point(22.000, 28.000, Point.CARTESIAN),
                                 new Point(9.000, 33.000, Point.CARTESIAN)
                         )
                 )

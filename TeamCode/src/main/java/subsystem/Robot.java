@@ -4,6 +4,7 @@ package subsystem;
 //import static constants.AutoConst.YELLOW_SECOND_EXTEND;
 //import static constants.AutoConst.YELLOW_THIRD_EXTEND;
 
+import static constants.RobotConstants.AllianceColour.Red;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT3;
@@ -30,6 +31,7 @@ public class Robot {
     public Intake intake = new Intake();
     public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
+    public Vision vision = new Vision();
     ScheduledExecutorService executor;
 
     public Robot() {}
@@ -38,6 +40,7 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
+        vision.Init(hardwareMap, Red);
         drivetrain.init(hardwareMap);
     }
 
