@@ -2,7 +2,7 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.313; //0.62
+    public static final double INTAKE_CLAW_OPEN = 0.295; //0.62
     public static final double INTAKE_CLAW_CLOSE = 0.124;
     public static final double INTAKE_CLAW_OPEN_AUTO = 0.5;
 
@@ -21,11 +21,11 @@ public class RobotConstants {
 
     public static final double EXTEND_LEFT_IN = 0.948;
     public static final double EXTEND_LEFT_OUT = 0.635;
-    public static final double EXTEND_LEFT_TRANS = 0.895;
+    public static final double EXTEND_LEFT_TRANS = 0.906;
     public static final double EXTEND_LEFT_TRANS_PREP = 0.886;
     public static final double EXTEND_RIGHT_IN = 0.703;
     public static final double EXTEND_RIGHT_OUT = 1;
-    public static final double EXTEND_RIGHT_TRANS = 0.776;
+    public static final double EXTEND_RIGHT_TRANS = 0.765;
     public static final double EXTEND_RIGHT_TRANS_PREP = 0.803;
 
     // Extend Auto
@@ -33,8 +33,8 @@ public class RobotConstants {
     public static final double EXTEND_RIGHT_AUTO_COLLECT1 = 1;
     public static final double EXTEND_LEFT_AUTO_COLLECT2 = 0;
     public static final double EXTEND_RIGHT_AUTO_COLLECT2 = 0;
-    public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0.733;
-    public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0.967;
+    public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0.728;
+    public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0.972;
 
 
 
@@ -44,6 +44,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_ARM_SPECIMEN = 0.961;
     public static final double SCORE_CLAW_ARM_HANG = 0.450;
     public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.060;
+    public static final double SCORE_CLAW_ARM_PARK = 0.746;
 
 
     // Common Scoring Constants
@@ -64,7 +65,7 @@ public class RobotConstants {
     public static final int LIFT_LOW_BASKET = 400;
 
     public static final int LIFT_OPEN_SPECIMEN_CLAW = 330;
-    public static final int LIFT_OPEN_SPECIMEN_CLAW_AUTO = 500;
+    public static final int LIFT_OPEN_SPECIMEN_CLAW_AUTO = 550;
 
 
     // Other Constants

@@ -19,7 +19,7 @@ public class Vision {
     List<Vector2d> appleFarm = new ArrayList<>();
 
     public void Init(HardwareMap hardwaremap, AllianceColour colour){
-        limelight = hardwaremap.get(Limelight3A.class, "limelight");
+        limelight = hardwaremap.get(Limelight3A.class, "Limelight");
         if (colour == AllianceColour.Red) limelight.pipelineSwitch(1);
         if (colour == AllianceColour.Blue) limelight.pipelineSwitch(2);
     }

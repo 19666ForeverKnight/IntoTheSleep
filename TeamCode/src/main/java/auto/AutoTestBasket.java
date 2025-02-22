@@ -50,7 +50,7 @@ public class AutoTestBasket extends OpMode {
                         // Line 1
                         new BezierLine(
                                 new Point(7.000, 112.000, Point.CARTESIAN),
-                                new Point(16.500, 127.500, Point.CARTESIAN)
+                                new Point(14.500, 126.000, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
@@ -61,11 +61,11 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 2
                         new BezierLine(
-                                new Point(16.500, 127.500, Point.CARTESIAN),
-                                new Point(19.000, 121.500, Point.CARTESIAN)
+                                new Point(14.500, 126.000, Point.CARTESIAN),
+                                new Point(15.000, 120.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-1))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -73,11 +73,11 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 3
                         new BezierLine(
-                                new Point(19.000, 121.500, Point.CARTESIAN),
-                                new Point(16.500, 127.500, Point.CARTESIAN)
+                                new Point(15.000, 121.500, Point.CARTESIAN),
+                                new Point(15.000, 126.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-1), Math.toRadians(-45))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -85,11 +85,11 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 4
                         new BezierLine(
-                                new Point(16.500, 127.500, Point.CARTESIAN),
-                                new Point(19.000, 129.500, Point.CARTESIAN)
+                                new Point(15.000, 126.500, Point.CARTESIAN),
+                                new Point(15.000, 130.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-5.5))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -97,11 +97,11 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 5
                         new BezierLine(
-                                new Point(19.000, 129.500, Point.CARTESIAN),
-                                new Point(16.500, 127.500, Point.CARTESIAN)
+                                new Point(15.000, 129.500, Point.CARTESIAN),
+                                new Point(15.000, 126.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-5.5), Math.toRadians(-45))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -109,21 +109,21 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 6
                         new BezierLine(
-                                new Point(16.500, 127.500, Point.CARTESIAN),
-                                new Point(18.700, 133.800, Point.CARTESIAN)
+                                new Point(15.000, 126.500, Point.CARTESIAN),
+                                new Point(16.700, 132.800, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(12))
+                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(20))
                 .build();
         samp3_score = follower.pathBuilder()
                 .addPath(
                         // Line 7
                         new BezierLine(
-                                new Point(18.700, 133.800, Point.CARTESIAN),
-                                new Point(16.000, 128.000, Point.CARTESIAN)
+                                new Point(16.700, 132.800, Point.CARTESIAN),
+                                new Point(15.000, 126.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(12), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(20), Math.toRadians(-45))
                 .build();
 
         park = follower.pathBuilder()
@@ -167,14 +167,15 @@ public class AutoTestBasket extends OpMode {
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(600),
-                                        new InstantCommand(() -> robot.scoring.armToBasket())
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
                                 ),
                                 new InstantCommand(() -> follower.followPath(preload, true)),
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
-                        new WaitCommand(200),
+                        new WaitCommand(150),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
+                        new WaitCommand(500),
                         // collect & score 1st
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftBack()),
@@ -186,37 +187,23 @@ public class AutoTestBasket extends OpMode {
                         ),
                         new WaitCommand(1200),
                         new InstantCommand(() -> robot.autoextendtocollect(1)),
-                        new WaitCommand(200),
+                        new WaitCommand(300),
                         new InstantCommand(() -> robot.intake.intakeClawClose()),
-                        new WaitCommand(700),
-                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(500),
+                        new InstantCommand(() -> robot.trans()),
+                        new WaitCommand(950),
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> follower.followPath(samp1_score)),
                                 new SequentialCommandGroup(
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(() -> robot.intake.toTransPos()),
-                                                new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS))
-                                        ),
-                                        new InstantCommand(() -> robot.intake.intakeStop()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.intake.intakeClawOpen()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.scoring.scoreClose()),
-                                        new WaitCommand(500),
-                                        new ParallelCommandGroup(
-                                                new SequentialCommandGroup(
-                                                        new WaitCommand(600),
-                                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
-                                                ),
-                                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                                        )
-                                )
+                                        new WaitCommand(600),
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                ),
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
-                        new WaitCommand(400),
+                        new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        // collect & score 2rd
-                        new WaitUntilCommand(() -> !follower.isBusy()),
+//                        // collect & score 2rd
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftBack()),
                                 new InstantCommand(() -> follower.followPath(samp2_collect)),
@@ -227,37 +214,23 @@ public class AutoTestBasket extends OpMode {
                         ),
                         new WaitCommand(1200),
                         new InstantCommand(() -> robot.autoextendtocollect(1)),
-                        new WaitCommand(200),
+                        new WaitCommand(300),
                         new InstantCommand(() -> robot.intake.intakeClawClose()),
-                        new WaitCommand(700),
-                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(500),
+                        new InstantCommand(() -> robot.trans()),
+                        new WaitCommand(950),
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> follower.followPath(samp2_score)),
                                 new SequentialCommandGroup(
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(() -> robot.intake.toTransPos()),
-                                                new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS))
-                                        ),
-                                        new InstantCommand(() -> robot.intake.intakeStop()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.intake.intakeClawOpen()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.scoring.scoreClose()),
-                                        new WaitCommand(500),
-                                        new ParallelCommandGroup(
-                                                new SequentialCommandGroup(
-                                                        new WaitCommand(600),
-                                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
-                                                ),
-                                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                                        )
-                                )
+                                        new WaitCommand(600),
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                ),
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
-                        new WaitCommand(400),
+                        new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        // collect & score 3nd
-                        new WaitUntilCommand(() -> !follower.isBusy()),
+//                        // collect & score 3nd
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftBack()),
                                 new InstantCommand(() -> follower.followPath(samp3_collect)),
@@ -268,65 +241,62 @@ public class AutoTestBasket extends OpMode {
                         ),
                         new WaitCommand(1200),
                         new InstantCommand(() -> robot.autoextendtocollect(3)),
-                        new WaitCommand(200),
+                        new WaitCommand(300),
                         new InstantCommand(() -> robot.intake.intakeClawClose()),
-                        new WaitCommand(700),
-                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(500),
+                        new InstantCommand(() -> robot.trans()),
+                        new WaitCommand(950),
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> follower.followPath(samp3_score)),
                                 new SequentialCommandGroup(
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(() -> robot.intake.toTransPos()),
-                                                new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS))
-                                        ),
-                                        new InstantCommand(() -> robot.intake.intakeStop()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.intake.intakeClawOpen()),
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.scoring.scoreClose()),
-                                        new WaitCommand(500),
-                                        new ParallelCommandGroup(
-                                                new SequentialCommandGroup(
-                                                        new WaitCommand(600),
-                                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
-                                                ),
-                                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                                        )
-                                )
+                                        new WaitCommand(600),
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                ),
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
-                        new WaitCommand(400),
+                        new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        // CV
+                        // park
                         new ParallelCommandGroup(
-                            new InstantCommand(() -> follower.followPath(park)),
-                                new SequentialCommandGroup(
-                                        new InstantCommand(() -> robot.scoring.liftBack()),
-                                        new InstantCommand(() -> robot.scoring.armToTrans())
-                                )
+                                new InstantCommand(() -> follower.followPath(park)),
+                                    new SequentialCommandGroup(
+                                            new InstantCommand(() -> robot.scoring.liftBack()),
+                                            new InstantCommand(() -> robot.scoring.armToCollect())
+                                    )
                         ),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.vision.start()),
-                                new SequentialCommandGroup(
-                                        new InstantCommand(() -> robot.intake.sweepOut()),
-                                        new InstantCommand(() -> robot.intake.sweepIn()),
-                                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS)),
-                                        new InstantCommand(() -> robot.intake.intakeClawIntakeDown()),
-                                        new InstantCommand(() -> robot.intake.intakeClawOpen())
-                                )
-                        ),
-                        new InstantCommand(() -> follower.followPath(cv)),
-                        new WaitUntilCommand(() -> robot.vision.thereIsAnApple()),
-                        new InstantCommand(() -> follower.breakFollowing()),
-                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_OUT, EXTEND_LEFT_OUT)),
-                        new WaitCommand(300),
-                        new InstantCommand(() -> robot.intake.intakeClawClose()),
-                        new InstantCommand(() -> robot.intake.toTransPos()),
-                        new InstantCommand(() -> robot.intake.intakeStop()),
-                        new InstantCommand(() -> robot.scoring.scoreClose()),
-                        new WaitCommand(400),
-                        new InstantCommand(() -> robot.intake.intakeClawOpen())
-//                        new InstantCommand(follower.followPath()
+                        new InstantCommand(() -> robot.scoring.armToPark()),
+                        new WaitCommand(5000)
+//                        // CV
+//                        new ParallelCommandGroup(
+//                            new InstantCommand(() -> follower.followPath(park)),
+//                                new SequentialCommandGroup(
+//                                        new InstantCommand(() -> robot.scoring.liftBack()),
+//                                        new InstantCommand(() -> robot.scoring.armToTrans())
+//                                )
+//                        ),
+//                        new ParallelCommandGroup(
+////                                new InstantCommand(() -> robot.vision.start()),
+//                                new SequentialCommandGroup(
+//                                        new InstantCommand(() -> robot.intake.sweepOut()),
+//                                        new InstantCommand(() -> robot.intake.sweepIn()),
+//                                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS)),
+//                                        new InstantCommand(() -> robot.intake.intakeClawIntakeDown()),
+//                                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+//                                )
+//                        ),
+//                        new InstantCommand(() -> follower.followPath(cv)),
+////                        new WaitUntilCommand(() -> robot.vision.thereIsAnApple()),
+//                        new InstantCommand(() -> follower.breakFollowing()),
+//                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_OUT, EXTEND_LEFT_OUT)),
+//                        new WaitCommand(300),
+//                        new InstantCommand(() -> robot.intake.intakeClawClose()),
+//                        new InstantCommand(() -> robot.intake.toTransPos()),
+//                        new InstantCommand(() -> robot.intake.intakeStop()),
+//                        new InstantCommand(() -> robot.scoring.scoreClose()),
+//                        new WaitCommand(400),
+//                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+////                        new InstantCommand(follower.followPath()
                 )
 
         );

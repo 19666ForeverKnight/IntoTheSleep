@@ -4,6 +4,7 @@ import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW_AUTO;
 import static constants.RobotConstants.SCORE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
+import static constants.RobotConstants.SCORE_CLAW_ARM_PARK;
 import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_AUTO_INIT;
@@ -176,6 +177,10 @@ public class Scoring {
 
     public void armToBasket() {
         setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP);
+    }
+
+    public void armToPark() {
+        setScoreArmPosition(SCORE_CLAW_ARM_PARK, SCORE_CLAW_FLIP_AUTO_INIT);
     }
     public void armToBasketDive() {
         setScoreArmPosition(SCORE_CLAW_ARM_DROP_TELEOP, SCORE_CLAW_FLIP_DROP_DIVE);

@@ -31,7 +31,7 @@ public class Robot {
     public Intake intake = new Intake();
     public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
-    public Vision vision = new Vision();
+//    public Vision vision = new Vision();
     ScheduledExecutorService executor;
 
     public Robot() {}
@@ -40,7 +40,7 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
-        vision.Init(hardwareMap, Red);
+//        vision.Init(hardwareMap, Red);
         drivetrain.init(hardwareMap);
     }
 
@@ -53,12 +53,27 @@ public class Robot {
     public void trans() {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
-        intake.intakeClawAvoid();
+        intake.setLeftRightPosition(0, 1);
+        intake.toTransPos();
         intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
-        executor.schedule(() -> intake.toTransPos(), 300, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 450, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 750, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 850, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 300, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setLeftRightPosition(1, 0), 400, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 500, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setLeftRightPosition(0.5, 0.5), 500, TimeUnit.MILLISECONDS);
+    }
+
+    public void autoTrans() {
+        scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
+        intake.setClawPosition(INTAKE_CLAW_CLOSE);
+        intake.setLeftRightPosition(0, 1);
+        intake.toTransPos();
+        intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
+        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 300, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setLeftRightPosition(1, 0), 400, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 600, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setLeftRightPosition(0.5, 0.5), 510, TimeUnit.MILLISECONDS);
     }
 
     public void sweep() {
