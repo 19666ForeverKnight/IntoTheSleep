@@ -105,8 +105,8 @@ public class Competition extends OpMode {
         dashboardPoseTracker.update();
 
         //Drivetrain
-        y = gamepad1.left_stick_y * 0.85;
-        x = -gamepad1.left_stick_x * 0.85;
+        y = gamepad1.left_stick_y * 0.9;
+        x = -gamepad1.left_stick_x * 0.9;
         rx = -gamepad1.right_stick_x * 0.85;
         if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.45;
         else p = 1;

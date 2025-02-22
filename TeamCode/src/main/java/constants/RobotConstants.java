@@ -2,7 +2,7 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.295; //0.62
+    public static final double INTAKE_CLAW_OPEN = 0.288; //0.62
     public static final double INTAKE_CLAW_CLOSE = 0.124;
     public static final double INTAKE_CLAW_OPEN_AUTO = 0.5;
 
@@ -10,7 +10,7 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;
     public static final double INTAKE_CLAW_YAW_MID = 0.482;
 
-    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.584;
+    public static final double INTAKE_CLAW_PITCH_INTAKE = 0.619;
     public static final double INTAKE_CLAW_PITCH_TRANS = 0.0;
     public static final double INTAKE_CLAW_PITCH_AVOID = 0.14;
 
@@ -50,7 +50,7 @@ public class RobotConstants {
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.653;
     public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.774;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.73;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.744;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
     public static final double SCORE_CLAW_FLIP_HANG = 0.257;
     public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.628;
