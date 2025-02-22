@@ -86,7 +86,7 @@ public class AutoTestBasket extends OpMode {
                         // Line 4
                         new BezierLine(
                                 new Point(15.000, 126.500, Point.CARTESIAN),
-                                new Point(15.000, 130.500, Point.CARTESIAN)
+                                new Point(14.500, 130.500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-5.5))
@@ -97,7 +97,7 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 5
                         new BezierLine(
-                                new Point(15.000, 129.500, Point.CARTESIAN),
+                                new Point(14.500, 130.500, Point.CARTESIAN),
                                 new Point(15.000, 126.500, Point.CARTESIAN)
                         )
                 )
@@ -208,7 +208,7 @@ public class AutoTestBasket extends OpMode {
                                 new InstantCommand(() -> robot.scoring.liftBack()),
                                 new InstantCommand(() -> follower.followPath(samp2_collect)),
                                 new InstantCommand(() -> robot.scoring.armToTrans()),
-                                new InstantCommand(() -> robot.intake.intakeClawOpenAuto()),
+                                new InstantCommand(() -> robot.intake.intakeClawOpen()),
                                 new InstantCommand(() -> robot.intake.intakeClawIntakeDown()),
                                 new InstantCommand(() -> robot.intake.intakeIntake())
                         ),
