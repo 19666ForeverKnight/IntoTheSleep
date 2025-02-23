@@ -4,7 +4,6 @@ import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -31,7 +30,7 @@ import pedroPathing.constants.LConstants;
 import subsystem.Robot;
 
 @Autonomous
-public class AutoTestBasket extends OpMode {
+public class AutoTestBasketRed extends OpMode {
     private Telemetry telemetryA;
     private Follower follower;
     private PathChain preload, samp1_collect, samp1_score, samp2_collect, samp2_score, samp3_collect, samp3_score, park, toSub, intakeDown, cv;
@@ -42,7 +41,7 @@ public class AutoTestBasket extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(7.00, 112.00, Math.toRadians(-90)));
-        robot.autoInit(hardwareMap);
+        robot.autoInitRed(hardwareMap);
 
         preload = follower.pathBuilder()
                 .addPath(
@@ -283,17 +282,52 @@ public class AutoTestBasket extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        // park
+//                        // park
+//                        new ParallelCommandGroup(
+//                                new InstantCommand(() -> follower.followPath(cv)),
+//                                    new SequentialCommandGroup(
+//                                            new InstantCommand(() -> robot.scoring.liftBack()),
+//                                            new InstantCommand(() -> robot.scoring.armToCollect())
+//                                    )
+//                        ),
+//                        new InstantCommand(() -> robot.scoring.armToPark()),
+//                        new WaitCommand(5000)
+                        // CV
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(toSub)),
-                                    new SequentialCommandGroup(
-                                            new InstantCommand(() -> robot.scoring.liftBack()),
-                                            new WaitCommand(850),
-                                            new InstantCommand(() -> robot.scoring.armToL1A())
-                                    )
+                            new InstantCommand(() -> follower.followPath(toSub)),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.scoring.liftBack()),
+                                        new InstantCommand(() -> robot.scoring.armToTrans())
+                                )
                         ),
-                        new InstantCommand(() -> robot.scoring.armToPark()),
-                        new WaitCommand(5000)
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitCommand(600),
+                        new ParallelCommandGroup(
+//                                new InstantCommand(() -> robot.vision.start()),
+                                new SequentialCommandGroup(
+                                        new InstantCommand(() -> robot.intake.sweepOut()),
+                                        new WaitCommand(250),
+                                        new InstantCommand(() -> robot.intake.sweepIn()),
+                                        new InstantCommand(() -> follower.followPath(intakeDown)),
+                                        new InstantCommand(() -> robot.intake.intakeClawIntakeDown()),
+                                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+                                )
+                        ),
+                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new InstantCommand(() -> follower.followPath(cv)),
+                        new WaitUntilCommand(() -> robot.vision.thereIsAnApple()),
+                        new InstantCommand(() -> follower.breakFollowing()),
+                        new InstantCommand(() -> robot.intake.intakeIntake()),
+                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS)),
+                        new WaitCommand(300),
+                        new InstantCommand(() -> robot.intake.intakeClawClose()),
+                        new WaitCommand(200),
+                        new InstantCommand(() -> robot.trans())
+//                        new InstantCommand(() -> robot.intake.intakeStop()),
+//                        new InstantCommand(() -> robot.scoring.scoreClose()),
+//                        new WaitCommand(400),
+//                        new InstantCommand(() -> robot.intake.intakeClawOpen())
+//                        new InstantCommand(follower.followPath()
                 )
 
         );

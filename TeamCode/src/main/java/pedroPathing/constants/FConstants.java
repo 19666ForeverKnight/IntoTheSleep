@@ -22,7 +22,7 @@ public class FConstants {
 
         FollowerConstants.mass = 12.00;
 
-        FollowerConstants.xMovement = 87.1345;
+        FollowerConstants.xMovement = 75;
         FollowerConstants.yMovement = 73.0151;
 
         FollowerConstants.forwardZeroPowerAcceleration = -35.2745;
@@ -49,6 +49,8 @@ public class FConstants {
         FollowerConstants.pathEndVelocityConstraint = 0.1;
         FollowerConstants.pathEndTranslationalConstraint = 0.1;
         FollowerConstants.pathEndHeadingConstraint = 0.007;
+
+        FollowerConstants.maxPower = 0.87;
 
         FollowerConstants.useVoltageCompensationInAuto = true;
     }

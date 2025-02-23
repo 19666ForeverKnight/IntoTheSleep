@@ -45,6 +45,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_ARM_HANG = 0.450;
     public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.060;
     public static final double SCORE_CLAW_ARM_PARK = 0.;
+    public static final double SCORE_CLAW_ARM_L1A = 0.29;
 
 
     // Common Scoring Constants

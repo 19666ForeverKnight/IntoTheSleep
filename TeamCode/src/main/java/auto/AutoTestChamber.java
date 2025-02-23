@@ -33,7 +33,7 @@ public class AutoTestChamber extends OpMode {
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        robot.autoInit(hardwareMap);
+        robot.autoInitRed(hardwareMap);
         robot.scoring.threadStart();
         follower.setStartingPose(new Pose(7, 63, Math.toRadians(0)));
 

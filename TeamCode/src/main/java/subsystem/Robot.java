@@ -4,6 +4,7 @@ package subsystem;
 //import static constants.AutoConst.YELLOW_SECOND_EXTEND;
 //import static constants.AutoConst.YELLOW_THIRD_EXTEND;
 
+import static constants.RobotConstants.AllianceColour.Blue;
 import static constants.RobotConstants.AllianceColour.Red;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
@@ -16,9 +17,7 @@ import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
-import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
-import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,7 +30,7 @@ public class Robot {
     public Intake intake = new Intake();
     public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
-//    public Vision vision = new Vision();
+    public Vision vision = new Vision();
     ScheduledExecutorService executor;
 
     public Robot() {}
@@ -40,8 +39,22 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
-//        vision.Init(hardwareMap, Red);
+        vision.Init(hardwareMap, Red);
         drivetrain.init(hardwareMap);
+    }
+
+    public void autoInitRed(HardwareMap hardwareMap) {
+        executor = Executors.newScheduledThreadPool(5);
+        intake.init(hardwareMap);
+        scoring.autoinit(hardwareMap);
+        vision.Init(hardwareMap, Red);
+    }
+
+    public void autoInitBlue(HardwareMap hardwareMap) {
+        executor = Executors.newScheduledThreadPool(5);
+        intake.init(hardwareMap);
+        scoring.autoinit(hardwareMap);
+        vision.Init(hardwareMap, Blue);
     }
 
     public void autoInit(HardwareMap hardwareMap) {
