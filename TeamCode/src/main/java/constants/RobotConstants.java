@@ -2,9 +2,9 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.288; //0.62
+    public static final double INTAKE_CLAW_OPEN = 0.278; //0.62
     public static final double INTAKE_CLAW_CLOSE = 0.124;
-    public static final double INTAKE_CLAW_OPEN_AUTO = 0.5;
+    public static final double INTAKE_CLAW_OPEN_AUTO = 0.3;
 
     public static final double INTAKE_CLAW_YAW_LEFT_LIMIT = 0.365;
     public static final double INTAKE_CLAW_YAW_RIGHT_LIMIT = 0.678;

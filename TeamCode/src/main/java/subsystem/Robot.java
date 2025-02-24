@@ -48,6 +48,7 @@ public class Robot {
         intake.init(hardwareMap);
         scoring.autoinit(hardwareMap);
         vision.Init(hardwareMap, Red);
+        vision.start();
     }
 
     public void autoInitBlue(HardwareMap hardwareMap) {
@@ -55,6 +56,7 @@ public class Robot {
         intake.init(hardwareMap);
         scoring.autoinit(hardwareMap);
         vision.Init(hardwareMap, Blue);
+        vision.start();
     }
 
     public void autoInit(HardwareMap hardwareMap) {

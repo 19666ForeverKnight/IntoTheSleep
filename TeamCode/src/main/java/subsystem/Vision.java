@@ -29,7 +29,7 @@ public class Vision {
 
     public boolean thereIsAnApple(){
         LLResult hxg = limelight.getLatestResult();
-        if(hxg.isValid()) {
+        if(hxg != null) {
             return true;
         }
         return false;

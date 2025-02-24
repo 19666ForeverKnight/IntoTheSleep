@@ -42,30 +42,38 @@ public class AutoTestBasket extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose(7.00, 112.00, Math.toRadians(-90)));
-        robot.autoInit(hardwareMap);
+        robot.autoInitRed(hardwareMap);
 
         preload = follower.pathBuilder()
                 .addPath(
                         // Line 1
                         new BezierLine(
                                 new Point(7.000, 112.000, Point.CARTESIAN),
-                                new Point(14.500, 126.000, Point.CARTESIAN)
+                                new Point(14.500, 127.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-90), Math.toRadians(-35))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
         samp1_collect = follower.pathBuilder()
                 .addPath(
                         // Line 2
-                        new BezierCurve(
-                                new Point(14.500, 126.000, Point.CARTESIAN),
-                                new Point(2.000, 115.500, Point.CARTESIAN),
-                                new Point(30.000, 120.500, Point.CARTESIAN)
+                        new BezierLine(
+                                new Point(14.500, 127.500, Point.CARTESIAN),
+                                new Point(14.500, 123.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-1))
+                .setLinearHeadingInterpolation(Math.toRadians(-35), Math.toRadians(0))
+                .setPathEndVelocityConstraint(5)
+                .addPath(
+                        // Line 2
+                        new BezierLine(
+                                new Point(14.500, 123.500, Point.CARTESIAN),
+                                new Point(32.000, 120.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -73,24 +81,32 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 3
                         new BezierLine(
-                                new Point(30.000, 120.500, Point.CARTESIAN),
-                                new Point(15.000, 126.500, Point.CARTESIAN)
+                                new Point(32.000, 120.000, Point.CARTESIAN),
+                                new Point(15.000, 127.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-1), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-1), Math.toRadians(-25))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
         samp2_collect = follower.pathBuilder()
                 .addPath(
                         // Line 4
-                        new BezierCurve(
-                                new Point(15.000, 126.500, Point.CARTESIAN),
-                                new Point(1.000, 137.000, Point.CARTESIAN),
-                                new Point(31.500, 132.000, Point.CARTESIAN)
+                        new BezierLine(
+                                new Point(15.000, 127.500, Point.CARTESIAN),
+                                new Point(15.000, 131.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-5.5))
+                .setLinearHeadingInterpolation(Math.toRadians(-25), Math.toRadians(0))
+                .setPathEndVelocityConstraint(5)
+                .addPath(
+                        // Line 4
+                        new BezierLine(
+                                new Point(15.000, 131.500, Point.CARTESIAN),
+                                new Point(33.700, 131.000, Point.CARTESIAN)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -98,11 +114,11 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 5
                         new BezierLine(
-                                new Point(31.500, 132.500, Point.CARTESIAN),
+                                new Point(33.700, 131.000, Point.CARTESIAN),
                                 new Point(15.000, 126.500, Point.CARTESIAN)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(-5.5), Math.toRadians(-45))
+                .setLinearHeadingInterpolation(Math.toRadians(-2.5), Math.toRadians(-45))
                 .setPathEndVelocityConstraint(5)
                 .build();
 
@@ -111,7 +127,7 @@ public class AutoTestBasket extends OpMode {
                         // Line 6
                         new BezierLine(
                                 new Point(15.000, 126.500, Point.CARTESIAN),
-                                new Point(17.700, 132.800, Point.CARTESIAN)
+                                new Point(20.000, 132.800, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(16.5))
@@ -120,8 +136,8 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // Line 7
                         new BezierLine(
-                                new Point(16.700, 132.800, Point.CARTESIAN),
-                                new Point(15.000, 126.500, Point.CARTESIAN)
+                                new Point(18.700, 132.800, Point.CARTESIAN),
+                                new Point(16.000, 128.500, Point.CARTESIAN)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(20), Math.toRadians(-45))
@@ -131,7 +147,7 @@ public class AutoTestBasket extends OpMode {
                 .addPath(
                         // ascent
                         new BezierCurve(
-                                new Point(16.000, 128.000, Point.CARTESIAN),
+                                new Point(16.000, 128.500, Point.CARTESIAN),
                                 new Point(67.000, 106.000, Point.CARTESIAN),
                                 new Point(65.000, 94.00, Point.CARTESIAN)
                         )
@@ -227,6 +243,7 @@ public class AutoTestBasket extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
+                        new WaitCommand(200),
 //                        // collect & score 2rd
                         new ParallelCommandGroup(
 
@@ -271,15 +288,11 @@ public class AutoTestBasket extends OpMode {
                         new InstantCommand(() -> robot.intake.intakeClawClose()),
                         new WaitCommand(500),
                         new InstantCommand(() -> robot.trans()),
-                        new WaitCommand(950),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> follower.followPath(samp3_score)),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(600),
-                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
-                                ),
-                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                        ),
+                        new WaitCommand(650),
+                        new InstantCommand(() -> robot.scoring.liftToHighBasket()),
+                        new WaitCommand(300),
+                        new InstantCommand(() -> robot.scoring.armToBasketDive()),
+                        new InstantCommand(() -> follower.followPath(samp3_score)),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(600),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
