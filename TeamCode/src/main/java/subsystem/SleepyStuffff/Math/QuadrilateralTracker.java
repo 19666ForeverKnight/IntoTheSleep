@@ -1,10 +1,12 @@
-package subsystem.VisionUtil;
+package subsystem.SleepyStuffff.Math;
 
 import static constants.RobotConstants.CVSmoothing;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+
+import subsystem.SleepyStuffff.Util.Vector2d;
 
 public class QuadrilateralTracker {
     List<Vector2d> tl = new ArrayList<>();
