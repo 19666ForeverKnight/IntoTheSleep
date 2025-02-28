@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import constants.RobotConstants.AllianceColour;
-import subsystem.VisionUtil.*;
+import subsystem.SleepyStuffff.Math.QuadrilateralTracker;
+import subsystem.SleepyStuffff.Util.Vector2d;
 
 public class Vision {
     public Limelight3A limelight;
