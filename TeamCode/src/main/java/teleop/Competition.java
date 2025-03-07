@@ -22,10 +22,8 @@ import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_LOW_BASKET;
 import static constants.RobotConstants.LIFT_LOW_CHAMBER;
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW;
-import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
-import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
@@ -45,7 +43,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
-import subsystem.Robot;
+import subsystems.Robot;
 
 
 @TeleOp(name = "Competition TaleOp", group = "Experiment")

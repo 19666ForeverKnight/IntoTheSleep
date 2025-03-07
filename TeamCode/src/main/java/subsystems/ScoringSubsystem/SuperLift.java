@@ -1,4 +1,4 @@
-package subsystem;
+package subsystems.ScoringSubsystem;
 
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
@@ -18,8 +18,7 @@ import java.util.concurrent.TimeUnit;
 import constants.Configs;
 import lombok.Getter;
 import lombok.Setter;
-import subsystem.SleepyStuffff.Math.NearDetector;
-import subsystem.SleepyStuffff.Util.MotorPIDSlideSubsystem;
+import subsystems.SleepyStuffff.Math.helperAndConverter;
 
 @Config
 public class SuperLift extends MotorPIDSlideSubsystem {
@@ -99,10 +98,10 @@ public class SuperLift extends MotorPIDSlideSubsystem {
         return (liftMotorR.getCurrentPosition() + liftMotorL.getCurrentPosition()) / 2;
     }
     public boolean atGoal(){
-        return NearDetector.isNear(goal.setpointTicks, getCurrentPosition(), 5);
+        return helperAndConverter.isNear(goal.setpointTicks, getCurrentPosition(), 5);
     }
     public boolean atBack(double tolerance){
-        return NearDetector.isNear(goal.BACK.setpointTicks, getCurrentPosition(), tolerance);
+        return helperAndConverter.isNear(goal.BACK.setpointTicks, getCurrentPosition(), tolerance);
     }
     public void periodicAsync() {
         if (goal == Goal.OPEN_LOOP || isResetting) return;

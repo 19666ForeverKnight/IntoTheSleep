@@ -42,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
-import subsystem.Robot;
+import subsystems.Robot;
 
 
 @TeleOp(name = "RR Competition TaleOp", group = "Experiment")

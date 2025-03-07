@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
-import subsystem.Robot;
+import subsystems.Robot;
 
 @Autonomous
 public class AutoTestChamber extends OpMode {
