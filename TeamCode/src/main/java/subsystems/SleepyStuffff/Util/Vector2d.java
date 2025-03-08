@@ -1,4 +1,4 @@
-package subsystem.SleepyStuffff.Util;
+package subsystems.SleepyStuffff.Util;
 
 public class Vector2d {
     public double x;

@@ -1,4 +1,4 @@
-package subsystem;
+package subsystems.IntakeSubsystem;
 
 import static constants.RobotConstants.CVSmoothing;
 
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import constants.RobotConstants.AllianceColour;
-import subsystem.SleepyStuffff.Math.QuadrilateralTracker;
-import subsystem.SleepyStuffff.Util.Vector2d;
+import subsystems.SleepyStuffff.Math.QuadrilateralTracker;
+import subsystems.SleepyStuffff.Util.Vector2d;
 
 public class Vision {
     public Limelight3A limelight;

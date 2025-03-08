@@ -1,4 +1,4 @@
-package subsystem;
+package subsystems;
 
 //import static constants.AutoConst.YELLOW_FIRST_EXTEND;
 //import static constants.AutoConst.YELLOW_SECOND_EXTEND;
@@ -25,6 +25,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import subsystems.ChassisSubsystem.Drivetrain;
+import subsystems.IntakeSubsystem.Intake;
+import subsystems.IntakeSubsystem.Vision;
 
 public class Robot {
     public Intake intake = new Intake();

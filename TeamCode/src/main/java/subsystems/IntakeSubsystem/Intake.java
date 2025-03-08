@@ -1,4 +1,4 @@
-package subsystem;
+package subsystems.IntakeSubsystem;
 
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;

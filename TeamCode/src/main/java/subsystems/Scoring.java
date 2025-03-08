@@ -1,4 +1,4 @@
-package subsystem;
+package subsystems;
 
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW_AUTO;
 import static constants.RobotConstants.SCORE_CLAW_ARM_AUTO_INIT;
@@ -284,18 +284,4 @@ public class Scoring {
     public double getmiddleliftheight() {
         return liftMiddle.getCurrentPosition();
     }
-
-//    public void armDrop() {
-//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_DROP);
-//        scoreClawArm.setPosition(SCORE_CLAW_ARM_DROP_TELEOP);
-//    }
-//
-//    public void armTrans() {
-//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_TRANS);
-//        scoreClawArm.setPosition(SCORE_CLAW_ARM_TRANS);
-//    }
-
-//    public void armOut(){
-//        armDrop();
-//    }
 }

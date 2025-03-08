@@ -1,12 +1,8 @@
-package subsystem;
-
-import static constants.RobotConstants.SWEEPING_APPLE;
-import static constants.RobotConstants.SWEEPING_INIT;
+package subsystems.ChassisSubsystem;
 
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import constants.Configs;
@@ -63,12 +59,6 @@ public class Drivetrain {
         double rightFrontPower = (power * sin / maxSinCos - turn);
         double leftBackPower = (power * sin / maxSinCos + turn);
         double rightBackPower = (power * cos / maxSinCos - turn);
-
-//        double maxPow = Math.max(Math.abs(leftFrontPower), Math.max(Math.abs(leftBackPower), Math.max(Math.abs(rightFrontPower), Math.abs(rightBackPower))));
-//        leftFrontPower /= maxPow;
-//        leftBackPower /= maxPow;
-//        rightFrontPower /= maxPow;
-//        rightBackPower /= maxPow;
 
         leftFront.setPower(leftFrontPower * p);
         rightFront.setPower(rightFrontPower * p);

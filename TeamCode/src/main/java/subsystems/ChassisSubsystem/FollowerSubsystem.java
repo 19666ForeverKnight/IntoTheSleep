@@ -15,15 +15,28 @@ public class FollowerSubsystem extends SubsystemBase {
     private static FollowerSubsystem instance;
     private Telemetry telemetry;
     public  Follower follower;
+    public enum FollowerType {
+        FAST,
+        MED,
+        SLOW
+    }
 
+    private FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry, int trajectoryMode){
+        follower = new Follower(hardwareMap);
+        this.telemetry = telemetry;
+        register();
+    }
     private FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry){
         follower = new Follower(hardwareMap);
         this.telemetry = telemetry;
-        //registry
         register();
     }
 
     public static synchronized FollowerSubsystem getInstance(HardwareMap hardwareMap, Telemetry telemetry){
+        instance = new FollowerSubsystem(hardwareMap, telemetry);
+        return instance;
+    }
+    public static synchronized FollowerSubsystem getInstance(HardwareMap hardwareMap, Telemetry telemetry, int a){
         instance = new FollowerSubsystem(hardwareMap, telemetry);
         return instance;
     }
@@ -63,5 +76,6 @@ public class FollowerSubsystem extends SubsystemBase {
     public PathBuilder pathBuilder(){
         return follower.pathBuilder();
     }
+    public void breakFollowing(){ follower.breakFollowing(); }
 
 }
