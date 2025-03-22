@@ -3,31 +3,27 @@ package teleop;
 import static constants.RobotConstants.EXTEND_DELTA;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_LEFT_OUT;
-import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_OUT;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
-import static constants.RobotConstants.INTAKE_CLAW_PITCH_INTAKE;
-import static constants.RobotConstants.INTAKE_CLAW_YAW_LEFT_LIMIT;
-import static constants.RobotConstants.INTAKE_CLAW_YAW_MID;
-//import static constants.RobotConstants.INTAKE_CLAW_INTAKE;
-import static constants.RobotConstants.INTAKE_CLAW_YAW_RIGHT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_LEFT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_LOW_BASKET;
 import static constants.RobotConstants.LIFT_LOW_CHAMBER;
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW;
+import static constants.RobotConstants.ROTATE_DELTA;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
-//import com.pedropathing.follower.Follower;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.localization.Pose;
@@ -58,8 +54,8 @@ public class Competition extends OpMode {
     private ElapsedTime timer = new ElapsedTime();
     private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false;
     private double intakeArmPos = INTAKE_CLAW_ARM_TRANS;
-    public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN;
-    private double intakeYaw = INTAKE_CLAW_YAW_MID, prevRT = 0;
+    public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN, intakeRotatePos = INTAKE_CLAW_ROTATE_MID;
+    private double prevRT = 0;
     private int basketIndex=0, chamberIndex=0,liftPos = 0;
     private final int[] basketPos = {LIFT_HIGH_BASKET, LIFT_LOW_BASKET};
     private final int[] chamberPos = {LIFT_HIGH_CHAMBER, LIFT_LOW_CHAMBER};
@@ -124,54 +120,37 @@ public class Competition extends OpMode {
         }
 
         if (intakeOut) {
+            if(gamepad2.left_stick_x < 0 && robot.intake.getClawRotatePosition() > INTAKE_CLAW_ROTATE_LEFT_LIMIT) {
+                intakeRotatePos -= ROTATE_DELTA;
+            } else if(gamepad2.left_stick_x > 0 && robot.intake.getClawRotatePosition() < INTAKE_CLAW_ROTATE_RIGHT_LIMIT) {
+                intakeRotatePos += ROTATE_DELTA;
+            }
+            //FIXME: FIX THIS F**KING LOGIC @xzh
+            //I don't know why, i dont want to know why, i shouldn't have to wonder why, but for whatever reason this stupid claw isn't rotating correctly
             if (timer.milliseconds() > 150) {
-                robot.intake.setPitchPosition(INTAKE_CLAW_PITCH_INTAKE);
-                intakeArmPos = INTAKE_CLAW_ARM_INTAKE_UP;
+                robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
                 intakeOut = false;
                 intaking = true;
             } else {
                 robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
-                intakeYaw = INTAKE_CLAW_YAW_MID;
+                robot.intake.intakeClawOpen();
             }
+            robot.intake.setRotatePosition(intakeRotatePos);
         }
 
         if (intaking) {
             if (gamepad2.right_trigger - prevRT > 0 || gamepad2.right_trigger > 0.95) {
-                robot.intake.setClawPosition(INTAKE_CLAW_OPEN);
-            } else {
-                robot.intake.setClawPosition(INTAKE_CLAW_CLOSE);
+                robot.collectApple();
             }
             prevRT = gamepad2.right_trigger;
-            // Left/Right control
-            if (gamepad1.right_trigger > 0) {
-                robot.intake.setLeftRightPosition(0, 1);
-            } else if (gamepad1.left_trigger > 0) {
-                robot.intake.setLeftRightPosition(1, 0);
-            } else {
-                robot.intake.setLeftRightPosition(0.5, 0.5);
-            }
-
-            // Arm and Yaw control
-            if (gamepad2.dpad_down && intakeArmPos > INTAKE_CLAW_ARM_INTAKE_DOWN) {
-                intakeArmPos -= 0.012;
-            } else if (gamepad2.dpad_up && intakeArmPos < INTAKE_CLAW_ARM_INTAKE_UP) {
-                intakeArmPos += 0.012;
-            }
-            if (gamepad2.dpad_left && intakeYaw > INTAKE_CLAW_YAW_LEFT_LIMIT) {
-                intakeYaw -= 0.003;
-            } else if (gamepad2.dpad_right && intakeYaw < INTAKE_CLAW_YAW_RIGHT_LIMIT) {
-                intakeYaw += 0.003;
-            }
-            robot.intake.setArmPosition(intakeArmPos);
-            robot.intake.setYawPosition(intakeYaw);
         }
 
         // Extend control
         if (!trans) {
-            if (gamepad2.left_stick_y < 0 && intakeExtendPosLeft > EXTEND_LEFT_OUT && intakeExtendPosRight < EXTEND_RIGHT_OUT) {
+            if (gamepad2.dpad_up && intakeExtendPosLeft > EXTEND_LEFT_OUT && intakeExtendPosRight < EXTEND_RIGHT_OUT) {
                 intakeExtendPosRight += EXTEND_DELTA;
                 intakeExtendPosLeft -= EXTEND_DELTA;
-            } else if (gamepad2.left_stick_y > 0 && intakeExtendPosLeft < EXTEND_LEFT_IN && intakeExtendPosRight >  EXTEND_RIGHT_IN) {
+            } else if (gamepad2.dpad_down && intakeExtendPosLeft < EXTEND_LEFT_IN && intakeExtendPosRight >  EXTEND_RIGHT_IN) {
                 intakeExtendPosRight -= EXTEND_DELTA;
                 intakeExtendPosLeft += EXTEND_DELTA;
             }
@@ -199,14 +178,11 @@ public class Competition extends OpMode {
             if (timer.milliseconds() > 830) {
                 trans = false;
                 gamepad2.rumble(1, 1, 100);
-                intakeExtendPosRight = EXTEND_RIGHT_TRANS;
-                intakeExtendPosLeft = EXTEND_LEFT_TRANS;
             }
         }
 
 //         Scoring Control
         if (gamepad2.y && !yHold && !locked) {
-            robot.intake.intakeClawAvoid();
             if (!basket) basketIndex = 1;
             basket = true;
             manual = false;
@@ -231,7 +207,6 @@ public class Competition extends OpMode {
         }
 
         if (gamepad2.b && !locked) {
-            robot.intake.intakeClawAvoid();
             back = true;
             manual = false;
             basketIndex = 1;
