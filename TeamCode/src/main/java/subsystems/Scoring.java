@@ -6,6 +6,7 @@ import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
 import static constants.RobotConstants.SCORE_CLAW_ARM_L1A;
 import static constants.RobotConstants.SCORE_CLAW_ARM_PARK;
+import static constants.RobotConstants.SCORE_CLAW_ARM_PREP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_AUTO_INIT;
@@ -13,6 +14,7 @@ import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP_DIVE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_HANG;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_READY_FOR_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS_PREP;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
@@ -59,12 +61,8 @@ public class Scoring {
         liftMiddle = hardwareMap.get(DcMotorEx.class, Configs.LIFT_MIDDLE);
         liftRight = hardwareMap.get(DcMotorEx.class, Configs.LIFT_RIGHT);
         scoreClaw = hardwareMap.get(Servo.class, Configs.SCORE_CLAW);
-        scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_ARM);
-        scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_FLIP);
-//        liftTouch = hardwareMap.get(DigitalChannel.class, Configs.LIFT_TOUCH);
-//         TODO Add rightTouch to Configs
-
-//        liftTouch.setMode(DigitalChannel.Mode.INPUT);
+        scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_ARM);
+        scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_ARM_PITCH);
 
         liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -82,8 +80,6 @@ public class Scoring {
         scoreClaw.setPosition(SCORE_CLAW_OPEN);
         scoreClawArm.setPosition(SCORE_CLAW_ARM_SPECIMEN);
         scoreClawFlip.setPosition(SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
-
-
     }
 
     public void autoinit (HardwareMap hardwareMap) {
@@ -92,12 +88,8 @@ public class Scoring {
         liftMiddle = hardwareMap.get(DcMotorEx.class, Configs.LIFT_MIDDLE);
         liftRight = hardwareMap.get(DcMotorEx.class, Configs.LIFT_RIGHT);
         scoreClaw = hardwareMap.get(Servo.class, Configs.SCORE_CLAW);
-        scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_ARM);
-        scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_CLAW_FLIP);
-//        liftTouch = hardwareMap.get(DigitalChannel.class, Configs.LIFT_TOUCH);
-//         TODO Add rightTouch to Configs
-
-//        liftTouch.setMode(DigitalChannel.Mode.INPUT);
+        scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_ARM);
+        scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_ARM_PITCH);
 
         liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -119,42 +111,14 @@ public class Scoring {
         threadStart();
     }
 
-//    public void autoInit (HardwareMap hardwareMap) {
-//        sch = new ScheduledThreadPoolExecutor(40);
-//        liftLeft = hardwareMap.get(DcMotorEx.class, "ll");
-//        liftRight = hardwareMap.get(DcMotorEx.class, "lr");
-//        scoreClaw = hardwareMap.get(Servo.class, "sc");
-//        scoreClawArm = hardwareMap.get(Servo.class, "sca");
-//        scoreClawFlip = hardwareMap.get(Servo.class, "scf");
-//        specimenClaw = hardwareMap.get(Servo.class, "spmc");
-//        hangRatchet = hardwareMap.get(Servo.class, "hr");
-//
-//        liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        // Initialize lift motors
-//        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//        liftLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-//        liftRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-//
-//        liftAuto();
-//
-//        // Initialize servo positions
-//        scoreClaw.setPosition(SCORE_CLAW_OPEN);
-//        scoreClawArm.setPosition(SCORE_CLAW_ARM_TRANS);
-//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_TRANS);
-//        specimenClaw.setPosition(SPECIMEN_CLAW_OPEN);
-//        hangRatchet.setPosition(RATCHET_RELEASE);
-//    }
-
     public boolean liftTouched() {
         return !liftTouch.getState();
     }
 
     public void setLiftPower(double power) {
-        liftLeft.setPower(power); //TODO check if this is correct
-        liftRight.setPower(power); //TODO check if this is correct
-        liftMiddle.setPower(power); //TODO check if this is correct
+        liftLeft.setPower(power);
+        liftRight.setPower(power);
+        liftMiddle.setPower(power);
     }
 
     public void runToPosition(int targetPosition) {
@@ -196,7 +160,7 @@ public class Scoring {
         setScoreArmPosition(SCORE_CLAW_ARM_L1A, SCORE_CLAW_FLIP_TRANS);
     }
     public void armToTrans() {
-        setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS);
+        setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
     }
 
     public int getLiftPosition() {

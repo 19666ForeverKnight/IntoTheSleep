@@ -1,40 +1,39 @@
 package subsystems;
 
-//import static constants.AutoConst.YELLOW_FIRST_EXTEND;
-//import static constants.AutoConst.YELLOW_SECOND_EXTEND;
-//import static constants.AutoConst.YELLOW_THIRD_EXTEND;
-
 import static constants.RobotConstants.AllianceColour.Blue;
 import static constants.RobotConstants.AllianceColour.Red;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT3;
-import static constants.RobotConstants.EXTEND_LEFT_TRANS;
-import static constants.RobotConstants.EXTEND_LEFT_TRANS_PREP;
+import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
-import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
+import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
+import static constants.RobotConstants.SCORE_CLAW_ARM_PREP_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS_PREP;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import java.sql.Time;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import subsystems.ChassisSubsystem.Drivetrain;
-import subsystems.IntakeSubsystem.Intake;
+import subsystems.IntakeSubsystem.SuperIntake;
 import subsystems.IntakeSubsystem.Vision;
 
 public class Robot {
-    public Intake intake = new Intake();
+    public SuperIntake intake = new SuperIntake();
     public Scoring scoring = new Scoring();
     public Drivetrain drivetrain = new Drivetrain();
-    public Vision vision = new Vision();
     ScheduledExecutorService executor;
 
     public Robot() {}
@@ -43,7 +42,6 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.init(hardwareMap);
-        vision.Init(hardwareMap, Red);
         drivetrain.init(hardwareMap);
     }
 
@@ -51,19 +49,10 @@ public class Robot {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.autoinit(hardwareMap);
-        vision.Init(hardwareMap, Red);
-        vision.start();
+
     }
 
     public void autoInitBlue(HardwareMap hardwareMap) {
-        executor = Executors.newScheduledThreadPool(5);
-        intake.init(hardwareMap);
-        scoring.autoinit(hardwareMap);
-        vision.Init(hardwareMap, Blue);
-        vision.start();
-    }
-
-    public void autoInit(HardwareMap hardwareMap) {
         executor = Executors.newScheduledThreadPool(5);
         intake.init(hardwareMap);
         scoring.autoinit(hardwareMap);
@@ -72,28 +61,32 @@ public class Robot {
     public void trans() {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
-        intake.setLeftRightPosition(0, 1);
         intake.toTransPos();
-        intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
-        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 300, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setLeftRightPosition(1, 0), 400, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 500, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setLeftRightPosition(0.5, 0.5), 500, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID), 450, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 500, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP), 700, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 800, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 850, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 950, TimeUnit.MILLISECONDS);
+    }
+    public void collectApple(){
+        executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 200, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 300, TimeUnit.MILLISECONDS);
     }
 
-    public void autoTrans() {
-        scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
-        intake.setClawPosition(INTAKE_CLAW_CLOSE);
-        intake.setLeftRightPosition(0, 1);
-        intake.toTransPos();
-        intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
-        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 300, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setLeftRightPosition(1, 0), 400, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 600, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setLeftRightPosition(0.5, 0.5), 510, TimeUnit.MILLISECONDS);
-    }
+//    public void autoTrans() {
+//        scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
+//        intake.setClawPosition(INTAKE_CLAW_CLOSE);
+//        intake.setLeftRightPosition(0, 1);
+//        intake.toTransPos();
+//        intake.setExtendPosition(EXTEND_RIGHT_TRANS_PREP, EXTEND_LEFT_TRANS_PREP);
+//        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_TRANS, EXTEND_LEFT_TRANS), 300, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.setLeftRightPosition(1, 0), 400, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.intakeClawOpen(), 600, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.setLeftRightPosition(0.5, 0.5), 510, TimeUnit.MILLISECONDS);
+//    }
 
     public void sweep() {
         intake.sweepOut();

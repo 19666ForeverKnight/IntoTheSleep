@@ -18,19 +18,27 @@ public class Configs {
     public static String LIFT_MIDDLE = "lm";
 
     // Servo
-    public static String INTAKE_CLAW = "ic";
-    public static String INTAKE_CLAW_LEFT = "li";
-    public static String INTAKE_CLAW_RIGHT = "ri";
-    public static String INTAKE_CLAW_YAW = "cl";
-    public static String INTAKE_CLAW_PITCH = "cp";
-    public static String INTAKE_CLAW_ARM = "cap";
-    public static String EXTEND_LEFT = "el";
+    /*
+     Control Hub 5 : ClawArm : cpi 抓取prep: 0.119; 抓取: 0.072; trans prep: 0.471; 扔sample: 0.246
+     Control Hub 2 : ClawTurret : cy | middle 抓取: 0.641; 扔sample: 0.210;
+     Control Hub 3 : ClawRotate : cr | middle 抓取: 0.534; 左极限: 0.21; 右极限: 0.848;
+     Control Hub 4 : Claw : cla | 抓取: 0.928; 开: 0.710
+     Expansion Hub 0 : ExtendRight : er
+     Expansion Hub 1 : ScoreArm : sa | trans prep: 0.239; trans: 0.209;
+     Expansion Hub 2 : ScoreArmPitch : sap | trans prep : 0.274; trans: 0.304;
+     Expansion Hub 3 : sweep : sw
+     Expansion Hub 4 : ExtendLeft : el
+     Expansion Hub 5 : ScoreClaw : sc
+     */
+    public static String CLAW = "cla";
+    public static String CLAW_TURRET = "cy";
+    public static String CLAW_ROTATE = "cr";
+    public static String CLAW_ARM = "cpi";
     public static String EXTEND_RIGHT = "er";
-
+    public static String EXTEND_LEFT = "el";
+    public static String SCORE_ARM = "sa";
+    public static String SCORE_ARM_PITCH = "sap";
     public static String SCORE_CLAW = "sc";
-    public static String SCORE_CLAW_ARM = "sa";
-    public static String SCORE_CLAW_FLIP = "sap";
-
     public static String SWEEP = "sw";
 
     //Sensor

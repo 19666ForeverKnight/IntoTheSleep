@@ -7,25 +7,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class ServoPositionTest extends LinearOpMode {
-    // 0 = claw pitch          Control hub 1    - cp
-    // 1 = left intake         Control hub 2    - li
-    // 2 = claw arm pitch      Control hub 3    - cap
-    // 3 = intake claw         Control hub 4    - ic
-    // 4 = right intake        Control hub 5    - ri
-    // 5 = claw rorate         Control Hub 6    - cl
-    // 6 = extend right        Exp Hub 1   - er
-    // 7 = scoring arm         Exp hub 2   - sa
-    // 8 = scoring arm pitch (flip)   Exp hub 3   - sap
-    // 9 = sweeping            Exp hub 4   - sw
-    // 10 = scoring claw       Exp hub 5   - sc
-    // 11 = extend left        Exp hub 6   - el
+    // Control Hub 5 : ClawArm : cpi
+    // Control Hub 2 : ClawTurret : cy
+    // Control Hub 3 : ClawRotate : cr
+    // Control Hub 4 : Claw : cla
+    // Expansion Hub 0 : ExtendRight : er
+    // Expansion Hub 1 : ScoreArm : sa
+    // Expansion Hub 2 : ScoreArmPitch : sap
+    // Expansion Hub 3 : sweep : sw
+    // Expansion Hub 4 : ExtendLeft : el
+    // Expansion Hub 5 : ScoreClaw : sc
 
     private DcMotorEx leftFront = null;
     private DcMotorEx leftBack = null;
     private DcMotorEx rightFront = null;
     private DcMotorEx rightBack = null;
     private double x, y, rx, p, posDelta = 0.0001;
-    private String[] names = {"cp", "li", "cap", "ic", "ri", "cl", "er", "el", "sa", "sap", "sw", "sc"};
+    private String[] names = {"cy", "cr", "cla", "cpi", "er", "sa", "sap", "sw", "el", "sc"};
     private int index = 0, servoNum = names.length;
     private Servo[] servos = new Servo[servoNum];
     private double[] poses = new double[servoNum];
