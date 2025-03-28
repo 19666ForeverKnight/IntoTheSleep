@@ -1,10 +1,7 @@
 //package auto;
 //
 //import static constants.RobotConstants.EXTEND_LEFT_IN;
-//import static constants.RobotConstants.EXTEND_LEFT_TRANS;
 //import static constants.RobotConstants.EXTEND_RIGHT_IN;
-//import static constants.RobotConstants.EXTEND_RIGHT_TRANS;
-//import static constants.RobotConstants.EXTEND_RIGHT_TRANS_PREP;
 //
 //import com.acmerobotics.dashboard.FtcDashboard;
 //import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
