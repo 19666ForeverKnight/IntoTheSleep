@@ -61,18 +61,19 @@ public class Robot {
     public void trans() {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
+        intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID);
+        intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN);
+        scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
         intake.toTransPos();
-        executor.schedule(() -> intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID), 450, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 500, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP), 700, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 800, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 850, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 950, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 350, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 600, TimeUnit.MILLISECONDS);
     }
     public void collectApple(){
-        executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawClose(), 200, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawIntakeUp(), 300, TimeUnit.MILLISECONDS);
+        intake.intakeClawOpen();
+        executor.schedule(() -> intake.intakeClawIntakeDown(), 150, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 250, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 350, TimeUnit.MILLISECONDS);
     }
 
 //    public void autoTrans() {
