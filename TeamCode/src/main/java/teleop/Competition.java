@@ -13,6 +13,9 @@ import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_LEFT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT_LIMIT;
 import static constants.RobotConstants.LIFT_HIGH_BASKET;
 import static constants.RobotConstants.LIFT_HIGH_CHAMBER;
 import static constants.RobotConstants.LIFT_LOW_BASKET;
@@ -23,6 +26,7 @@ import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
+import static constants.RobotConstants.TURRET_DELTA;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -52,15 +56,16 @@ public class Competition extends OpMode {
     private final Pose startPose = new Pose(0,0,0); // add limelight init pos reading support
 
     private ElapsedTime timer = new ElapsedTime();
-    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false;
+    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false, rotateHor = true;
     private double intakeArmPos = INTAKE_CLAW_ARM_TRANS;
-    public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN, intakeRotatePos = INTAKE_CLAW_ROTATE_MID;
-    private double prevRT = 0;
-    private int basketIndex=0, chamberIndex=0,liftPos = 0;
+    public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN, intakeRotatePos = INTAKE_CLAW_ROTATE_MID, intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+    private double prevRT = 0, prevLT = 0;
+    private int basketIndex=0, chamberIndex=0, liftPos = 0, extendIndex = 0;
     private final int[] basketPos = {LIFT_HIGH_BASKET, LIFT_LOW_BASKET};
     private final int[] chamberPos = {LIFT_HIGH_CHAMBER, LIFT_LOW_CHAMBER};
-    private boolean prevRB = false;
-    private double x, y, rx, p;
+    private final double[][] extendPos = {{EXTEND_LEFT_OUT, EXTEND_RIGHT_OUT}, {EXTEND_LEFT_IN + (EXTEND_LEFT_OUT - EXTEND_LEFT_IN) / 2, EXTEND_RIGHT_IN + (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) / 2}};
+    private boolean prevRB = false, prevUp = false;
+    private double x, y, rx, p = 1;
 
     private int counthighbasket = 0;
     /** This method is call once when init is played, it initializes the follower **/
@@ -102,8 +107,8 @@ public class Competition extends OpMode {
         y = gamepad1.left_stick_y * 0.9;
         x = -gamepad1.left_stick_x * 0.9;
         rx = -gamepad1.right_stick_x * 0.85;
-        if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.45;
-        else p = 1;
+//        if (Math.abs(robot.intake.getClawArmPos() - INTAKE_CLAW_ARM_INTAKE_DOWN) < 0.05) p = 0.45;
+//        else p = 1;
         robot.drivetrain.drive(y, x, rx, p);
 
         if (gamepad1.left_bumper) {
@@ -114,17 +119,14 @@ public class Competition extends OpMode {
         if (gamepad2.left_bumper) {
             intakeOut = true;
             intaking = false;
+            rotateHor = true;
             back = true;
+            extendIndex = 0;
             timer.reset();
             robot.scoring.armToTrans();
         }
 
         if (intakeOut) {
-            if(gamepad2.left_stick_x < 0 && robot.intake.getClawRotatePosition() > INTAKE_CLAW_ROTATE_LEFT_LIMIT) {
-                intakeRotatePos -= ROTATE_DELTA;
-            } else if(gamepad2.left_stick_x > 0 && robot.intake.getClawRotatePosition() < INTAKE_CLAW_ROTATE_RIGHT_LIMIT) {
-                intakeRotatePos += ROTATE_DELTA;
-            }
             //FIXME: FIX THIS F**KING LOGIC @xzh
             //I don't know why, i dont want to know why, i shouldn't have to wonder why, but for whatever reason this stupid claw isn't rotating correctly
             if (timer.milliseconds() > 150) {
@@ -135,7 +137,7 @@ public class Competition extends OpMode {
                 robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
                 robot.intake.intakeClawOpen();
             }
-            robot.intake.setRotatePosition(intakeRotatePos);
+
         }
 
         if (intaking) {
@@ -143,18 +145,63 @@ public class Competition extends OpMode {
                 robot.collectApple();
             }
             prevRT = gamepad2.right_trigger;
+
+            if(gamepad2.dpad_left && robot.intake.getClawRotatePosition() > INTAKE_CLAW_ROTATE_LEFT_LIMIT) {
+                intakeRotatePos -= ROTATE_DELTA;
+            } else if(gamepad2.dpad_right && robot.intake.getClawRotatePosition() < INTAKE_CLAW_ROTATE_RIGHT_LIMIT) {
+                intakeRotatePos += ROTATE_DELTA;
+            }
+            if (gamepad2.left_trigger > 0 && prevLT == 0) {
+                if (rotateHor) {
+                    rotateHor = false;
+                    intakeRotatePos = INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
+                } else {
+                    rotateHor = true;
+                    intakeRotatePos = INTAKE_CLAW_ROTATE_MID;
+                }
+            }
+            prevLT = gamepad2.left_trigger;
+            robot.intake.setRotatePosition(intakeRotatePos);
+
+//            if(gamepad2.left_stick_x > 0 && intakeTurretPos > INTAKE_CLAW_TURRET_RIGHT_LIMIT) {
+//                intakeTurretPos -= TURRET_DELTA;
+//            } else if(gamepad2.left_stick_x < 0 && intakeTurretPos < INTAKE_CLAW_TURRET_LEFT_LIMIT) {
+//                intakeTurretPos += TURRET_DELTA;
+//            }
+            if(gamepad2.left_stick_x > 0.5) {
+                intakeTurretPos = INTAKE_CLAW_TURRET_RIGHT_LIMIT;
+            } else if(gamepad2.left_stick_x < -0.5) {
+                intakeTurretPos = INTAKE_CLAW_TURRET_LEFT_LIMIT;
+            } else if (gamepad2.left_stick_y < -0.5) {
+                intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+            }
+            robot.intake.setTurretPosition(intakeTurretPos);
         }
+
+        if (gamepad2.dpad_up && !prevUp) {
+            extendIndex = (extendIndex + 1) % 2;
+            intakeExtendPosLeft = extendPos[extendIndex][0];
+            intakeExtendPosRight = extendPos[extendIndex][1];
+            p = 0.45;
+        }
+        if (gamepad2.dpad_down) {
+            intakeExtendPosLeft = EXTEND_LEFT_IN;
+            intakeExtendPosRight = EXTEND_RIGHT_IN;
+            extendIndex = 0;
+        }
+        prevUp = gamepad2.dpad_up;
+
+        robot.intake.setExtendPosition(intakeExtendPosRight, intakeExtendPosLeft);
 
         // Extend control
         if (!trans) {
-            if (gamepad2.dpad_up && intakeExtendPosLeft > EXTEND_LEFT_OUT && intakeExtendPosRight < EXTEND_RIGHT_OUT) {
-                intakeExtendPosRight += EXTEND_DELTA;
-                intakeExtendPosLeft -= EXTEND_DELTA;
-            } else if (gamepad2.dpad_down && intakeExtendPosLeft < EXTEND_LEFT_IN && intakeExtendPosRight >  EXTEND_RIGHT_IN) {
-                intakeExtendPosRight -= EXTEND_DELTA;
-                intakeExtendPosLeft += EXTEND_DELTA;
-            }
-            robot.intake.setExtendPosition(intakeExtendPosRight, intakeExtendPosLeft);
+//            if (gamepad2.left_stick_y < 0 && intakeExtendPosLeft > EXTEND_LEFT_OUT && intakeExtendPosRight < EXTEND_RIGHT_OUT) {
+//                intakeExtendPosRight += (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) / 40;
+//                intakeExtendPosLeft -= (EXTEND_LEFT_IN - EXTEND_LEFT_OUT) / 40;
+//            } else if (gamepad2.left_stick_y > 0 && intakeExtendPosLeft < EXTEND_LEFT_IN && intakeExtendPosRight >  EXTEND_RIGHT_IN) {
+//                intakeExtendPosRight -= (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) / 40;
+//                intakeExtendPosLeft += (EXTEND_LEFT_IN - EXTEND_LEFT_OUT) / 40;
+//            }
 
             if (specimenOpen) {
                 robot.scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
@@ -170,12 +217,18 @@ public class Competition extends OpMode {
             intakeOut = false;
             intakeIn = false;
             specimenOpen = false;
+            intakeRotatePos = INTAKE_CLAW_ROTATE_MID;
+            intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+            intakeExtendPosRight = EXTEND_RIGHT_IN;
+            intakeExtendPosLeft = EXTEND_LEFT_IN;
+            basketIndex = 1;
+            p = 1;
             timer.reset();
             robot.trans();
         }
 
         if (trans) {
-            if (timer.milliseconds() > 830) {
+            if (timer.milliseconds() > 630) {
                 trans = false;
                 gamepad2.rumble(1, 1, 100);
             }
@@ -216,7 +269,7 @@ public class Competition extends OpMode {
         if (gamepad2.right_stick_y > 0.2 && robot.scoring.getLiftPosition() >= 0) {  // 软件限位
             robot.scoring.setLiftPower(-1);
             manual = true;
-        } else if (gamepad2.right_stick_y < -0.2 && robot.scoring.getLiftPosition() <= 1800) {
+        } else if (gamepad2.right_stick_y < -0.2 && robot.scoring.getLiftPosition() <= LIFT_HIGH_BASKET) {
             robot.scoring.setLiftPower(1);
             manual = true;
             if ((robot.scoring.getrightliftheight() + robot.scoring.getleftliftheight()) / 2.0 > LIFT_OPEN_SPECIMEN_CLAW) {
@@ -243,7 +296,9 @@ public class Competition extends OpMode {
                     }
                 }
             } else {
-                if (chamberIndex == 0) robot.scoring.armToChamber();
+                if (chamberIndex == 0) {
+                    robot.scoring.armToChamber();
+                }
                 else if (chamberIndex == 1) robot.scoring.armToCollect();
                 liftPos = chamberPos[chamberIndex];
             }
