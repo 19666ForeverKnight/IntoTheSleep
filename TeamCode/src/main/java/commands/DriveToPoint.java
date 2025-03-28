@@ -10,19 +10,18 @@ import constants.AutoConstants;
 import lombok.Setter;
 import subsystems.ChassisSubsystem.FollowerSubsystem;
 import subsystems.ChassisSubsystem.FollowerSubsystem.FollowerType;
+import subsystems.SleepyStuffff.Util.Vector2d;
 
 public class DriveToPoint extends CommandBase {
     private FollowerSubsystem follower;
     @Setter private FollowerType currentFollowerType = FollowerType.FAST;
     private double maxSpeed = 1;
-    private double relX;
-    private double relY;
+    private Vector2d targetPos;
     private boolean holdEnd = true;
 
-    public DriveToPoint(FollowerSubsystem follower, double rX, double rY, int a) {
+    public DriveToPoint(FollowerSubsystem follower, Vector2d pos, int a) {
+        targetPos = new Vector2d(pos.x, pos.y);
         this.follower = follower;
-        relX = rX;
-        relY = rY;
         switch (a) {
             case 0:
                 currentFollowerType = FollowerType.FAST;
@@ -56,25 +55,18 @@ public class DriveToPoint extends CommandBase {
     }
     @Override
     public void initialize() {
-        double x = follower.getPose().getX();
-        double y = follower.getPose().getY();
-        double r = follower.getPose().getHeading();
-        double rx = relY * Math.cos(r) + relX * Math.sin(r);
-        double ry = relX * Math.cos(r) + relY * Math.sin(r);
-
-        double tx = x + rx;
-        double ty = y - ry;
-
+        this.follower.breakFollowing();
         PathBuilder builder = new PathBuilder();
         builder.addPath(
                 new BezierLine(
-                        new Point(x, y, 1),
-                        new Point(tx, ty, 1)
+                        new Point(follower.getPose().getX(), follower.getPose().getY(), 1),
+                        new Point(targetPos.x, targetPos.y,1)
                 )
         ).setConstantHeadingInterpolation(follower.getPose().getHeading());
-        follower.breakFollowing();
-        follower.followPath(builder.build(), true);
+        this.follower.breakFollowing();
+        this.follower.followPath(builder.build(), this.holdEnd);
     }
+
     @Override
     public boolean isFinished() {
         return follower.getCurrentTValue() > 0.85;
