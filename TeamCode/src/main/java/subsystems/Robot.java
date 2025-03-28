@@ -45,17 +45,11 @@ public class Robot {
         drivetrain.init(hardwareMap);
     }
 
-    public void autoInitRed(HardwareMap hardwareMap) {
+    public void autoInit(HardwareMap hardwareMap) {
         executor = Executors.newScheduledThreadPool(5);
-        intake.init(hardwareMap);
+        intake.autoInit(hardwareMap);
         scoring.autoinit(hardwareMap);
 
-    }
-
-    public void autoInitBlue(HardwareMap hardwareMap) {
-        executor = Executors.newScheduledThreadPool(5);
-        intake.init(hardwareMap);
-        scoring.autoinit(hardwareMap);
     }
 
     public void trans() {

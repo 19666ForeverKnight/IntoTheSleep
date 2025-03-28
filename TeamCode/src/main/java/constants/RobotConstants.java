@@ -16,6 +16,7 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.119;
     public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.072;
     public static final double INTAKE_CLAW_ARM_TRANS = 0.471;
+    public static final double INTAKE_CLAW_ARM_AUTO_INIT = 0.656;
     public static final double INTAKE_CLAW_THROW_SAMPLE_IN_OBS_ZONE = 0.246;
 
     public static final double EXTEND_LEFT_IN = 0.576;
@@ -43,7 +44,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.239;
     public static final double SCORE_CLAW_ARM_SPECIMEN = 0.961;
     public static final double SCORE_CLAW_ARM_HANG = 0.450;
-    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.060;
+    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.135;
     public static final double SCORE_CLAW_ARM_PARK = 0.;
     public static final double SCORE_CLAW_ARM_L1A = 0.29;
 
@@ -55,7 +56,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.274;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
     public static final double SCORE_CLAW_FLIP_HANG = 0.257;
-    public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.628;
+    public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.237;
 
 
     public static final double SCORE_CLAW_OPEN = 0.682;
@@ -63,7 +64,7 @@ public class RobotConstants {
 
     public static final int LIFT_HIGH_CHAMBER = 110;
     public static final int LIFT_LOW_CHAMBER = 0;
-    public static final int LIFT_HIGH_BASKET = 1800;
+    public static final int LIFT_HIGH_BASKET = 1500;
     public static final int LIFT_LOW_BASKET = 400;
 
     public static final int LIFT_OPEN_SPECIMEN_CLAW = 330;

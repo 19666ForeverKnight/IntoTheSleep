@@ -2,6 +2,7 @@ package subsystems.IntakeSubsystem;
 
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
@@ -13,12 +14,13 @@ import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
 import static constants.RobotConstants.SWEEPING_APPLE;
 import static constants.RobotConstants.SWEEPING_INIT;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import constants.Configs;
 
-public class SuperIntake {
+public class SuperIntake extends SubsystemBase {
     private Servo intakeClawTurret;
     private Servo intakeClawRotate;
     private Servo intakeClawArm;
@@ -39,6 +41,22 @@ public class SuperIntake {
         extendLeft.setPosition(EXTEND_LEFT_IN);
         extendRight.setPosition(EXTEND_RIGHT_IN);
         toTransPos();
+        sweepIn();
+    }
+    public void autoInit(HardwareMap hardwareMap) {
+        intakeClaw = hardwareMap.get(Servo.class, Configs.CLAW);
+        intakeClawRotate = hardwareMap.get(Servo.class, Configs.CLAW_ROTATE);
+        intakeClawTurret = hardwareMap.get(Servo.class, Configs.CLAW_TURRET);
+        intakeClawArm = hardwareMap.get(Servo.class, Configs.CLAW_ARM);
+        extendLeft = hardwareMap.get(Servo.class, Configs.EXTEND_LEFT);
+        extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_RIGHT);
+        sweep = hardwareMap.get(Servo.class, Configs.SWEEP);
+
+        extendLeft.setPosition(EXTEND_LEFT_IN);
+        extendRight.setPosition(EXTEND_RIGHT_IN);
+        intakeClawOpen();
+        setRotatePosition(INTAKE_CLAW_ROTATE_MID);
+        setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT);
         sweepIn();
     }
 
