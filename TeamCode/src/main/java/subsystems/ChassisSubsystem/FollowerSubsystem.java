@@ -17,16 +17,15 @@ public class FollowerSubsystem extends SubsystemBase {
     public  Follower follower;
     public enum FollowerType {
         FAST,
-        MED,
-        SLOW
+        MED
     }
 
-    private FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry, int trajectoryMode){
+    public FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry, int trajectoryMode){
         follower = new Follower(hardwareMap);
         this.telemetry = telemetry;
         register();
     }
-    private FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry){
+    public FollowerSubsystem(HardwareMap hardwareMap, Telemetry telemetry){
         follower = new Follower(hardwareMap);
         this.telemetry = telemetry;
         register();
@@ -55,6 +54,9 @@ public class FollowerSubsystem extends SubsystemBase {
 
     public void followPath(PathChain path, boolean holdEnd){
         follower.followPath(path, holdEnd);
+    }
+    public void setStartingPose(Pose a){
+        follower.setStartingPose(a.copy());
     }
 
     public Pose getPose(){
