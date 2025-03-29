@@ -19,6 +19,7 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.072;
     public static final double INTAKE_CLAW_ARM_TRANS = 0.48;
     public static final double INTAKE_CLAW_ARM_AUTO_INIT = 0.656;
+    public static final double INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER = 0.304;
     public static final double INTAKE_CLAW_THROW_SAMPLE_IN_OBS_ZONE = 0.246;
 
     public static final double EXTEND_LEFT_IN = 0.592;
@@ -52,12 +53,12 @@ public class RobotConstants {
 
 
     // Common Scoring Constants
-    public static final double SCORE_CLAW_FLIP_DROP = 0.653;
-    public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.774;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.266;
-    public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
-    public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.304;
-    public static final double SCORE_CLAW_FLIP_HANG = 0.257;
+    public static final double SCORE_CLAW_FLIP_DROP = 0.611;
+    public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.732;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.224;
+    public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.141;
+    public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.271;
+    public static final double SCORE_CLAW_FLIP_HANG = 0.221;
     public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.237;
 
 
