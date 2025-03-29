@@ -56,7 +56,7 @@ public class Competition extends OpMode {
     private final Pose startPose = new Pose(0,0,0); // add limelight init pos reading support
 
     private ElapsedTime timer = new ElapsedTime();
-    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, chamber = false,back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false, rotateHor = true;
+    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, chamber = false,back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false, rotateHor = true, thrown = false;
     private double intakeArmPos = INTAKE_CLAW_ARM_TRANS;
     public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN, intakeRotatePos = INTAKE_CLAW_ROTATE_MID, intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
     private double prevRT = 0, prevLT = 0;
@@ -164,6 +164,7 @@ public class Competition extends OpMode {
             prevLT = gamepad2.left_trigger;
             robot.intake.setRotatePosition(intakeRotatePos);
 
+
 //            if(gamepad2.left_stick_x > 0 && intakeTurretPos > INTAKE_CLAW_TURRET_RIGHT_LIMIT) {
 //                intakeTurretPos -= TURRET_DELTA;
 //            } else if(gamepad2.left_stick_x < 0 && intakeTurretPos < INTAKE_CLAW_TURRET_LEFT_LIMIT) {
@@ -177,6 +178,7 @@ public class Competition extends OpMode {
                 intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
             }
             robot.intake.setTurretPosition(intakeTurretPos);
+
         }
 
         if (gamepad2.dpad_up && !prevUp) {
@@ -338,6 +340,12 @@ public class Competition extends OpMode {
             pad = false;
         }
 
+        // Throw specimen to the left
+        if(gamepad1.right_trigger > 0 && prevRT == 0){
+            robot.thrownRight();
+            intaking = false;
+        }
+
 //        telemetryA.addData("liftrightheight", robot.scoring.getrightliftheight());
 //        telemetryA.addData("liftleftheight", robot.scoring.getleftliftheight());
 //        telemetryA.addData("liftmiddleheight", robot.scoring.getmiddleliftheight());
@@ -357,6 +365,7 @@ public class Competition extends OpMode {
             telemetryA.addData("High Basket:", counthighbasket);
             telemetryA.addData("", "--------------------");
         }
+        telemetryA.addData("Thrown", thrown);
         //make this draw a big ascii art letter T , else draw a big ascii art letter F
         telemetryA.update();
 

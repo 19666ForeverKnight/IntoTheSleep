@@ -13,6 +13,7 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_TURRET_INTAKE_AND_TRANS = 0.637;
     public static final double INTAKE_CLAW_TURRET_LEFT_LIMIT = 0.873;
     public static final double INTAKE_CLAW_TURRET_RIGHT_LIMIT = 0.383;
+    public static final double INTAKE_CLAW_TURRET_DELTA = 0.02;
     public static final double INTAKE_CLAW_TURRET_THROW_SAMPLE_IN_OBS_ZONE = 0.210;
 
     public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.155;
@@ -22,14 +23,19 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER = 0.304;
     public static final double INTAKE_CLAW_THROW_SAMPLE_IN_OBS_ZONE = 0.246;
 
-    public static final double EXTEND_LEFT_IN = 0.592;
-    public static final double EXTEND_LEFT_OUT = 0.272;
+    public static final double EXTEND_LEFT_IN = 0.360;
+    public static final double EXTEND_LEFT_OUT = 0.042;
     //    public static final double EXTEND_LEFT_TRANS = 0.906;
 //    public static final double EXTEND_LEFT_TRANS_PREP = 0.886;
-    public static final double EXTEND_RIGHT_IN = 0.206;
-    public static final double EXTEND_RIGHT_OUT = 0.599;
+    public static final double EXTEND_RIGHT_IN = 0.213;
+    public static final double EXTEND_RIGHT_OUT = 0.572;
 //    public static final double EXTEND_RIGHT_TRANS = 0.765;
 //    public static final double EXTEND_RIGHT_TRANS_PREP = 0.803;
+
+    //Intake Thrown - Right
+    public static final double INTAKE_CLAW_TURRET_RIGHT = 0.187;
+    public static final double INTAKE_CLAW_ARM_RIGHT = 0.257;
+    public static final double INTAKE_CLAW_ROTATE = 0.714;
 
     // Extend Auto
     public static final double EXTEND_LEFT_AUTO_COLLECT1 = 0.675;

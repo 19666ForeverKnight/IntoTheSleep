@@ -10,8 +10,14 @@ import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_LEFT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT_LIMIT;
 import static constants.RobotConstants.SCORE_CLAW_ARM_PREP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
@@ -73,6 +79,18 @@ public class Robot {
         intake.sweepOut();
         executor.schedule(() -> intake.sweepIn(), 270, TimeUnit.MILLISECONDS);
     }
+
+    // Semi-Auto Thrown the specimen to the right
+    public void thrownRight() {
+        intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
+        intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
+        intake.setRotatePosition(INTAKE_CLAW_ROTATE);
+        executor.schedule(() -> intake.intakeClawOpen(), 800, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 1000, TimeUnit.MILLISECONDS);
+    }
+
+
+
 
     public void autoextendtocollect(int sampleindex) {
         if(sampleindex == 1) {
