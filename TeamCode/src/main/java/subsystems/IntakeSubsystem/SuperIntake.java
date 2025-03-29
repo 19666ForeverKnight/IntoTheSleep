@@ -3,6 +3,7 @@ package subsystems.IntakeSubsystem;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
@@ -114,6 +115,9 @@ public class SuperIntake extends SubsystemBase {
     }
     public void intakeClawIntakeDown() {
         intakeClawArm.setPosition(INTAKE_CLAW_ARM_INTAKE_DOWN);
+    }
+    public void intakeClawAvoid() {
+        intakeClawArm.setPosition(INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER);
     }
 
     public void intakeClawOpen() {
