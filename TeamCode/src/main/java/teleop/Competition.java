@@ -189,6 +189,7 @@ public class Competition extends OpMode {
             intakeExtendPosLeft = EXTEND_LEFT_IN;
             intakeExtendPosRight = EXTEND_RIGHT_IN;
             extendIndex = 0;
+            p = 1;
         }
         prevUp = gamepad2.dpad_up;
 
