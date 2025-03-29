@@ -56,7 +56,7 @@ public class Competition extends OpMode {
     private final Pose startPose = new Pose(0,0,0); // add limelight init pos reading support
 
     private ElapsedTime timer = new ElapsedTime();
-    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false, rotateHor = true;
+    private boolean intakeOut = false, intaking = false, trans = false, intakeIn = false, yHold = false, xHold = false, basket = false, chamber = false,back = true, manual = true, rbHold = false, specimenOpen = true, locked = false, pad = false, intakeOpen = false, rotateHor = true;
     private double intakeArmPos = INTAKE_CLAW_ARM_TRANS;
     public double intakeExtendPosRight = EXTEND_RIGHT_IN, intakeExtendPosLeft = EXTEND_LEFT_IN, intakeRotatePos = INTAKE_CLAW_ROTATE_MID, intakeTurretPos = INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
     private double prevRT = 0, prevLT = 0;
@@ -120,10 +120,12 @@ public class Competition extends OpMode {
             intakeOut = true;
             intaking = false;
             rotateHor = true;
-            back = true;
             extendIndex = 0;
             timer.reset();
-            robot.scoring.armToTrans();
+            if (!chamber) {
+                back = true;
+                robot.scoring.armToTrans();
+            }
         }
 
         if (intakeOut) {
@@ -137,7 +139,6 @@ public class Competition extends OpMode {
                 robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
                 robot.intake.intakeClawOpen();
             }
-
         }
 
         if (intaking) {
@@ -240,6 +241,7 @@ public class Competition extends OpMode {
             basket = true;
             manual = false;
             back = false;
+            chamber = false;
             yHold = true;
             basketIndex = (basketIndex + 3) % 2;
         } else if (!gamepad2.y && yHold) {
@@ -252,9 +254,11 @@ public class Competition extends OpMode {
             manual = false;
             back = false;
             xHold = true;
+            chamber = true;
             chamberIndex = (chamberIndex + 3) % 2;
             intakeExtendPosRight = EXTEND_RIGHT_IN;
             intakeExtendPosLeft = EXTEND_LEFT_IN;
+            robot.intake.intakeClawAvoid();
         } else if (!gamepad2.a && xHold) {
             xHold = false;
         }
