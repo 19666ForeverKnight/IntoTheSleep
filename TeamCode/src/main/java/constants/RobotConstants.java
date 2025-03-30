@@ -16,15 +16,15 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_TURRET_DELTA = 0.02;
     public static final double INTAKE_CLAW_TURRET_THROW_SAMPLE_IN_OBS_ZONE = 0.210;
 
-    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.155;
+    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.17; //0.155
     public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.072;
     public static final double INTAKE_CLAW_ARM_TRANS = 0.48;
     public static final double INTAKE_CLAW_ARM_AUTO_INIT = 0.656;
     public static final double INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER = 0.304;
     public static final double INTAKE_CLAW_THROW_SAMPLE_IN_OBS_ZONE = 0.246;
 
-    public static final double EXTEND_LEFT_IN = 0.360;
-    public static final double EXTEND_LEFT_OUT = 0.042;
+    public static final double EXTEND_LEFT_IN = 0.672;
+    public static final double EXTEND_LEFT_OUT = 0.383;
     //    public static final double EXTEND_LEFT_TRANS = 0.906;
 //    public static final double EXTEND_LEFT_TRANS_PREP = 0.886;
     public static final double EXTEND_RIGHT_IN = 0.213;

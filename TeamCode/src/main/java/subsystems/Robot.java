@@ -85,8 +85,8 @@ public class Robot {
         intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
         intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE);
-        executor.schedule(() -> intake.intakeClawOpen(), 800, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 1000, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 250, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
 
 
