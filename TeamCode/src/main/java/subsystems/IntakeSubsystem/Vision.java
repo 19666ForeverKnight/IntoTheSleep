@@ -20,8 +20,14 @@ public class Vision {
 
     public void Init(HardwareMap hardwaremap, AllianceColour colour){
         limelight = hardwaremap.get(Limelight3A.class, "Limelight");
+        limelight.pipelineSwitch(0);
         if (colour == AllianceColour.Red) limelight.pipelineSwitch(1);
         if (colour == AllianceColour.Blue) limelight.pipelineSwitch(2);
+    }
+
+    public void Init(HardwareMap hardwaremap){
+        limelight = hardwaremap.get(Limelight3A.class, "Limelight");
+        limelight.pipelineSwitch(0);
     }
 
     public void start(){ limelight.start(); }
