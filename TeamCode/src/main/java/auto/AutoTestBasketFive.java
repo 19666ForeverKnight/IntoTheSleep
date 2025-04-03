@@ -1,6 +1,4 @@
 package auto;
-import static constants.AutoConstants.EXTEND_LEFT_AUTO_COLLECT_FIRST_APPLE;
-import static constants.AutoConstants.EXTEND_RIGHT_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE;
@@ -22,9 +20,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -42,7 +38,6 @@ import subsystems.SleepyStuffff.Util.Vector2d;
 public class AutoTestBasketFive extends OpMode {
     private Telemetry telemetryA;
     private FollowerSubsystem follower;
-    private PathChain preload, samp1_collect, samp1_score, samp2_collect, samp2_score, samp3_collect, samp3_score, park, toSub, intakeDown, cv;
     Robot robot = new Robot();
 
     @Override
