@@ -1,6 +1,7 @@
 package subsystems;
 
 import static constants.RobotConstants.LIFT_OPEN_SPECIMEN_CLAW_AUTO;
+import static constants.RobotConstants.SCORE_CLAW_ARM_AUTO_CHAMBER_INIT;
 import static constants.RobotConstants.SCORE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.SCORE_CLAW_ARM_DROP_TELEOP;
 import static constants.RobotConstants.SCORE_CLAW_ARM_HANG;
@@ -9,6 +10,7 @@ import static constants.RobotConstants.SCORE_CLAW_ARM_PARK;
 import static constants.RobotConstants.SCORE_CLAW_ARM_PREP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_ARM_SPECIMEN;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
+import static constants.RobotConstants.SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_AUTO_INIT;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_DROP_DIVE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_HANG;
@@ -109,6 +111,35 @@ public class Scoring {
         scoreClaw.setPosition(SCORE_CLAW_CLOSE);
         scoreClawArm.setPosition(SCORE_CLAW_ARM_AUTO_INIT);
         scoreClawFlip.setPosition(SCORE_CLAW_FLIP_AUTO_INIT);
+
+        threadStart();
+    }
+
+    public void chamberAutoInit (HardwareMap hardwareMap) {
+        sch = new ScheduledThreadPoolExecutor(40);
+        liftLeft = hardwareMap.get(DcMotorEx.class, Configs.LIFT_LEFT);
+        liftMiddle = hardwareMap.get(DcMotorEx.class, Configs.LIFT_MIDDLE);
+        liftRight = hardwareMap.get(DcMotorEx.class, Configs.LIFT_RIGHT);
+        scoreClaw = hardwareMap.get(Servo.class, Configs.SCORE_CLAW);
+        scoreClawArm = hardwareMap.get(Servo.class, Configs.SCORE_ARM);
+        scoreClawFlip = hardwareMap.get(Servo.class, Configs.SCORE_ARM_PITCH);
+
+        liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMiddle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Initialize lift motors
+        liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        liftLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        liftRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        liftMiddle.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Initialize servo positions
+        scoreClaw.setPosition(SCORE_CLAW_CLOSE);
+        scoreClawArm.setPosition(SCORE_CLAW_ARM_AUTO_CHAMBER_INIT);
+        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT);
 
         threadStart();
     }

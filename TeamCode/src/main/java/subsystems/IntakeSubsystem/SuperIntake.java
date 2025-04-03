@@ -4,6 +4,7 @@ import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
@@ -12,6 +13,7 @@ import static constants.RobotConstants.INTAKE_CLAW_CLOSE_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
 import static constants.RobotConstants.SWEEPING_APPLE;
 import static constants.RobotConstants.SWEEPING_INIT;
@@ -59,6 +61,24 @@ public class SuperIntake extends SubsystemBase {
         intakeClawOpen();
         setRotatePosition(INTAKE_CLAW_ROTATE_MID);
         setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT);
+        sweepIn();
+    }
+
+    public void chamberAutoInit(HardwareMap hardwareMap) {
+        intakeClaw = hardwareMap.get(Servo.class, Configs.CLAW);
+        intakeClawRotate = hardwareMap.get(Servo.class, Configs.CLAW_ROTATE);
+        intakeClawTurret = hardwareMap.get(Servo.class, Configs.CLAW_TURRET);
+        intakeClawArm = hardwareMap.get(Servo.class, Configs.CLAW_ARM);
+        extendLeft = hardwareMap.get(Servo.class, Configs.EXTEND_LEFT);
+        extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_RIGHT);
+        sweep = hardwareMap.get(Servo.class, Configs.SWEEP);
+
+        extendLeft.setPosition(EXTEND_LEFT_IN);
+        extendRight.setPosition(EXTEND_RIGHT_IN);
+        intakeClawOpen();
+        setTurretPosition(INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT);
+        setRotatePosition(INTAKE_CLAW_ROTATE_MID);
+        setArmPosition(INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT);
         sweepIn();
     }
 

@@ -60,6 +60,13 @@ public class Robot {
 
     }
 
+    public void chamberAutoInit(HardwareMap hardwareMap) {
+        executor = Executors.newScheduledThreadPool(5);
+        intake.chamberAutoInit(hardwareMap);
+        scoring.chamberAutoInit(hardwareMap);
+
+    }
+
     public void trans() {
         // intake.setExtendPosition(EXTEND_LEFT_IN + (EXTEND_LEFT_OUT - EXTEND_LEFT_IN) * 0.1, EXTEND_RIGHT_IN + (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) * 0.1);
         intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN);
