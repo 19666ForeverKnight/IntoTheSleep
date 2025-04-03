@@ -6,10 +6,12 @@ import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
+import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.EXTEND_RIGHT_OUT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE;
@@ -59,15 +61,17 @@ public class Robot {
     }
 
     public void trans() {
+        // intake.setExtendPosition(EXTEND_LEFT_IN + (EXTEND_LEFT_OUT - EXTEND_LEFT_IN) * 0.1, EXTEND_RIGHT_IN + (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) * 0.1);
+        intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN);
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID);
-        intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN);
         scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
         intake.toTransPos();
-        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 350, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 450, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 600, TimeUnit.MILLISECONDS);
+        //executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 270, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 500, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 650, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 850, TimeUnit.MILLISECONDS);
     }
     public void collectApple(){
         intake.intakeClawOpen();

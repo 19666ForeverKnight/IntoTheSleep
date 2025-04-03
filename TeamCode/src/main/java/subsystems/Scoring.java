@@ -32,6 +32,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -247,5 +249,17 @@ public class Scoring {
 
     public double getmiddleliftheight() {
         return liftMiddle.getCurrentPosition();
+    }
+
+    public boolean getcurrentliftleft() {
+        return liftLeft.isOverCurrent();
+    }
+
+    public boolean getcurrentliftright() {
+        return liftRight.isOverCurrent();
+    }
+
+    public boolean getcurrentliftmiddle() {
+        return liftMiddle.isOverCurrent();
     }
 }

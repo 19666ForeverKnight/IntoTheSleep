@@ -19,8 +19,6 @@ public class VisionTest extends LinearOpMode {
         ll.Init(hardwareMap);
         ll.start();
 //        intake.init(hardwareMap);
-
-        waitForStart();
         while (opModeIsActive()) {
             List<DetectorResult> detectorResults = ll.limelight.getLatestResult().getDetectorResults();
             if (detectorResults != null) {

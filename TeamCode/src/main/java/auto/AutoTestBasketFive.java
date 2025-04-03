@@ -4,8 +4,10 @@ import static constants.AutoConstants.EXTEND_RIGHT_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE;
+import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_Third_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_APPLE;
+import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_Third_APPLE;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
@@ -20,7 +22,9 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
+import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -57,59 +61,96 @@ public class AutoTestBasketFive extends OpMode {
     public void start() {
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
+                        // ---------------  Preload ---------------
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(600),
                                         new InstantCommand(() -> robot.scoring.armToBasketDive())
                                 ),
-                                new DriveToPoint(follower, new Vector2d(14.5, 127.5), -35, 0),
-                                //drive and prepare for dump 1st
+                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 1).setHoldEnd(true),
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        new WaitCommand(400),
-                        new InstantCommand(() -> robot.scoring.liftBack()),
-                        new WaitCommand(500),
-                        new DriveToPoint(follower, new Vector2d(29, 126.2), 0, 1),
-                        //Drive forward and use turret to collect first apple
+                        // ---------------  First Apple ---------------
+                        new ParallelCommandGroup(
+                                new DriveToPoint(follower, new Vector2d(34.5, 126.2), 0, 1).setHoldEnd(true),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(350),
+                                        new InstantCommand(() -> robot.scoring.liftBack())
+                                ),
+                                new InstantCommand(() -> robot.scoring.armToTrans())
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
                         this.CollectFirstApple(),
-                        new WaitCommand(300),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(600),
-                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
-                                ),
-                                new DriveToPoint(follower, new Vector2d(14.5, 127.5), -35, 0),
-                                //drive and prepare for dump 2st
-                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                        ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(100),
-                        new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        new WaitCommand(400),
-                        new InstantCommand(() -> robot.scoring.liftBack()),
                         new WaitCommand(500),
-                        new DriveToPoint(follower, new Vector2d(29, 126.2), 0, 1),
-                        //Drive forward and use turret to collect second apple
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(600),
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 1).setHoldEnd(true)
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        new WaitCommand(100),
+                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                        // ---------------  Second Apple ---------------
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(350),
+                                        new InstantCommand(() -> robot.scoring.liftBack())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(31.5, 126.5),0, 1).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.armToTrans())
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
                         this.CollectSecondApple(),
-                        new WaitCommand(300),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(600),
                                         new InstantCommand(() -> robot.scoring.armToBasketDive())
                                 ),
-                                new DriveToPoint(follower, new Vector2d(14.5, 127.5), -35, 0),
-                                //drive and prepare for dump 1st
+                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 1).setHoldEnd(true),
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        new WaitCommand(400),
-                        new InstantCommand(() -> robot.scoring.liftBack()),
-                        new WaitCommand(500)
+                        // ---------------  Third Apple ---------------
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(350),
+                                        new InstantCommand(() -> robot.scoring.liftBack())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(33.5, 135),0, 1).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.armToTrans())
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        this.CollectThirdApple(),
+                        new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 1).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
+                        ),
+                        new WaitUntilCommand(()-> follower.getatParametricEnd()),
+                        new WaitCommand(100),
+                        new InstantCommand(() -> robot.scoring.scoreOpen())
+//                        // ---------------  Park ---------------
+//                        new ParallelCommandGroup(
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(350),
+//                                        new InstantCommand(() -> robot.scoring.liftBack())
+//                                ),
+//                                new DriveToPoint(follower, new Vector2d(30.5, 135),0, 1).setHoldEnd(true),
+//                                new InstantCommand(() -> robot.scoring.armToPark())
+//                        )
                 )
         );
     }
@@ -121,15 +162,17 @@ public class AutoTestBasketFive extends OpMode {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE)),
-                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_AUTO_COLLECT_FIRST_APPLE, EXTEND_LEFT_AUTO_COLLECT_FIRST_APPLE)),
+                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN)),
                         new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
                         new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE))
                 ),
                 new WaitCommand(400),
                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
-                new WaitCommand(400),
+                new WaitCommand(500),
+                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
+                new WaitCommand(100),
                 new InstantCommand(() -> robot.trans()),
-                new WaitCommand(100)
+                new WaitCommand(300)
         );
     }
     private Command CollectSecondApple(){
@@ -142,8 +185,28 @@ public class AutoTestBasketFive extends OpMode {
                 ),
                 new WaitCommand(400),
                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
+                new WaitCommand(500),
+                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
+                new WaitCommand(100),
+                new InstantCommand(() -> robot.trans()),
+                new WaitCommand(300)
+        );
+    }
+    private Command CollectThirdApple(){
+        return new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_AUTO_COLLECT_Third_APPLE)),
+                        new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN)),
+                        new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
+                        new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_AUTO_COLLECT_Third_APPLE))
+                ),
                 new WaitCommand(400),
-                new InstantCommand(() -> robot.trans())
+                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
+                new WaitCommand(500),
+                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
+                new WaitCommand(100),
+                new InstantCommand(() -> robot.trans()),
+                new WaitCommand(300)
         );
     }
 }

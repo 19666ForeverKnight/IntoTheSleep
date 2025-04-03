@@ -8,6 +8,7 @@ import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
+import static constants.RobotConstants.INTAKE_CLAW_CLOSE_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
@@ -130,6 +131,10 @@ public class SuperIntake extends SubsystemBase {
 
     public void intakeClawClose() {
         intakeClaw.setPosition(INTAKE_CLAW_CLOSE);
+    }
+
+    public void intakeClawCloseAuto() {
+        intakeClaw.setPosition(INTAKE_CLAW_CLOSE_AUTO);
     }
 
     public void intakeClawIntake() {

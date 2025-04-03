@@ -80,4 +80,7 @@ public class FollowerSubsystem extends SubsystemBase {
     }
     public void breakFollowing(){ follower.breakFollowing(); }
 
+    public boolean getatParametricEnd(){
+        return follower.atParametricEnd();
+    }
 }
