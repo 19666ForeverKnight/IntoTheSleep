@@ -26,10 +26,9 @@ public class AutoConstants {
     public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_ASPPLE = 0.775;
     public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_ASPPLE = 0.627;
 
-    public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_ASPPLE = 0.488;
-    public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_ASPPLE = 0.289;
+    public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_ASPPLE = 0.489;
+    public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_ASPPLE = 0.375;
 
-
-
-
+    public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_ASPPLE = 0.542;
+    public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_ASPPLE = 0.395;
 }

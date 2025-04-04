@@ -5,11 +5,13 @@ import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPL
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_ASPPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_ASPPLE;
+import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_ASPPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_Third_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_ASPPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_ASPPLE;
+import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_ASPPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_Third_APPLE;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
@@ -69,7 +71,7 @@ public class AutoTestChamber extends OpMode {
                 new SequentialCommandGroup(
                         // ---------------  Preload ---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(43, 77),0, 0).setHoldEnd(true),
+                                new DriveToPoint(follower, new Vector2d(44, 77),0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitCommand(1250),
@@ -81,7 +83,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         // ---------------  First ASpple ---------------
                         new ParallelCommandGroup(
-                                new DriveThreePoints(follower, new Vector2d(32, 17.8),  new Vector2d(14, 56), 0, 1).setHoldEnd(true),
+                                new DriveThreePoints(follower, new Vector2d(33.2, 16.8),  new Vector2d(14, 56), 0, 1).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new InstantCommand(() -> robot.scoring.liftBack()),
@@ -100,7 +102,7 @@ public class AutoTestChamber extends OpMode {
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         // ---------------  Second ASpple ---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(34.5, 16.5),0, 0).setHoldEnd(true),
+                                new DriveToPoint(follower, new Vector2d(33.8, 16.5),0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new InstantCommand(() -> robot.scoring.liftBack()),
@@ -109,6 +111,7 @@ public class AutoTestChamber extends OpMode {
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         this.CollectSecondASpple(),
+                        new WaitCommand(1000000),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
@@ -116,9 +119,26 @@ public class AutoTestChamber extends OpMode {
                                 ),
                                 new DriveToPoint(follower, new Vector2d(19, 14),0, 0)
                         ),
-                        new WaitUntilCommand(()-> !follower.isBusy())
-                        // ---------------  Second ASpple ---------------
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        // ---------------  Third ASpple ---------------
+                        new ParallelCommandGroup(
+                                new DriveToPoint(follower, new Vector2d(34, 6.5),0, 0).setHoldEnd(true),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.scoring.liftBack()),
+                                        new InstantCommand(() -> robot.scoring.armToCollect())
+                                )
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        this.CollectThirdASpple()
+//                        new ParallelCommandGroup(
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(200),
+//                                        new InstantCommand(() -> robot.thrownRight())
+//                                ),
+//                                new DriveToPoint(follower, new Vector2d(19, 14),0, 0)
+//                        )
+//                        new WaitUntilCommand(()-> !follower.isBusy()),
 //                        new InstantCommand(() -> follower.setMaxPower(0.9)),
 //                        new ParallelCommandGroup(
 //                                new InstantCommand(() -> follower.followPath(spec1_collect, true)),
@@ -270,20 +290,20 @@ public class AutoTestChamber extends OpMode {
                 new WaitCommand(300)
         );
     }
-    private Command CollectThirdApple(){
+    private Command CollectThirdASpple(){
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_AUTO_COLLECT_Third_APPLE)),
+                        new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_ASPPLE)),
                         new InstantCommand(() -> robot.intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN)),
                         new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
-                        new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_AUTO_COLLECT_Third_APPLE))
+                        new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_ASPPLE))
                 ),
                 new WaitCommand(400),
                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
                 new WaitCommand(500),
                 new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
                 new WaitCommand(100),
-                new InstantCommand(() -> robot.trans()),
+                new InstantCommand(() -> robot.intake.intakeClawIntakeUp()),
                 new WaitCommand(300)
         );
     }
