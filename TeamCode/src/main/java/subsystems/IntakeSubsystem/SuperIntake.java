@@ -1,7 +1,9 @@
 package subsystems.IntakeSubsystem;
 
 import static constants.RobotConstants.EXTEND_LEFT_IN;
+import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.EXTEND_RIGHT_OUT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT;
@@ -12,9 +14,13 @@ import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN_AUTO;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_LEFT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT_LIMIT;
 import static constants.RobotConstants.SWEEPING_APPLE;
 import static constants.RobotConstants.SWEEPING_INIT;
 
@@ -42,10 +48,10 @@ public class SuperIntake extends SubsystemBase {
         extendRight = hardwareMap.get(Servo.class, Configs.EXTEND_RIGHT);
         sweep = hardwareMap.get(Servo.class, Configs.SWEEP);
 
-        extendLeft.setPosition(EXTEND_LEFT_IN);
-        extendRight.setPosition(EXTEND_RIGHT_IN);
-        toTransPos();
-        sweepIn();
+//        extendLeft.setPosition(EXTEND_LEFT_IN);
+//        extendRight.setPosition(EXTEND_RIGHT_IN);
+//        toTransPos();
+//        sweepIn();
     }
     public void autoInit(HardwareMap hardwareMap) {
         intakeClaw = hardwareMap.get(Servo.class, Configs.CLAW);
@@ -126,6 +132,19 @@ public class SuperIntake extends SubsystemBase {
         extendLeft.setPosition(positionL);
         extendRight.setPosition(positionR);
     }
+
+    public void setExtendPercent(double percent) {
+        setExtendPosition(EXTEND_RIGHT_IN + ((EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) * percent / 100), EXTEND_LEFT_IN + ((EXTEND_LEFT_OUT - EXTEND_LEFT_IN) * percent / 100));
+    }
+
+    public void setTurretDegree(double d) {
+        setTurretPosition(INTAKE_CLAW_TURRET_LEFT_LIMIT + (INTAKE_CLAW_TURRET_RIGHT_LIMIT - INTAKE_CLAW_TURRET_LEFT_LIMIT) * d / 180);
+    }
+
+    public void setRotateDegree(double d) {
+        setRotatePosition(INTAKE_CLAW_ROTATE_LEFT_LIMIT + (INTAKE_CLAW_ROTATE_RIGHT_LIMIT - INTAKE_CLAW_ROTATE_LEFT_LIMIT) * d / 180);
+    }
+
     public void prepareToCollect() {
         intakeClawIntakeUp();
         intakeClawOpen();
