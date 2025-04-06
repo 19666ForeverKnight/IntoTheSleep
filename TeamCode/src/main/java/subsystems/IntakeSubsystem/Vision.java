@@ -1,105 +1,52 @@
 package subsystems.IntakeSubsystem;
 
 import static constants.RobotConstants.CVSmoothing;
+import static subsystems.SleepyStuffff.Math.helperAndConverter.getDetectorClassIDHelper;
 
+import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.hardware.limelightvision.LLResultTypes.DetectorResult;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import constants.RobotConstants.AllianceColour;
 import subsystems.SleepyStuffff.Math.QuadrilateralTracker;
+import subsystems.SleepyStuffff.Util.DetectorLLResultPair;
 import subsystems.SleepyStuffff.Util.Vector2d;
 
-public class Vision {
+public class Vision extends SubsystemBase {
+    private static Vision instance;
     public Limelight3A limelight;
     public QuadrilateralTracker apple = new QuadrilateralTracker();
     List<Vector2d> appleFarm = new ArrayList<>();
-
-    public void Init(HardwareMap hardwaremap, AllianceColour colour){
-        limelight = hardwaremap.get(Limelight3A.class, "Limelight");
-        limelight.pipelineSwitch(0);
-        if (colour == AllianceColour.Red) limelight.pipelineSwitch(1);
-        if (colour == AllianceColour.Blue) limelight.pipelineSwitch(2);
-    }
-
-    public void Init(HardwareMap hardwaremap){
-        limelight = hardwaremap.get(Limelight3A.class, "Limelight");
+    public void Init(HardwareMap hardwareMap, Telemetry telemetry){
+        limelight = hardwareMap.get(Limelight3A.class, "Limelight");
         limelight.pipelineSwitch(0);
     }
-
-    public void start(){ limelight.start(); }
-    public void stop(){ limelight.stop(); }
-
-    public boolean thereIsAnApple(){
+    public DetectorLLResultPair getLatestResult(AllianceColour a){
         LLResult hxg = limelight.getLatestResult();
-        if(hxg != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public LLResult appleGrowing() {
-        LLResult hxg = limelight.getLatestResult();
-        if (hxg != null) {
-            List<Vector2d> corners = (List<Vector2d>) getAppleCornerPositions(hxg);
-            if (corners == null){
-                apple.update(corners);
+        if(hxg.isValid()){
+            List<DetectorResult> unfilteredResults = hxg.getDetectorResults();
+            for(DetectorResult hxg12527 : unfilteredResults){
+                if(hxg12527.getClassName().equals(getDetectorClassIDHelper(a)) || hxg12527.getClassName().equals("Yellow")){
+                    return new DetectorLLResultPair(hxg12527, hxg);
+                }
             }
         }
-        return hxg;
+        return null; //TODO: have to add a constructor here to avoid null point exception, or simply let the robot move and re-run the process.
     }
 
-    public Vector2d getAppleCornerPositions(LLResult appleGrowing) {
-        if (appleGrowing != null) {
-            Vector2d position = new Vector2d(appleGrowing.getTx(), appleGrowing.getTy());
-            appleFarm.add(position);
-            if (appleFarm.size() > CVSmoothing) appleFarm.remove(0);
-            Vector2d average = new Vector2d(0, 0);
-            for (Vector2d apple : appleFarm) {
-                average.add(apple);
-            }
-            average.divide(CVSmoothing);
-            if (appleFarm.size() >= CVSmoothing) {
-                return new Vector2d(average.x, average.y);
-            } else {
-                return null;
-            }
-        } else {
-            appleFarm.clear();
-        }
-        return null;
-    }
 
-    public double getAppleArea(LLResult appleGrowing) {
-        if (appleGrowing != null){
-            Double a = appleGrowing.getTa();
-            if (a != null){
-                return a;
-            } else {
-                return 0.0;
-            }
-        } else {
-            return 0.0;
-        }
+    public void stopWorking(){
+        limelight.stop();
     }
-
-    public double yDistance(double ty) {
-        return 0.016 * ty * ty * ty - 0.017 * ty * ty + 11.716 * ty + 176.876;
-    }
-
-    public double xDistance(double tx, double ty) {
-        return (0.2742 * ty + 7.3) * tx;
-    }
-
-    public double getIntakeDegree(double xDis) {
-        return Math.toDegrees(Math.asin(xDis / 180.0));
-    }
-
-    public double getExtendPercent(double xDis, double yDis) {
-        double extendLength = yDis - Math.cos(Math.asin(xDis / 180.0)) * 180;
-        return 0.2497 * extendLength + 8.352;
+    public void goWork(){
+        limelight.start();
     }
 }
