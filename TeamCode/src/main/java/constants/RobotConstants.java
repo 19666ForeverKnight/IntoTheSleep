@@ -51,11 +51,11 @@ public class RobotConstants {
 
 
     // TeleOp Scoring Constants
-    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.586;
-    public static final double SCORE_CLAW_ARM_TRANS = 0.34;
-    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.369;
-    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.723;
-    public static final double SCORE_CLAW_ARM_HANG = 0.473;
+    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.649;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.175;
+    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.234;
+    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.946;
+    public static final double SCORE_CLAW_ARM_HANG = 0.411;
     public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.316;
     public static final double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.31;
     public static final double SCORE_CLAW_ARM_PARK = 0.;
@@ -65,8 +65,8 @@ public class RobotConstants {
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.611;
     public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.732;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.256;
-    public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.141;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.218;
+    public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.271;
     public static final double SCORE_CLAW_FLIP_HANG = 0.221;
     public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.236;
