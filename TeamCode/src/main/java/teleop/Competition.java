@@ -120,6 +120,7 @@ public class Competition extends OpMode {
             intakeOut = true;
             intaking = false;
             rotateHor = true;
+            intakeRotatePos = INTAKE_CLAW_ROTATE_MID;
             extendIndex = 0;
             timer.reset();
             if (!chamber) {
