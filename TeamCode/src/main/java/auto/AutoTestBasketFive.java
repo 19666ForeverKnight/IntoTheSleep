@@ -47,10 +47,13 @@ public class AutoTestBasketFive extends OpMode {
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(7, 112, Math.toRadians(-90)));
         robot.autoInit(hardwareMap);
+        telemetryA.update();
     }
     @Override
     public void loop() {
         CommandScheduler.getInstance().run();
+        follower.follower.update();
+        follower.follower.telemetryDebug(telemetryA);
     }
     @Override
     public void start() {
@@ -152,6 +155,7 @@ public class AutoTestBasketFive extends OpMode {
     @Override
     public void stop() {
         robot.scoring.threadStop();
+        CommandScheduler.getInstance().reset();
     }
     private Command CollectFirstApple(){
         return new SequentialCommandGroup(

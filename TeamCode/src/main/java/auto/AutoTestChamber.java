@@ -58,11 +58,14 @@ public class AutoTestChamber extends OpMode {
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(10, 63, Math.toRadians(0)));
         robot.chamberAutoInit(hardwareMap);
+        telemetryA.update();
     }
 
     @Override
     public void loop() {
         CommandScheduler.getInstance().run();
+        follower.follower.update();
+        follower.follower.telemetryDebug(telemetryA);
     }
 
     @Override
@@ -254,6 +257,7 @@ public class AutoTestChamber extends OpMode {
     @Override
     public void stop() {
         robot.scoring.threadStop();
+        CommandScheduler.getInstance().reset();
     }
 
     private Command CollectFirstASpple(){
