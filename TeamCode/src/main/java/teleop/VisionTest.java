@@ -26,21 +26,25 @@ import subsystems.Robot;
 @TeleOp
 public class VisionTest extends OpMode {
     private Telemetry telemetryA;
-    private SuperIntake intake = new SuperIntake();
+    private Robot robot = new Robot();
     private Vision vision = new Vision();
     private CommandScheduler cs;
     @Override
     public void init(){
-        intake.autoInit(hardwareMap);
+        robot.autoInit(hardwareMap);
         vision.Init(hardwareMap, telemetryA);
     }
     @Override
     public void loop(){
-        if(gamepad1.a){
-            intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT);
+        if(gamepad1.triangle){
+            robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT);
+            robot.intake.setExtendPercent(0);
         }
-        if(gamepad1.b){
-            new GrowAppleInFarm(vision, intake, RobotConstants.AllianceColour.Red).GrabApple();
+        if(gamepad1.cross){
+            new GrowAppleInFarm(vision, robot.intake, RobotConstants.AllianceColour.Red).GrabApple();
+        }
+        if(gamepad1.circle) {
+            robot.thrownRightStay();
         }
     }
 }
@@ -67,47 +71,61 @@ public class VisionTest extends OpMode {
 //    Vision ll = new Vision();
 //    Robot robot = new Robot();
 //    double turretDegree = 90, xDis = 0, yDis = 0;
+//    String color = "blue";
+//    List<List<Double>> corners;
 //
 //    @Override
 //    public void runOpMode() throws InterruptedException {
-//        ll.Init(hardwareMap);
-//        ll.start();
+//        ll.Init(hardwareMap, telemetry);
+//        ll.goWork();
 //        robot.init(hardwareMap);
 //        robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP);
 //
 //        waitForStart();
 //
 //        while (opModeIsActive()) {
-//            if (gamepad1.a) {
-//                LLResult result = ll.limelight.getLatestResult();
-//                List<DetectorResult> detectorResults = result.getDetectorResults();
-//
-//                if (result != null) {
-//                    telemetry.addData("tx", result.getTx());
-//                    telemetry.addData("ty", result.getTy());
-//                    xDis = ll.xDistance(result.getTx(), result.getTy());
-//                    yDis = ll.yDistance(result.getTy());
-//                    telemetry.addData("txd", xDis);
-//                    telemetry.addData("tyd", yDis);
-//                    turretDegree = 90 + ll.getIntakeDegree(ll.xDistance(result.getTx(), result.getTy()));
-//                    robot.intake.setTurretDegree(turretDegree);
-//                    robot.intake.setExtendPercent(ll.getExtendPercent(xDis, yDis));
-//                }
-//
-//                if (detectorResults != null) {
-//                    telemetry.addData("size", detectorResults.size());
+//            LLResult result = ll.limelight.getLatestResult();
+//            List<DetectorResult> detectorResults = result.getDetectorResults();
+//            if (!detectorResults.isEmpty()) {
+//                telemetry.addData("size", detectorResults.size());
 ////                    for (DetectorResult dr : detectorResults) {
 ////
 ////                    }
-//                    List<List<Double>> corners = detectorResults.get(0).getTargetCorners();
-//                    telemetry.addData("ratio", (corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1)));
-//                    if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(result.getTx()) > 15 ? 1.3 : 1)) {
-//                        robot.intake.setRotateDegree(turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree);
-//                    } else {
-//                        robot.intake.setRotateDegree(180 - turretDegree);
+//                for (int i = 0; i < detectorResults.size(); i++) {
+//                    if (detectorResults.get(i).getClassName().equals(color) || detectorResults.get(i).getClassName().equals("yellow")) {
+//                        telemetry.addData("tx", detectorResults.get(i).getTargetXDegrees());
+//                        telemetry.addData("ty", detectorResults.get(i).getTargetYDegrees());
+//                        xDis = ll.xDistance(detectorResults.get(i).getTargetXDegrees(), detectorResults.get(i).getTargetYDegrees());
+//                        yDis = ll.yDistance(detectorResults.get(i).getTargetYDegrees());
+//                        telemetry.addData("txd", xDis);
+//                        telemetry.addData("tyd", yDis);
+//                        corners = detectorResults.get(i).getTargetCorners();
+//                        telemetry.addData("ratio", (corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1)));
+//                        telemetry.addData("0x", corners.get(0).get(0));
+//                        telemetry.addData("0y", corners.get(0).get(1));
+//                        telemetry.addData("1x", corners.get(1).get(0));
+//                        telemetry.addData("1y", corners.get(1).get(1));
+//                        telemetry.addData("2x", corners.get(2).get(0));
+//                        telemetry.addData("2y", corners.get(2).get(1));
+//                        telemetry.addData("3x", corners.get(3).get(0));
+//                        telemetry.addData("3y", corners.get(3).get(1));
 //                    }
 //                }
-//                telemetry.update();
+//            }
+//            telemetry.update();
+//
+//            if (gamepad1.left_bumper) color = "red";
+//            if (gamepad1.left_trigger > 0) color = "blue";
+//
+//            if (gamepad1.a) {
+//                turretDegree = 90 + ll.getIntakeDegree(ll.xDistance(result.getTx(), result.getTy()));
+//                robot.intake.setTurretDegree(turretDegree);
+//                robot.intake.setExtendPercent(ll.getExtendPercent(xDis, yDis));
+//                if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(result.getTx()) > 15 ? 1.3 : 1)) {
+//                    robot.intake.setRotateDegree(turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree);
+//                } else {
+//                    robot.intake.setRotateDegree(180 - turretDegree);
+//                }
 //            }
 //
 //            if (gamepad1.right_bumper) {
@@ -124,4 +142,4 @@ public class VisionTest extends OpMode {
 //        }
 //    }
 //}
-
+//
