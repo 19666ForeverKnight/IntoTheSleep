@@ -76,9 +76,9 @@ public class Robot {
         scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
         intake.toTransPos();
         //executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 270, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 500, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 650, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawOpen(), 850, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 392, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 419, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 577, TimeUnit.MILLISECONDS);
     }
     public void collectApple(){
         intake.intakeClawOpen();
