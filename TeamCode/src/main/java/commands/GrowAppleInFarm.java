@@ -4,8 +4,6 @@ import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,17 +26,16 @@ public class GrowAppleInFarm extends CommandBase {
         Farmer = farmer;
         Slave.goWork();
         SlaveWorkPlan = Executors.newScheduledThreadPool(5);
-        // Farmer.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT); 把这一行写一个instant command放这个旁边
     }
     public void GrabApple(){
-        AppleTypePair = Slave.getLatestResult(RobotConstants.AllianceColour.Red);
-        xDis = VisionUtil.xDistance(AppleTypePair.getLr().getTx(), AppleTypePair.getLr().getTy());
-        yDis = VisionUtil.yDistance(AppleTypePair.getLr().getTy());
+        AppleTypePair = Slave.getLatestResult(RobotConstants.AllianceColour.Blue);
+        xDis = VisionUtil.xDistance(AppleTypePair.getDr().getTargetXDegrees(), AppleTypePair.getDr().getTargetYDegrees());
+        yDis = VisionUtil.yDistance(AppleTypePair.getDr().getTargetYDegrees());
         turretDegree = 90 + VisionUtil.getIntakeDegree(xDis);
         intakePercentage = VisionUtil.getExtendPercent(xDis, yDis);
 
         List<List<Double>> corners = AppleTypePair.getDr().getTargetCorners();
-        if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(AppleTypePair.getLr().getTx()) > 15
+        if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(AppleTypePair.getDr().getTargetXDegrees()) > 15
                 ? 1.3 : 1)) {
             rotateDegree = turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree;
         } else {

@@ -2,6 +2,7 @@ package commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.follower.FollowerConstants;
+import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.Point;
@@ -83,7 +84,7 @@ public class DriveToPoint extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return follower.getCurrentTValue() > 0.85;
+        return !follower.isBusy() || follower.isRobotStuck();
     }
     @Override
     public void end(boolean interrupted){

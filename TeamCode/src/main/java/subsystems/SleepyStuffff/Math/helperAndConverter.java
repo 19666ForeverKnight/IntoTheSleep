@@ -8,8 +8,8 @@ public class helperAndConverter {
     }
     public static String getDetectorClassIDHelper(RobotConstants.AllianceColour allianceColour){
         switch (allianceColour){
-            case Red: return "Red";
-            case Blue: return "Blue";
+            case Red: return "red";
+            case Blue: return "blue";
         }
         return "";
     }
