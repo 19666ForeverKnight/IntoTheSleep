@@ -51,7 +51,7 @@ public class DriveThreePoints extends CommandBase {
                 FollowerConstants.yMovement = 73.0151;
                 FollowerConstants.forwardZeroPowerAcceleration = -35.2745;
                 FollowerConstants.lateralZeroPowerAcceleration = -64.62;
-                FollowerConstants.maxPower = 1.0;
+                FollowerConstants.maxPower = 0.8;
                 break;
             case MED:
                 FollowerConstants.drivePIDFCoefficients = MedPIDConst.MedDrivePIDF;
@@ -89,7 +89,7 @@ public class DriveThreePoints extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return follower.getCurrentTValue() > 0.85;
+        return !follower.isBusy() || follower.isRobotStuck();
     }
     @Override
     public void end(boolean interrupted){
