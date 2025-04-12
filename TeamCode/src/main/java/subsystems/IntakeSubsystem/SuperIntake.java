@@ -9,17 +9,20 @@ import static constants.RobotConstants.INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE_AUTO;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_OPEN_AUTO;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_LEFT_LIMIT;
+import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT_LIMIT;
 import static constants.RobotConstants.SWEEPING_APPLE;
 import static constants.RobotConstants.SWEEPING_INIT;
@@ -82,9 +85,9 @@ public class SuperIntake extends SubsystemBase {
         extendLeft.setPosition(EXTEND_LEFT_IN);
         extendRight.setPosition(EXTEND_RIGHT_IN);
         intakeClawOpen();
-        setTurretPosition(INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT);
-        setRotatePosition(INTAKE_CLAW_ROTATE_MID);
-        setArmPosition(INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT);
+        setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
+        setArmPosition(INTAKE_CLAW_ARM_RIGHT);
+        setRotatePosition(INTAKE_CLAW_ROTATE);
         sweepIn();
     }
 

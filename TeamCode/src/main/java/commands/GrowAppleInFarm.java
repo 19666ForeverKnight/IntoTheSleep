@@ -28,7 +28,7 @@ public class GrowAppleInFarm extends CommandBase {
         SlaveWorkPlan = Executors.newScheduledThreadPool(5);
     }
     public void GrabApple(){
-        AppleTypePair = Slave.getLatestResult(RobotConstants.AllianceColour.Blue);
+        AppleTypePair = Slave.getLatestResult(RobotConstants.AllianceColour.Blue, true);
         xDis = VisionUtil.xDistance(AppleTypePair.getDr().getTargetXDegrees(), AppleTypePair.getDr().getTargetYDegrees());
         yDis = VisionUtil.yDistance(AppleTypePair.getDr().getTargetYDegrees());
         turretDegree = 90 + VisionUtil.getIntakeDegree(xDis);
@@ -47,10 +47,6 @@ public class GrowAppleInFarm extends CommandBase {
         SlaveWorkPlan.schedule(() -> Farmer.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP), 100, TimeUnit.MILLISECONDS);
         SlaveWorkPlan.schedule(() -> Farmer.setExtendPercent(intakePercentage), 150, TimeUnit.MILLISECONDS);
         SlaveWorkPlan.schedule(() -> Farmer.setRotateDegree(rotateDegree), 200, TimeUnit.MILLISECONDS);
-        SlaveWorkPlan.schedule(() -> Farmer.intakeClawIntakeDown(), 320, TimeUnit.MILLISECONDS);
-        SlaveWorkPlan.schedule(() -> Farmer.intakeClawClose(), 570, TimeUnit.MILLISECONDS);
-        SlaveWorkPlan.schedule(() -> Farmer.intakeClawIntakeUp(), 700, TimeUnit.MILLISECONDS);
-        SlaveWorkPlan.schedule(() -> Farmer.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 720, TimeUnit.MILLISECONDS);
     }
     @Override
     public void initialize(){

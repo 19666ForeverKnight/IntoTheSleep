@@ -15,6 +15,7 @@ import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -39,9 +40,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import commands.DriveThreePoints;
 import commands.DriveToPoint;
+import commands.DriveToPointSLB;
+import constants.RobotConstants;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import subsystems.ChassisSubsystem.FollowerSubsystem;
+import subsystems.IntakeSubsystem.Vision;
 import subsystems.Robot;
 import subsystems.SleepyStuffff.Util.Vector2d;
 
@@ -49,7 +53,9 @@ import subsystems.SleepyStuffff.Util.Vector2d;
 public class AutoTestChamber extends OpMode {
     private Telemetry telemetryA;
     private FollowerSubsystem follower;
+    private Vision vision = new Vision();
     Robot robot = new Robot();
+    RobotConstants.AllianceColour colour = RobotConstants.AllianceColour.Red;
 
     @Override
     public void init() {
@@ -58,6 +64,7 @@ public class AutoTestChamber extends OpMode {
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(10, 63, Math.toRadians(0)));
         robot.chamberAutoInit(hardwareMap);
+        vision.Init(hardwareMap, telemetryA);
         telemetryA.update();
     }
 
@@ -72,257 +79,212 @@ public class AutoTestChamber extends OpMode {
     public void start() {
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        // ---------------  Preload ---------------
+                        // ---------------  Preload and grab one ---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(44, 77),0, 0).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPointSLB(follower, new Vector2d(44, 76), new Vector2d(10, 63), 0, 0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new WaitCommand(1250),
+                                        new WaitCommand(800
+                                        ),
                                         new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(400),
-                                        new InstantCommand(() -> robot.scoring.scoreOpen())
+                                        new WaitCommand(300),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                                new InstantCommand(() -> robot.scoring.liftBack())
+                                        )
+                                ),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1700),
+                                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, false))),
+                                        new WaitCommand(300),
+                                        new InstantCommand(() -> robot.collectApple())
                                 )
                         ),
-                        new WaitUntilCommand(() -> !follower.isBusy()),
-                        // ---------------  First ASpple ---------------
+                        new WaitCommand(550),
+                        // ---------------  Collect Second Specimen and thrown one sample---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(22, 15.7), 0, 0).setHoldEnd(true),
+                                new InstantCommand(() -> robot.intake.setExtendPercent(0)),
+                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1100),
+                                        new InstantCommand(() -> robot.thrownRight()),
+                                        new WaitCommand(700),
+                                        new ParallelCommandGroup(
+                                              new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS)),
+                                                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT)),
+                                                new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID))
+
+                                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        // ---------------  Drop Second Specimen ---------------
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(250),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(100),
+                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+                                        new WaitCommand(1400),
+                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                                new InstantCommand(() -> robot.scoring.liftBack())
+                                        )
+                                )
+                        ),
+                        // ---------------  Pick up First ASpple ---------------
+                        new ParallelCommandGroup(
+                                new DriveToPoint(follower, new Vector2d(22, 16.3), 0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new InstantCommand(() -> robot.scoring.liftBack()),
                                         new InstantCommand(() -> robot.scoring.armToCollect())
+                                ),
+                                new SequentialCommandGroup(
+                                     new WaitCommand(700),
+                                        this.CollectFirstASpple()
                                 )
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        this.CollectFirstASpple(),
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(50),
-                                        new InstantCommand(() -> robot.thrownRight())
+                                        new InstantCommand(() -> robot.thrownRightStay())
                                 ),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(10))
                         ),
-                        new WaitCommand(600),
-                        // ---------------  Second ASpple ---------------
+                        new WaitCommand(1000),
+                        // ---------------  Pick up Second ASpple ---------------
                         this.CollectSecondASpple(),
+                        new WaitCommand(100),
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(50),
-                                        new InstantCommand(() -> robot.thrownRight())
+                                        new InstantCommand(() -> robot.thrownRightStay())
                                 ),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(10))
                         ),
-                        new WaitCommand(600),
-                        // ---------------  Third ASpple ---------------
-                        new DriveToPoint(follower, new Vector2d(30, 8),0, 0).setHoldEnd(true),
+                        new WaitCommand(300),
+                        // ---------------  Pick up Third ASpple ---------------
+                        new ParallelCommandGroup(
+                                new DriveToPoint(follower, new Vector2d(30, 8),0, 0).setHoldEnd(true),
+                                this.CollectThirdASpple()
+                        ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        this.CollectThirdASpple(),
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(200),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
-                                        new InstantCommand(() -> robot.thrownRight())
+                                        new InstantCommand(() -> robot.thrownRight()),
+                                        new WaitCommand(100)
                                 ),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(10)),
-                                new DriveThreePoints(follower, new Vector2d(10, 32), new Vector2d(26, 36), 0, 0)
+                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false)
                         ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(300),
-
-                        // ---------------  Second Chamber ---------------
+                        new WaitCommand(600),
+                        // ---------------  Drop Third Specimen ---------------
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.scoreClose()),
+                                new InstantCommand(() -> robot.intake.setExtendPercent(0)),
+                                new InstantCommand(() -> robot.intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS)),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT)),
+                                new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID)),
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(150),
+                                        new WaitCommand(100),
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
-//                                        new WaitCommand(100),
+                                        new WaitCommand(1400),
                                         new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(300),
+                                        new WaitCommand(200),
                                         new InstantCommand(() -> robot.scoring.scoreOpen())
                                 )
                         ),
-                        new WaitCommand(200),
-
-                        // ---------------  Third Spec ---------------
                         new ParallelCommandGroup(
-//                                new DriveThreePoints(follower, new Vector2d(12, 32), new Vector2d(23, 33), 0, 0).setHoldEnd(true),
-                                new DriveToPoint(follower, new Vector2d(10.5, 32), 0, 0).setHoldEnd(false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new InstantCommand(() -> robot.scoring.liftBack()),
-                                        new InstantCommand(() -> robot.scoring.armToCollect())
-
-                                )
+                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                new InstantCommand(() -> robot.scoring.liftBack())
                         ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(300),
-
-                        // ---------------  Third Chamber ---------------
+                        // ---------------  Drop Four Specimen ---------------
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.scoreClose()),
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(200),
+                                        new WaitCommand(100),
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new DriveToPoint(follower, new Vector2d(44, 71),0, 0).setHoldEnd(false),
-//                                        new WaitCommand(100),
+                                        new WaitCommand(1400),
                                         new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(300),
-                                        new InstantCommand(() -> robot.scoring.scoreOpen())
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                                new InstantCommand(() -> robot.scoring.liftBack())
+                                        )
                                 )
                         ),
-                        new WaitCommand(200),
-
-                        // ---------------  Fourth Spec ---------------
                         new ParallelCommandGroup(
-//                                new DriveThreePoints(follower, new Vector2d(12, 32), new Vector2d(23, 33), 0, 0).setHoldEnd(true),
-                                new DriveToPoint(follower, new Vector2d(10.5, 32), 0, 0).setHoldEnd(false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new InstantCommand(() -> robot.scoring.liftBack()),
-                                        new InstantCommand(() -> robot.scoring.armToCollect())
-
-                                )
+                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                new InstantCommand(() -> robot.scoring.liftBack())
                         ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(300),
-
-                        // ---------------  Fourth Chamber ---------------
+                        // ---------------  Drop Five Specimen ---------------
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.scoreClose()),
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(200),
+                                        new WaitCommand(100),
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new DriveToPoint(follower, new Vector2d(44, 68),0, 0).setHoldEnd(false),
-//                                        new WaitCommand(100),
+                                        new WaitCommand(1400),
                                         new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(300),
-                                        new InstantCommand(() -> robot.scoring.scoreOpen())
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                                new InstantCommand(() -> robot.scoring.liftBack())
+                                        )
                                 )
                         ),
-                        new WaitCommand(200),
-
-                        // ---------------  Fifth Spec ---------------
                         new ParallelCommandGroup(
-//                                new DriveThreePoints(follower, new Vector2d(12, 32), new Vector2d(23, 33), 0, 0).setHoldEnd(true),
-                                new DriveToPoint(follower, new Vector2d(10.5, 32), 0, 0).setHoldEnd(false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new InstantCommand(() -> robot.scoring.liftBack()),
-                                        new InstantCommand(() -> robot.scoring.armToCollect())
-
-                                )
+                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                new InstantCommand(() -> robot.scoring.liftBack())
                         ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(300),
-
-                        // ---------------  Fifth Chamber ---------------
+                        // ---------------  Drop Six Specimen ---------------
+                        new InstantCommand(() -> robot.scoring.scoreClose()),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.scoreClose()),
+                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(200),
+                                        new WaitCommand(100),
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new DriveToPoint(follower, new Vector2d(44, 65),0, 0).setHoldEnd(false),
-//                                        new WaitCommand(100),
+                                        new WaitCommand(1400),
                                         new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(300),
-                                        new InstantCommand(() -> robot.scoring.scoreOpen())
-                                )
-                        ),
-                        new WaitCommand(200),
-
-                        // ---------------  Park ---------------
-                        new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(10, 32), -90, 0),
-                                new SequentialCommandGroup(
                                         new WaitCommand(200),
-                                        new InstantCommand(() -> robot.scoring.liftBack()),
-                                        new InstantCommand(() -> robot.scoring.armToCollect())
-
+                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                                        new ParallelCommandGroup(
+                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+                                                new InstantCommand(() -> robot.scoring.liftBack())
+                                        )
                                 )
                         )
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(0.9)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec2_collect, true)),
-//                                new SequentialCommandGroup(
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
-//                                        new WaitCommand(700),
-//                                        new InstantCommand(() -> robot.scoring.scoreClose())
-//                                )
-//                        ),
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(1)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec2_score)),
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(100),
-//                                        new InstantCommand(() -> robot.scoring.armToChamber()),
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
-//                                        new WaitCommand(550),
-//                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-//                                        new WaitCommand(500),
-//                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
-//                                        new ParallelCommandGroup(
-//                                                new InstantCommand(() -> robot.scoring.liftBack()),
-//                                                new InstantCommand(() -> robot.scoring.armToCollect())
-//                                        )
-//                                )
-//                        ),
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(0.9)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec3_collect, true)),
-//                                new SequentialCommandGroup(
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
-//                                        new WaitCommand(700),
-//                                        new InstantCommand(() -> robot.scoring.scoreClose())
-//                                )
-//                        ),
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(1)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec3_score)),
-//                                new SequentialCommandGroup(
-//                                        new InstantCommand(() -> robot.scoring.armToChamber()),
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
-//                                        new WaitCommand(400),
-//                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-//                                        new WaitCommand(500),
-//                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
-//                                        new ParallelCommandGroup(
-//                                                new InstantCommand(() -> robot.scoring.liftBack()),
-//                                                new InstantCommand(() -> robot.scoring.armToCollect())
-//                                        )
-//                                )
-//                        )
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(0.9)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec4_collect, true)),
-//                                new SequentialCommandGroup(
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() < 9.5),
-//                                        new WaitCommand(700),
-//                                        new InstantCommand(() -> robot.scoring.scoreClose())
-//                                )
-//                        ),
-//                        new WaitUntilCommand(() -> !follower.isBusy()),
-//                        new InstantCommand(() -> follower.setMaxPower(1)),
-//                        new ParallelCommandGroup(
-//                                new InstantCommand(() -> follower.followPath(spec4_score)),
-//                                new SequentialCommandGroup(
-//                                        new InstantCommand(() -> robot.scoring.armToChamber()),
-//                                        new WaitUntilCommand(() -> follower.getPose().getX() > 36.5),
-//                                        new WaitCommand(400),
-//                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-//                                        new WaitCommand(500),
-//                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
-//                                        new ParallelCommandGroup(
-//                                                new InstantCommand(() -> robot.scoring.liftBack()),
-//                                                new InstantCommand(() -> robot.scoring.armToCollect())
-//                                        )
-//                                )
-//                        )
                 )
         );
     }
@@ -341,13 +303,6 @@ public class AutoTestChamber extends OpMode {
                         new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
                         new InstantCommand(() -> robot.intake.setRotateDegree(133.4))
                 ),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
-                new WaitCommand(100),
-                new InstantCommand(() -> robot.intake.intakeClawIntakeUp()),
-                new InstantCommand(() -> robot.intake.setTurretDegree(90)),
                 new WaitCommand(100)
         );
     }
@@ -359,13 +314,6 @@ public class AutoTestChamber extends OpMode {
                         new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
                         new InstantCommand(() -> robot.intake.setRotateDegree(46.6))
                 ),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
-                new WaitCommand(100),
-                new InstantCommand(() -> robot.intake.intakeClawIntakeUp()),
-                new InstantCommand(() -> robot.intake.setTurretDegree(90)),
                 new WaitCommand(100)
         );
     }
@@ -377,13 +325,6 @@ public class AutoTestChamber extends OpMode {
                         new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP)),
                         new InstantCommand(() -> robot.intake.setRotateDegree(26))
                 ),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN)),
-                new WaitCommand(200),
-                new InstantCommand(() -> robot.intake.intakeClawCloseAuto()),
-                new WaitCommand(100),
-                new InstantCommand(() -> robot.intake.intakeClawIntakeUp()),
-                new InstantCommand(() -> robot.intake.setTurretDegree(90)),
                 new WaitCommand(100)
         );
     }

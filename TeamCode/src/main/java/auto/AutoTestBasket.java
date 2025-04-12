@@ -42,6 +42,7 @@ public class AutoTestBasket extends OpMode {
     private FollowerSubsystem follower;
     private Vision vision = new Vision();
     Robot robot = new Robot();
+    RobotConstants.AllianceColour colour = RobotConstants.AllianceColour.Red;
 
     @Override
     public void init() {
@@ -95,7 +96,7 @@ public class AutoTestBasket extends OpMode {
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(300),
                         new InstantCommand(() -> robot.trans()),
-                        new WaitCommand(850),
+                        new WaitCommand(950),
                         // drop first apple
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket()),
@@ -128,7 +129,7 @@ public class AutoTestBasket extends OpMode {
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(300),
                         new InstantCommand(()-> robot.trans()),
-                        new WaitCommand(850),
+                        new WaitCommand(950),
                         // drop second apple
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket()),
@@ -161,7 +162,7 @@ public class AutoTestBasket extends OpMode {
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(300),
                         new InstantCommand(()-> robot.trans()),
-                        new WaitCommand(850),
+                        new WaitCommand(950),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new WaitCommand(500),
@@ -171,51 +172,58 @@ public class AutoTestBasket extends OpMode {
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(250),
+                        new WaitCommand(350),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // Go to Sub
-                        new WaitCommand(1000000000),
                         new ParallelCommandGroup(
-                                new DriveThreePoints(follower, new Vector2d(62.6, 97.6), new Vector2d(72.5, 115), 270, 0),
+                                new DriveThreePoints(follower, new Vector2d(62.6, 97.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
+                                new InstantCommand(() -> robot.scoring.armToTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
-                        new WaitCommand(150),
-                        new GrowAppleInFarm(vision, robot.intake, RobotConstants.AllianceColour.Blue),
-                        new WaitCommand(850),
-                        new InstantCommand(() -> robot.trans()),
-                        new WaitCommand(900),
+                        new WaitCommand(1300),
+                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, true))),
+                        new WaitCommand(800),
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(500),
                         // drop 5th apple
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.liftToHighBasket()),
                                 new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.trans()),
+                                        new WaitCommand(1100),
+                                        new InstantCommand(() -> robot.scoring.liftToHighBasket()),
                                         new WaitCommand(600),
-                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                        new InstantCommand(() -> robot.scoring.armToBasket())
                                 ),
-                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true)
+                                new DriveThreePoints(follower, new Vector2d(17, 127), new Vector2d(72.5, 115), -45, 0).setHoldEnd(true)
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         //Go to sub
                         new ParallelCommandGroup(
-                                new DriveThreePoints(follower, new Vector2d(62.6, 97.6), new Vector2d(72.5, 115), 270, 0),
+                                new DriveThreePoints(follower, new Vector2d(64.6, 97.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
+                                new InstantCommand(() -> robot.scoring.armToTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
-                        new WaitCommand(150),
-                        new GrowAppleInFarm(vision, robot.intake, RobotConstants.AllianceColour.Blue),
-                        new WaitCommand(750),
-                        new InstantCommand(() -> robot.trans()),
-                        new WaitCommand(900),
-                        // drop 4th apple
+                        new WaitCommand(1300),
+                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, true))),
+                        new WaitCommand(800),
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(500),
+                        // drop 6th apple
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.liftToHighBasket()),
                                 new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new InstantCommand(() -> robot.trans()),
+                                        new WaitCommand(1100),
+                                        new InstantCommand(() -> robot.scoring.liftToHighBasket()),
                                         new WaitCommand(600),
-                                        new InstantCommand(() -> robot.scoring.armToBasketDive())
+                                        new InstantCommand(() -> robot.scoring.armToBasket())
                                 ),
-                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true)
+                                new DriveThreePoints(follower, new Vector2d(17, 127), new Vector2d(72.5, 115), -45, 0).setHoldEnd(true)
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
@@ -227,5 +235,6 @@ public class AutoTestBasket extends OpMode {
     public void stop() {
         robot.scoring.threadStop();
         CommandScheduler.getInstance().reset();
+        vision.RIP();
     }
 }

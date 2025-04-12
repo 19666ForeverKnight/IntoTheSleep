@@ -12,6 +12,7 @@ import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_OUT;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE;
@@ -30,6 +31,7 @@ import static constants.RobotConstants.SCORE_CLAW_OPEN;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.sql.Time;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -77,7 +79,7 @@ public class Robot {
         intake.toTransPos();
         //executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 270, TimeUnit.MILLISECONDS);
         executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 580, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 730, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 770, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawOpen(), 930, TimeUnit.MILLISECONDS);
     }
     public void collectApple(){
@@ -85,6 +87,13 @@ public class Robot {
         executor.schedule(() -> intake.intakeClawIntakeDown(), 150, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawClose(), 250, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawIntakeUp(), 350, TimeUnit.MILLISECONDS);
+    }
+    public void grabApple(List<Double> apple) {
+        intake.intakeClawOpen();
+        executor.schedule(() -> intake.setTurretDegree(apple.get(0)), 50, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP), 100, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setExtendPercent(apple.get(1)), 150, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setRotateDegree(apple.get(2)), 200, TimeUnit.MILLISECONDS);
     }
     public void collectAppleSlow(){
         intake.intakeClawOpen();

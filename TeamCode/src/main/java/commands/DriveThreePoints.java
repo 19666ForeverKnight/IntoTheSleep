@@ -51,7 +51,7 @@ public class DriveThreePoints extends CommandBase {
                 FollowerConstants.yMovement = 73.0151;
                 FollowerConstants.forwardZeroPowerAcceleration = -35.2745;
                 FollowerConstants.lateralZeroPowerAcceleration = -64.62;
-                FollowerConstants.maxPower = 0.8;
+                FollowerConstants.maxPower = 0.75;
                 break;
             case MED:
                 FollowerConstants.drivePIDFCoefficients = MedPIDConst.MedDrivePIDF;
