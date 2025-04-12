@@ -36,7 +36,7 @@ public class RobotConstants {
 //    public static final double EXTEND_RIGHT_TRANS_PREP = 0.803;
 
     //Intake Thrown - Right
-    public static final double INTAKE_CLAW_TURRET_RIGHT = 0.219;
+    public static final double INTAKE_CLAW_TURRET_RIGHT = 0.2;
     public static final double INTAKE_CLAW_ARM_RIGHT = 0.257;
     public static final double INTAKE_CLAW_ROTATE = 0.714;
 
