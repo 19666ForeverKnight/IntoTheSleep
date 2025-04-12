@@ -52,7 +52,7 @@ public class RobotConstants {
 
     // TeleOp Scoring Constants
     public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.649;
-    public static final double SCORE_CLAW_ARM_TRANS = 0.175;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.1679;
     public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.234;
     public static final double SCORE_CLAW_ARM_SPECIMEN = 0.946;
     public static final double SCORE_CLAW_ARM_HANG = 0.411;
