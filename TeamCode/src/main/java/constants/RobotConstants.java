@@ -65,7 +65,7 @@ public class RobotConstants {
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.611;
     public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.732;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.218;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.255;
     public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.271;
     public static final double SCORE_CLAW_FLIP_HANG = 0.221;
