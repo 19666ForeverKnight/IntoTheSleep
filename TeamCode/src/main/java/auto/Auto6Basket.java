@@ -1,12 +1,10 @@
 package auto;
-import static constants.AutoConstants.INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_APPLE;
 import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_APPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_ASPPLE;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 
@@ -27,7 +25,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import commands.DriveThreePoints;
 import commands.DriveToPoint;
-import commands.GrowAppleInFarm;
 import constants.RobotConstants;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -37,7 +34,7 @@ import subsystems.Robot;
 import subsystems.SleepyStuffff.Util.Vector2d;
 
 @Autonomous
-public class AutoTestBasket extends OpMode {
+public class Auto6Basket extends OpMode {
     private Telemetry telemetryA;
     private FollowerSubsystem follower;
     private Vision vision = new Vision();

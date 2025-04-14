@@ -23,7 +23,8 @@ public class Vision extends SubsystemBase {
     private static Vision instance;
     public Limelight3A limelight;
     private DetectorLLResultPair AppleTypePair;
-    double turretDegree = 90, xDis = 0, yDis = 0, intakePercentage = 0, rotateDegree = 0;
+    double turretDegree = 90, xDis = 0, intakePercentage = 0, rotateDegree = 0;
+    double yDis = 0;
 
     public void Init(HardwareMap hardwareMap, Telemetry telemetry){
         limelight = hardwareMap.get(Limelight3A.class, "Limelight");
@@ -67,12 +68,6 @@ public class Vision extends SubsystemBase {
             add(intakePercentage);
             add(rotateDegree);
         }};
-
-//        Farmer.intakeClawOpen();
-//        SlaveWorkPlan.schedule(() -> Farmer.setTurretDegree(turretDegree), 50, TimeUnit.MILLISECONDS);
-//        SlaveWorkPlan.schedule(() -> Farmer.setArmPosition(INTAKE_CLAW_ARM_INTAKE_UP), 100, TimeUnit.MILLISECONDS);
-//        SlaveWorkPlan.schedule(() -> Farmer.setExtendPercent(intakePercentage), 150, TimeUnit.MILLISECONDS);
-//        SlaveWorkPlan.schedule(() -> Farmer.setRotateDegree(rotateDegree), 200, TimeUnit.MILLISECONDS);
     }
 
     public void RIP(){

@@ -16,24 +16,17 @@ public class RobotConstants {
     public static final double INTAKE_CLAW_TURRET_RIGHT_LIMIT = 0.336;
     public static final double INTAKE_CLAW_TURRET_DELTA = 0.02;
     public static final double INTAKE_CLAW_TURRET_CHAMBER_AUTO_INIT = 0.880;
-    public static final double INTAKE_CLAW_TURRET_THROW_SAMPLE_IN_OBS_ZONE = 0.210;
 
-    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.17; //0.155
+    public static final double INTAKE_CLAW_ARM_INTAKE_UP = 0.17;
     public static final double INTAKE_CLAW_ARM_INTAKE_DOWN = 0.072;
     public static final double INTAKE_CLAW_ARM_TRANS = 0.48;
     public static final double INTAKE_CLAW_ARM_AUTO_INIT = 0.656;
     public static final double INTAKE_CLAW_ARM_CHAMBER_AUTO_INIT = 0.672;
     public static final double INTAKE_CLAW_ARM_AVOID_LOW_CHAMBER = 0.304;
-    public static final double INTAKE_CLAW_THROW_SAMPLE_IN_OBS_ZONE = 0.246;
-
     public static final double EXTEND_LEFT_IN = 0.719;
     public static final double EXTEND_LEFT_OUT = 0.404;
-//    public static final double EXTEND_LEFT_TRANS = 0.906;
-//    public static final double EXTEND_LEFT_TRANS_PREP = 0.886;
     public static final double EXTEND_RIGHT_IN = 0.201;
     public static final double EXTEND_RIGHT_OUT = 0.576;
-//    public static final double EXTEND_RIGHT_TRANS = 0.765;
-//    public static final double EXTEND_RIGHT_TRANS_PREP = 0.803;
 
     //Intake Thrown - Right
     public static final double INTAKE_CLAW_TURRET_RIGHT = 0.2;
@@ -48,13 +41,11 @@ public class RobotConstants {
     public static final double EXTEND_LEFT_AUTO_COLLECT3 = 0.728;
     public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0.972;
 
-
-
     // TeleOp Scoring Constants
-    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.649;
-    public static final double SCORE_CLAW_ARM_TRANS = 0.1679;
-    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.234;
-    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.946;
+    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.628;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.110;
+    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.187;
+    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.982;
     public static final double SCORE_CLAW_ARM_HANG = 0.411;
     public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.316;
     public static final double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.31;
@@ -67,7 +58,7 @@ public class RobotConstants {
     public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.732;
     public static final double SCORE_CLAW_FLIP_TRANS = 0.255;
     public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
-    public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.271;
+    public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.299;
     public static final double SCORE_CLAW_FLIP_HANG = 0.221;
     public static final double SCORE_CLAW_FLIP_AUTO_INIT = 0.236;
     public static final double SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT = 0.264;
@@ -83,14 +74,6 @@ public class RobotConstants {
 
     public static final int LIFT_OPEN_SPECIMEN_CLAW = 330;
     public static final int LIFT_OPEN_SPECIMEN_CLAW_AUTO = 550;
-
-
-    // Other Constants
-    public static final double RATCHET_LOCK = 0.165;
-    public static final double RATCHET_RELEASE = 0.796;
-
-    public static final double SPECIMEN_CLAW_OPEN = 0.608;
-    public static final double SPECIMEN_CLAW_CLOSE = 0.261;
 
     public static final double SWEEPING_INIT = 0.488;
     public static final double SWEEPING_APPLE = 0.128;

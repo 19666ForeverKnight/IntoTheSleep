@@ -70,23 +70,21 @@ public class Robot {
     }
 
     public void trans() {
-        // intake.setExtendPosition(EXTEND_LEFT_IN + (EXTEND_LEFT_OUT - EXTEND_LEFT_IN) * 0.1, EXTEND_RIGHT_IN + (EXTEND_RIGHT_OUT - EXTEND_RIGHT_IN) * 0.1);
         intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN);
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID);
         scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
         intake.toTransPos();
-        //executor.schedule(() -> intake.setExtendPosition(EXTEND_RIGHT_IN, EXTEND_LEFT_IN), 270, TimeUnit.MILLISECONDS);
         executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 580, TimeUnit.MILLISECONDS);
         executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 770, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawOpen(), 930, TimeUnit.MILLISECONDS);
     }
     public void collectApple(){
         intake.intakeClawOpen();
-        executor.schedule(() -> intake.intakeClawIntakeDown(), 150, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawClose(), 250, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawIntakeUp(), 350, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 200, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 300, TimeUnit.MILLISECONDS);
     }
     public void grabApple(List<Double> apple) {
         intake.intakeClawOpen();
@@ -97,10 +95,10 @@ public class Robot {
     }
     public void collectAppleSlow(){
         intake.intakeClawOpen();
-        executor.schedule(() -> intake.intakeClawIntakeDown(), 150, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawClose(), 400, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawIntakeUp(), 530, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 550, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeDown(), 50, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 300, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 430, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
     public void sweep() {
         intake.sweepOut();

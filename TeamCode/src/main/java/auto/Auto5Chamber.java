@@ -1,18 +1,5 @@
 package auto;
 
-import static constants.AutoConstants.INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN;
-import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE;
-import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_ASPPLE;
-import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE;
-import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_ASPPLE;
-import static constants.AutoConstants.INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_ASPPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_ASPPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_APPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_ASPPLE;
-import static constants.AutoConstants.INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_ASPPLE;
-import static constants.RobotConstants.EXTEND_LEFT_IN;
-import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
@@ -27,18 +14,12 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
-import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import commands.DriveThreePoints;
 import commands.DriveToPoint;
 import commands.DriveToPointSLB;
 import constants.RobotConstants;
@@ -50,7 +31,7 @@ import subsystems.Robot;
 import subsystems.SleepyStuffff.Util.Vector2d;
 
 @Autonomous
-public class AutoTestChamber extends OpMode {
+public class Auto5Chamber extends OpMode {
     private Telemetry telemetryA;
     private FollowerSubsystem follower;
     private Vision vision = new Vision();
