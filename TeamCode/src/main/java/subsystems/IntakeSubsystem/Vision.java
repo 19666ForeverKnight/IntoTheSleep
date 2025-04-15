@@ -31,45 +31,44 @@ public class Vision extends SubsystemBase {
         limelight.pipelineSwitch(0);
         this.goWork();
     }
-    public DetectorLLResultPair getLatestResult(AllianceColour a, boolean includeYellow){
+    public List<Double> getLatestResult(AllianceColour a, boolean includeYellow) {
         LLResult hxg = limelight.getLatestResult();
-        for(int b=0; b<4; b++){
-            if(!hxg.getDetectorResults().isEmpty()) {
+        for (int b = 0; b < 34; b++) {
+            if (!hxg.getDetectorResults().isEmpty()) {
                 hxg = limelight.getLatestResult();
             }
         }
-        if(hxg.isValid()){
+        if (hxg.isValid()) {
             List<DetectorResult> unfilteredResults = hxg.getDetectorResults();
-            for(DetectorResult hxg12527 : unfilteredResults){
-                if(hxg12527.getClassName().equals(getDetectorClassIDHelper(a)) || (includeYellow && hxg12527.getClassName().equals("yellow"))){
-                    return new DetectorLLResultPair(hxg12527, hxg);
+            String detectorID = a.name().toLowerCase();
+            for (DetectorResult result : unfilteredResults) {
+                if (result.getClassName().equals(detectorID) || (includeYellow && result.getClassName().equals("yellow")) && !result.getTargetCorners().isEmpty()) {
+                    xDis = VisionUtil.xDistance(result.getTargetXDegrees(), result.getTargetYDegrees());
+                    yDis = VisionUtil.yDistance(result.getTargetYDegrees());
+                    turretDegree = 90 + VisionUtil.getIntakeDegree(xDis);
+                    intakePercentage = VisionUtil.getExtendPercent(xDis, yDis);
+
+                    List<List<Double>> corners = result.getTargetCorners();
+                    if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(result.getTargetXDegrees()) > 15
+                            ? 1.3 : 1)) {
+                        rotateDegree = turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree;
+                    } else {
+                        rotateDegree = 180 - turretDegree;
+                    }
+                    return new ArrayList<Double>() {{
+                        add(turretDegree);
+                        add(intakePercentage);
+                        add(rotateDegree);
+                    }};
                 }
             }
         }
-        return null;
-    }
-
-    public List<Double> CalculateApple(AllianceColour color, boolean includeYellow){
-        AppleTypePair = getLatestResult(color, includeYellow);
-        xDis = VisionUtil.xDistance(AppleTypePair.getDr().getTargetXDegrees(), AppleTypePair.getDr().getTargetYDegrees());
-        yDis = VisionUtil.yDistance(AppleTypePair.getDr().getTargetYDegrees());
-        turretDegree = 90 + VisionUtil.getIntakeDegree(xDis);
-        intakePercentage = VisionUtil.getExtendPercent(xDis, yDis);
-
-        List<List<Double>> corners = AppleTypePair.getDr().getTargetCorners();
-        if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(AppleTypePair.getDr().getTargetXDegrees()) > 15
-                ? 1.3 : 1)) {
-            rotateDegree = turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree;
-        } else {
-            rotateDegree = 180 - turretDegree;
-        }
         return new ArrayList<Double>() {{
-            add(turretDegree);
-            add(intakePercentage);
-            add(rotateDegree);
+            add(0.0);
+            add(0.0);
+            add(0.0);
         }};
     }
-
     public void RIP(){
         limelight.stop();
     }

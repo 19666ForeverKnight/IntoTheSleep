@@ -23,8 +23,8 @@ public class Configs {
      Control Hub 2 : ClawTurret : cy | middle 抓取: 0.641; 扔sample: 0.210;
      Control Hub 3 : ClawRotate : cr | middle 抓取: 0.534; 左极限: 0.21; 右极限: 0.848;
      Control Hub 4 : Claw : cla | 抓取: 0.928; 开: 0.710
+     Control Hub 0 : ScoreArm : sa | trans prep: 0.239; trans: 0.209;
      Expansion Hub 0 : ExtendRight : er
-     Expansion Hub 1 : ScoreArm : sa | trans prep: 0.239; trans: 0.209;
      Expansion Hub 2 : ScoreArmPitch : sap | trans prep : 0.274; trans: 0.304;
      Expansion Hub 3 : sweep : sw
      Expansion Hub 4 : ExtendLeft : el

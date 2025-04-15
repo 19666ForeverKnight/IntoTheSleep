@@ -11,8 +11,8 @@ public class ServoPositionTest extends LinearOpMode {
     // Control Hub 2 : ClawTurret : cy
     // Control Hub 3 : ClawRotate : cr
     // Control Hub 4 : Claw : cla
+    // Control Hub 0 : ScoreArm : sa
     // Expansion Hub 0 : ExtendRight : er
-    // Expansion Hub 1 : ScoreArm : sa
     // Expansion Hub 2 : ScoreArmPitch : sap
     // Expansion Hub 3 : sweep : sw
     // Expansion Hub 4 : ExtendLeft : el

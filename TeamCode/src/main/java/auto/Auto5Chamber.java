@@ -78,7 +78,7 @@ public class Auto5Chamber extends OpMode {
                                 ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(1700),
-                                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, false))),
+                                        new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, false))),
                                         new WaitCommand(300),
                                         new InstantCommand(() -> robot.collectApple())
                                 )

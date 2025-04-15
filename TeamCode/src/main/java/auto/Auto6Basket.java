@@ -179,7 +179,7 @@ public class Auto6Basket extends OpMode {
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(1300),
-                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, true))),
+                        new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, true))),
                         new WaitCommand(800),
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(500),
@@ -206,7 +206,7 @@ public class Auto6Basket extends OpMode {
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(1300),
-                        new InstantCommand(() -> robot.grabApple(vision.CalculateApple(colour, true))),
+                        new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, true))),
                         new WaitCommand(800),
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(500),

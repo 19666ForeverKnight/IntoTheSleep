@@ -5,7 +5,7 @@ public class VisionUtil {
     public static double extendLength;
 
     public static double yDistance(double ty) {
-        return 0.0187 * ty * ty * ty - 0.0013 * ty * ty + 13.337 * ty + 254.55;
+        return 0.0187 * ty * ty * ty - 0.0013 * ty * ty + 13.337 * ty + 252.55;
     }
     public static double xDistance(double tx, double ty) {
         return (0.2798 * ty + 8) * tx - 2.6;
