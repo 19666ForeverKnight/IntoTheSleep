@@ -83,7 +83,7 @@ public class Auto7Basket_Exp extends OpMode {
                         ),
                         new WaitCommand(500),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // ---------------  First Apple ---------------
                         new ParallelCommandGroup(
@@ -116,7 +116,7 @@ public class Auto7Basket_Exp extends OpMode {
                                 )
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // ---------------  Second Apple ---------------
                         new ParallelCommandGroup(
@@ -149,34 +149,34 @@ public class Auto7Basket_Exp extends OpMode {
                                 )
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
 //                        // ---------------  Third Apple ---------------
-//                        new ParallelCommandGroup(
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(350),
-//                                        new InstantCommand(() -> robot.scoring.liftBack())
-//                                ),
-//                                new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
-//                                new InstantCommand(() -> robot.scoring.armToTrans())
-//                        ),
-//                        new WaitUntilCommand(()-> !follower.isBusy()),
-//                        new WaitCommand(60), //100
-//                        new InstantCommand(() -> robot.collectApple()),
-//                        new WaitCommand(300),
-//                        new InstantCommand(()-> robot.trans()),
-//                        new WaitCommand(950),
-//                        new ParallelCommandGroup(
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(500),
-//                                        new InstantCommand(() -> robot.scoring.armToBasket())
-//                                ),
-//                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true),
-//                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-//                        ),
-//                        new WaitUntilCommand(()-> !follower.isBusy()),
-//                        new WaitCommand(60),
-//                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(350),
+                                        new InstantCommand(() -> robot.scoring.liftBack())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.armToTrans())
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        new WaitCommand(60), //100
+                        new InstantCommand(() -> robot.collectApple()),
+                        new WaitCommand(300),
+                        new InstantCommand(()-> robot.trans()),
+                        new WaitCommand(950),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> robot.scoring.armToBasket())
+                                ),
+                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true),
+                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
+                        ),
+                        new WaitUntilCommand(()-> !follower.isBusy()),
+                        new WaitCommand(100),
+                        new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // Go to Sub
                         new ParallelCommandGroup(
                                 new DriveThreePoints(follower, new Vector2d(62.6, 96), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
@@ -203,7 +203,7 @@ public class Auto7Basket_Exp extends OpMode {
                                 new DriveThreePoints(follower, new Vector2d(17, 127), new Vector2d(72.5, 115), -45, 0).setHoldEnd(true)
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         //Go to sub
                         new ParallelCommandGroup(
@@ -230,7 +230,7 @@ public class Auto7Basket_Exp extends OpMode {
                                 new DriveThreePoints(follower, new Vector2d(17, 127), new Vector2d(72.5, 115), -45, 0).setHoldEnd(true)
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
+                        new WaitCommand(100),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // Go to Sub
                         new ParallelCommandGroup(

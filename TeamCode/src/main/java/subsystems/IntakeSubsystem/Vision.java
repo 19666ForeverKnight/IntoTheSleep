@@ -28,7 +28,7 @@ public class Vision extends SubsystemBase {
 
     public void Init(HardwareMap hardwareMap, Telemetry telemetry){
         limelight = hardwareMap.get(Limelight3A.class, "Limelight");
-        limelight.pipelineSwitch(0);
+        limelight.pipelineSwitch(5);
         this.goWork();
     }
     public List<Double> getLatestResult(AllianceColour a, boolean includeYellow) {
@@ -49,8 +49,8 @@ public class Vision extends SubsystemBase {
                     intakePercentage = VisionUtil.getExtendPercent(xDis, yDis);
 
                     List<List<Double>> corners = result.getTargetCorners();
-                    if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(result.getTargetXDegrees()) > 15
-                            ? 1.3 : 1)) {
+                    if (((corners.get(1).get(0) - corners.get(0).get(0)) / (corners.get(3).get(1) - corners.get(0).get(1))) > (Math.abs(result.getTargetXDegrees()) > 6
+                            ? 1.4 : (Math.abs(result.getTargetXDegrees()) > 2 ? 1.2 : 1))) {
                         rotateDegree = turretDegree > 90 ? 270 - turretDegree : 90 - turretDegree;
                     } else {
                         rotateDegree = 180 - turretDegree;
