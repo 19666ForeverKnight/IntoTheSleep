@@ -16,6 +16,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
+import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -44,12 +45,15 @@ public class Auto7Basket_Exp extends OpMode {
     @Override
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
+//        FollowerConstants.xMovement = 83;
+//        FollowerConstants.yMovement = 83;
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(7, 112, Math.toRadians(-90)));
         robot.autoInit(hardwareMap);
         vision.Init(hardwareMap, telemetryA);
         telemetryA.update();
+        CommandScheduler.getInstance().reset();
     }
     @Override
     public void loop() {
@@ -133,7 +137,7 @@ public class Auto7Basket_Exp extends OpMode {
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftToHighBasket()),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(600),
+                                        new WaitCommand(400),
                                         new InstantCommand(() -> robot.scoring.armToBasket())
                                 ),
                                 new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true),
@@ -147,44 +151,45 @@ public class Auto7Basket_Exp extends OpMode {
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(60),
                         new InstantCommand(() -> robot.scoring.scoreOpen()),
-                        // ---------------  Third Apple ---------------
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(350),
-                                        new InstantCommand(() -> robot.scoring.liftBack())
-                                ),
-                                new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
-                        ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60), //100
-                        new InstantCommand(() -> robot.collectApple()),
-                        new WaitCommand(300),
-                        new InstantCommand(()-> robot.trans()),
-                        new WaitCommand(950),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new InstantCommand(() -> robot.scoring.armToBasket())
-                                ),
-                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
-                        ),
-                        new WaitUntilCommand(()-> !follower.isBusy()),
-                        new WaitCommand(60),
-                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+//                        // ---------------  Third Apple ---------------
+//                        new ParallelCommandGroup(
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(350),
+//                                        new InstantCommand(() -> robot.scoring.liftBack())
+//                                ),
+//                                new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
+//                                new InstantCommand(() -> robot.scoring.armToTrans())
+//                        ),
+//                        new WaitUntilCommand(()-> !follower.isBusy()),
+//                        new WaitCommand(60), //100
+//                        new InstantCommand(() -> robot.collectApple()),
+//                        new WaitCommand(300),
+//                        new InstantCommand(()-> robot.trans()),
+//                        new WaitCommand(950),
+//                        new ParallelCommandGroup(
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(500),
+//                                        new InstantCommand(() -> robot.scoring.armToBasket())
+//                                ),
+//                                new DriveToPoint(follower, new Vector2d(17, 127),-45, 0).setHoldEnd(true),
+//                                new InstantCommand(() -> robot.scoring.liftToHighBasket())
+//                        ),
+//                        new WaitUntilCommand(()-> !follower.isBusy()),
+//                        new WaitCommand(60),
+//                        new InstantCommand(() -> robot.scoring.scoreOpen()),
                         // Go to Sub
                         new ParallelCommandGroup(
                                 new DriveThreePoints(follower, new Vector2d(62.6, 96), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
                                 new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.intake.setExtendPercent(0)),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(50),
                         new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, true))),
                         new WaitCommand(250),
                         new InstantCommand(() -> robot.collectApple()),
-                        new WaitCommand(500),
+                        new WaitCommand(600),
                         // drop 6th apple
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
@@ -211,7 +216,7 @@ public class Auto7Basket_Exp extends OpMode {
                         new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, true))),
                         new WaitCommand(250),
                         new InstantCommand(() -> robot.collectApple()),
-                        new WaitCommand(500),
+                        new WaitCommand(400),
                         // drop 7th apple
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
@@ -238,7 +243,7 @@ public class Auto7Basket_Exp extends OpMode {
                         new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, true))),
                         new WaitCommand(250),
                         new InstantCommand(() -> robot.collectApple()),
-                        new WaitCommand(500),
+                        new WaitCommand(400),
                         // drop 5th apple
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(

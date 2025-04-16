@@ -83,8 +83,8 @@ public class Robot {
     public void collectApple(){
         intake.intakeClawOpen();
         executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawClose(), 200, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawIntakeUp(), 300, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 280, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 370, TimeUnit.MILLISECONDS);
     }
     public void grabApple(List<Double> apple) {
         intake.intakeClawOpen();
@@ -110,7 +110,7 @@ public class Robot {
         intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
         intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE);
-        executor.schedule(() -> intake.intakeClawOpen(), 200, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 100, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
 
@@ -118,7 +118,7 @@ public class Robot {
         intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
         intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE);
-        executor.schedule(() -> intake.intakeClawOpen(), 200, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawOpen(), 130, TimeUnit.MILLISECONDS);
 //        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
 
