@@ -73,17 +73,17 @@ public class Scoring {
         liftMiddle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Initialize lift motors
-        liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         liftLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         liftRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         liftMiddle.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         // Initialize servo positions
-        scoreClaw.setPosition(SCORE_CLAW_OPEN);
-        scoreClawArm.setPosition(SCORE_CLAW_ARM_SPECIMEN);
-        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
+//        scoreClaw.setPosition(SCORE_CLAW_OPEN);
+//        scoreClawArm.setPosition(SCORE_CLAW_ARM_SPECIMEN);
+//        scoreClawFlip.setPosition(SCORE_CLAW_FLIP_READY_FOR_SPECIMEN);
     }
 
     public void autoinit (HardwareMap hardwareMap) {

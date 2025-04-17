@@ -2,10 +2,10 @@ package constants;
 
 public class RobotConstants {
     // Intake Constants
-    public static final double INTAKE_CLAW_OPEN = 0.710;
-    public static final double INTAKE_CLAW_CLOSE = 0.928;
-    public static final double INTAKE_CLAW_CLOSE_AUTO = 0.94;
-    public static final double INTAKE_CLAW_OPEN_AUTO = 0.3;
+    public static final double INTAKE_CLAW_OPEN = 0.325;
+    public static final double INTAKE_CLAW_CLOSE = 0.582;
+    public static final double INTAKE_CLAW_CLOSE_AUTO = 0.325;
+    public static final double INTAKE_CLAW_OPEN_AUTO = 0.582;
 
     public static final double INTAKE_CLAW_ROTATE_LEFT_LIMIT = 0.219;
     public static final double INTAKE_CLAW_ROTATE_RIGHT_LIMIT = 0.839;
@@ -42,12 +42,12 @@ public class RobotConstants {
     public static final double EXTEND_RIGHT_AUTO_COLLECT3 = 0.972;
 
     // TeleOp Scoring Constants
-    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.628;
-    public static final double SCORE_CLAW_ARM_TRANS = 0.110;
-    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.187;
-    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.982;
-    public static final double SCORE_CLAW_ARM_HANG = 0.391;
-    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.038;
+    public static final double SCORE_CLAW_ARM_DROP_TELEOP = 0.660;
+    public static final double SCORE_CLAW_ARM_TRANS = 0.213;
+    public static final double SCORE_CLAW_ARM_PREP_TRANS = 0.276;
+    public static final double SCORE_CLAW_ARM_SPECIMEN = 0.99;
+    public static final double SCORE_CLAW_ARM_HANG = 0.436;
+    public static final double SCORE_CLAW_ARM_AUTO_INIT = 0.163;
     public static final double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.063;
     public static final double SCORE_CLAW_ARM_PARK = 0.;
     public static final double SCORE_CLAW_ARM_L1A = 0.29;
@@ -56,7 +56,7 @@ public class RobotConstants {
     // Common Scoring Constants
     public static final double SCORE_CLAW_FLIP_DROP = 0.611;
     public static final double SCORE_CLAW_FLIP_DROP_DIVE = 0.732;
-    public static final double SCORE_CLAW_FLIP_TRANS = 0.255;
+    public static final double SCORE_CLAW_FLIP_TRANS = 0.228;
     public static final double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
     public static final double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.299;
     public static final double SCORE_CLAW_FLIP_HANG = 0.221;
