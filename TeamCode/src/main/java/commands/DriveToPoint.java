@@ -47,7 +47,7 @@ public class DriveToPoint extends CommandBase {
                 FollowerConstants.yMovement = 73.0151;
                 FollowerConstants.forwardZeroPowerAcceleration = -35.2745;
                 FollowerConstants.lateralZeroPowerAcceleration = -64.62;
-                FollowerConstants.maxPower = 1;
+                FollowerConstants.maxPower = 0.8;
                 break;
             case MED:
                 FollowerConstants.drivePIDFCoefficients = MedPIDConst.MedDrivePIDF;
