@@ -39,15 +39,12 @@ public class AscentTest extends LinearOpMode {
         waitForStart();
         timer.reset();
         while (opModeIsActive()) {
-            if (gamepad1.y && !prevY) {
-                timer.reset();
-            }
-            if (gamepad1.y && liftLeft.getCurrentPosition() < 1365 && liftRight.getCurrentPosition() < 1365) {
+            if (gamepad2.y && liftLeft.getCurrentPosition() < 1365 && liftRight.getCurrentPosition() < 1365) {
                 ms = timer.milliseconds();
                 liftLeft.setPower(1);
                 liftMiddle.setPower(1);
                 liftRight.setPower(1);
-            } else if (gamepad1.a) {
+            } else if (gamepad2.a) {
                 liftLeft.setPower(-1);
                 liftMiddle.setPower(-1);
                 liftRight.setPower(-1);
@@ -57,12 +54,9 @@ public class AscentTest extends LinearOpMode {
                 liftRight.setPower(0);
             }
 
-            prevY = gamepad1.y;
-
             telemetry.addData("liftLeftPos", liftLeft.getCurrentPosition());
             telemetry.addData("liftRightPos", liftRight.getCurrentPosition());
             telemetry.addData("liftMiddlePos", liftMiddle.getCurrentPosition());
-            telemetry.addData("ms", ms);
             telemetry.update();
         }
     }
