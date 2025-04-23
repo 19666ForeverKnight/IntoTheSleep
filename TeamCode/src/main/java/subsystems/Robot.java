@@ -1,26 +1,20 @@
 package subsystems;
 
-import static constants.RobotConstants.AllianceColour.Blue;
-import static constants.RobotConstants.AllianceColour.Red;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_LEFT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
-import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
-import static constants.RobotConstants.EXTEND_RIGHT_OUT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
-import static constants.RobotConstants.INTAKE_CLAW_ROTATE;
+import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_INTAKE_AND_TRANS;
-import static constants.RobotConstants.INTAKE_CLAW_TURRET_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT;
-import static constants.RobotConstants.INTAKE_CLAW_TURRET_RIGHT_LIMIT;
 import static constants.RobotConstants.SCORE_CLAW_ARM_PREP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
@@ -30,7 +24,6 @@ import static constants.RobotConstants.SCORE_CLAW_OPEN;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import subsystems.ChassisSubsystem.Drivetrain;
 import subsystems.IntakeSubsystem.SuperIntake;
-import subsystems.IntakeSubsystem.Vision;
 
 public class Robot {
     public SuperIntake intake = new SuperIntake();
@@ -80,11 +72,17 @@ public class Robot {
         executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 770, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawOpen(), 930, TimeUnit.MILLISECONDS);
     }
-    public void collectApple(){
+    public void collectAppleNoLift(){
         intake.intakeClawOpen();
         executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawClose(), 280, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.intakeClawIntakeUp(), 370, TimeUnit.MILLISECONDS);
+//        executor.schedule(() -> intake.intakeClawIntakeUp(), 370, TimeUnit.MILLISECONDS);
+    }
+    public void collectApple(){
+        intake.intakeClawOpen();
+        executor.schedule(() -> intake.intakeClawIntakeDown(), 100, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawClose(), 250, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.intakeClawIntakeUp(), 440, TimeUnit.MILLISECONDS);
     }
     public void grabApple(List<Double> apple) {
         intake.intakeClawOpen();
@@ -109,16 +107,16 @@ public class Robot {
     public void thrownRight() {
         intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
         intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
-        intake.setRotatePosition(INTAKE_CLAW_ROTATE);
-        executor.schedule(() -> intake.intakeClawOpen(), 100, TimeUnit.MILLISECONDS);
+        intake.setRotatePosition(INTAKE_CLAW_ROTATE_RIGHT);
+        executor.schedule(() -> intake.intakeClawOpen(), 150, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
 
     public void thrownRightStay() {
         intake.setTurretPosition(INTAKE_CLAW_TURRET_RIGHT);
         intake.setArmPosition(INTAKE_CLAW_ARM_RIGHT);
-        intake.setRotatePosition(INTAKE_CLAW_ROTATE);
-        executor.schedule(() -> intake.intakeClawOpen(), 130, TimeUnit.MILLISECONDS);
+        intake.setRotatePosition(INTAKE_CLAW_ROTATE_RIGHT);
+        executor.schedule(() -> intake.intakeClawOpen(), 150, TimeUnit.MILLISECONDS);
 //        executor.schedule(() -> intake.setTurretPosition(INTAKE_CLAW_TURRET_INTAKE_AND_TRANS), 500, TimeUnit.MILLISECONDS);
     }
 
