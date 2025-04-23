@@ -13,7 +13,6 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -39,14 +38,17 @@ public class Auto6Chamber extends OpMode {
     Robot robot = new Robot();
     RobotConstants.AllianceColour colour = RobotConstants.AllianceColour.Red;
 
+    Vector2d collectWall = new Vector2d(11.6, 32);
+    Vector2d collectWallPerP = new Vector2d(14, 32);
+
     @Override
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
-        follower.setStartingPose(new Pose(10, 63, Math.toRadians(0)));
+        follower.setStartingPose(new Pose(10.5, 63, Math.toRadians(0)));
         robot.chamberAutoInit(hardwareMap);
-        vision.Init(hardwareMap, telemetryA);
+        vision.init(hardwareMap, telemetryA);
         telemetryA.update();
     }
 
@@ -64,7 +66,7 @@ public class Auto6Chamber extends OpMode {
                         // ---------------  Preload and grab one ---------------
                         new ParallelCommandGroup(
                                 new InstantCommand(() -> robot.scoring.liftToHighChamber()),
-                                new DriveToPointSLB(follower, new Vector2d(44, 76), new Vector2d(10, 63), 0, 0, 0).setHoldEnd(true),
+                                new DriveToPointSLB(follower, new Vector2d(44, 76), new Vector2d(10.5, 63), 0, 0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new InstantCommand(() -> robot.scoring.armToChamber()),
                                         new WaitCommand(800),
@@ -75,28 +77,29 @@ public class Auto6Chamber extends OpMode {
                                                 new InstantCommand(() -> robot.scoring.armToCollect()),
                                                 new InstantCommand(() -> robot.scoring.liftBack())
                                         )
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1000),
-                                        new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, false))),
-                                        new WaitCommand(300),
-                                        new InstantCommand(() -> robot.collectApple())
                                 )
+//                                ,
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(1000),
+//                                        new InstantCommand(() -> robot.grabApple(vision.getLatestResult(colour, false))),
+//                                        new WaitCommand(300),
+//                                        new InstantCommand(() -> robot.collectApple())
+//                                )
                         ),
-                        new WaitCommand(450),
+                        new WaitCommand(150),
                         // ---------------  Collect Second Specimen and thrown one sample---------------
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.intake.setExtendPercent(0)),
-                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1100),
-                                        new InstantCommand(() -> robot.thrownRight()),
-                                        new WaitCommand(550),
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT)),
-                                                new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID))
-                                        )
-                                )
+//                                new InstantCommand(() -> robot.intake.setExtendPercent(0)),
+                                new DriveToPoint(follower, collectWall, 0, 0).setHoldEnd(false)
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(1100),
+//                                        new InstantCommand(() -> robot.thrownRight()),
+//                                        new WaitCommand(550),
+//                                        new ParallelCommandGroup(
+//                                                new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT)),
+//                                                new InstantCommand(() -> robot.intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID))
+//                                        )
+//                                )
                         ),
                         new WaitCommand(50),
                         // ---------------   Second Specimen ---------------
@@ -120,7 +123,7 @@ public class Auto6Chamber extends OpMode {
                         ),
                         // ---------------  Pick up First ASpple ---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(22, 16.3), 0, 0).setHoldEnd(true),
+                                new DriveToPoint(follower, new Vector2d(20.8, 16.3), 0, 0).setHoldEnd(true),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new InstantCommand(() -> robot.scoring.liftBack()),
@@ -135,21 +138,21 @@ public class Auto6Chamber extends OpMode {
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(400),
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(15, 16.3), 0, 0).setHoldEnd(false),
+                                new DriveToPoint(follower, new Vector2d(13.5, 16.3), 0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
                                         new WaitCommand(70),
                                         new InstantCommand(() -> robot.thrownRightStay())
                                 ),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(10))
                         ),
-                        new DriveToPoint(follower, new Vector2d(22, 16.3), 0, 0).setHoldEnd(true),
+                        new DriveToPoint(follower, new Vector2d(22, 15.8), 0, 0).setHoldEnd(true),
                         // ---------------  Pick up Second ASpple ---------------
                         this.CollectSecondASpple(),
                         new WaitCommand(150),
                         new InstantCommand(() -> robot.collectApple()),
                         new WaitCommand(400),
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(15, 16.3), 0, 0).setHoldEnd(false),
+                                new DriveToPoint(follower, new Vector2d(15, 15.8), 0, 0).setHoldEnd(false),
                                 new SequentialCommandGroup(
                                         new WaitCommand(20),
                                         new InstantCommand(() -> robot.thrownRightStay())
@@ -159,7 +162,7 @@ public class Auto6Chamber extends OpMode {
                         new WaitCommand(300),
                         // ---------------  Pick up Third ASpple ---------------
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(30, 8),0, 0).setHoldEnd(true),
+                                new DriveToPoint(follower, new Vector2d(29, 8),0, 0).setHoldEnd(true),
                                 this.CollectThirdASpple()
                         ),
                         new WaitCommand(150),
@@ -167,11 +170,11 @@ public class Auto6Chamber extends OpMode {
                         new WaitCommand(400),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new WaitCommand(100),
+                                        new WaitCommand(400),
                                         new InstantCommand(() -> robot.thrownRight())
                                 ),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(7)),
-                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false)
+                                new DriveToPoint(follower,collectWall, 0, 0).setHoldEnd(false)
                         ),
                         new WaitCommand(250),
                         // ---------------  Drop Third Specimen ---------------
@@ -194,7 +197,7 @@ public class Auto6Chamber extends OpMode {
                                 )
                         ),
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new DriveToPoint(follower, collectWall, 0, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.armToCollect()),
                                 new InstantCommand(() -> robot.scoring.liftBack())
                         ),
@@ -218,7 +221,7 @@ public class Auto6Chamber extends OpMode {
                                 )
                         ),
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new DriveToPoint(follower, collectWall, 0, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.armToCollect()),
                                 new InstantCommand(() -> robot.scoring.liftBack())
                         ),
@@ -242,29 +245,29 @@ public class Auto6Chamber extends OpMode {
                                 )
                         ),
                         new ParallelCommandGroup(
-                                new DriveToPoint(follower, new Vector2d(12, 32), 0, 0).setHoldEnd(false),
+                                new DriveToPoint(follower, collectWall, 0, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.armToCollect()),
                                 new InstantCommand(() -> robot.scoring.liftBack())
-                        ),
-                        // ---------------  Drop Six Specimen ---------------
-                        new InstantCommand(() -> robot.scoring.scoreClose()),
-                        new WaitCommand(250),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
-                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(100),
-                                        new InstantCommand(() -> robot.scoring.armToChamber()),
-                                        new WaitCommand(1400),
-                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
-                                        new WaitCommand(200),
-                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
-                                        new ParallelCommandGroup(
-                                                new InstantCommand(() -> robot.scoring.armToCollect()),
-                                                new InstantCommand(() -> robot.scoring.liftBack())
-                                        )
-                                )
                         )
+                        // ---------------  Drop Six Specimen ---------------
+//                        new InstantCommand(() -> robot.scoring.scoreClose()),
+//                        new WaitCommand(250),
+//                        new ParallelCommandGroup(
+//                                new InstantCommand(() -> robot.scoring.liftToHighChamber()),
+//                                new DriveToPoint(follower, new Vector2d(44, 74),0, 0).setHoldEnd(false),
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(100),
+//                                        new InstantCommand(() -> robot.scoring.armToChamber()),
+//                                        new WaitCommand(1400),
+//                                        new InstantCommand(() -> robot.scoring.liftToChamberOpenAuto()),
+//                                        new WaitCommand(200),
+//                                        new InstantCommand(() -> robot.scoring.scoreOpen()),
+//                                        new ParallelCommandGroup(
+//                                                new InstantCommand(() -> robot.scoring.armToCollect()),
+//                                                new InstantCommand(() -> robot.scoring.liftBack())
+//                                        )
+//                                )
+//                        )
                 )
         );
     }
