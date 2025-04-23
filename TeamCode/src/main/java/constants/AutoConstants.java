@@ -7,18 +7,15 @@ import commands.DriveToPoint;
 import subsystems.SleepyStuffff.Util.Vector2d;
 
 public class AutoConstants {
-    //Sample
+    // First apple
     public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_FIRST_APPLE = 0.686;
     public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_FIRST_APPLE = 0.519;
 
-
-    public static final double INTAKE_CLAW_ARM_AUTO_COLLECT_APPLE_DOWN = 0.083;
-
+    // Second apple
     public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_SECOND_APPLE = 0.786;
     public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_SECOND_APPLE = 0.6577;
 
-
-    // Third Apple
+    // Third apple
     public static final double INTAKE_CLAW_TURRET_AUTO_COLLECT_THIRD_APPLE = 0.724;
     public static final double INTAKE_CLAW_ROTATE_AUTO_COLLECT_THIRD_APPLE = 0.646;
 
