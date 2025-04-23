@@ -37,6 +37,7 @@ import com.pedropathing.util.DashboardPoseTracker;
 import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -53,6 +54,7 @@ public class Competition extends OpMode {
     private DashboardPoseTracker dashboardPoseTracker;
 
     Robot robot = new Robot();
+    Servo led = null;
     private final Pose startPose = new Pose(0,0,0); // add limelight init pos reading support
 
     private ElapsedTime timer = new ElapsedTime();
@@ -71,6 +73,7 @@ public class Competition extends OpMode {
     /** This method is call once when init is played, it initializes the follower **/
     @Override
     public void init() {
+        led = hardwareMap.get(Servo.class, "led");
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         Constants.setConstants(FConstants.class, LConstants.class);
         poseUpdater = new PoseUpdater(hardwareMap);
@@ -84,6 +87,7 @@ public class Competition extends OpMode {
         telemetryA.update();
         Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
         Drawing.sendPacket();
+        led.setPosition(0);
     }
 
     /** This method is called continuously after Init while waiting to be started. **/
@@ -115,6 +119,9 @@ public class Competition extends OpMode {
             robot.sweep();
             gamepad1.rumble(1, 0, 100);
         }
+
+        if (gamepad1.cross) led.setPosition(1);
+        else if (gamepad1.triangle) led.setPosition(0);
 
         if (gamepad2.left_bumper) {
             intakeOut = true;
