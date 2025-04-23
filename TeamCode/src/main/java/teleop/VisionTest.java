@@ -1,17 +1,11 @@
 package teleop;
 
 import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
-import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
-import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
 
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes.DetectorResult;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -20,8 +14,6 @@ import java.util.List;
 import constants.RobotConstants;
 import subsystems.IntakeSubsystem.Vision;
 import subsystems.Robot;
-import subsystems.SleepyStuffff.Math.VisionUtil;
-import subsystems.SleepyStuffff.Util.DetectorLLResultPair;
 
 @TeleOp
 public class VisionTest extends OpMode {
@@ -32,7 +24,7 @@ public class VisionTest extends OpMode {
     @Override
     public void init(){
         robot.init(hardwareMap);
-        vision.Init(hardwareMap, telemetryA);
+        vision.initTest(hardwareMap, telemetryA);
     }
     @Override
     public void loop(){
@@ -46,6 +38,9 @@ public class VisionTest extends OpMode {
         }
         if(gamepad1.circle) {
             robot.collectApple();
+        }
+        if(gamepad1.square) {
+            robot.thrownRightStay();
         }
 
         List<DetectorResult> test = vision.limelight.getLatestResult().getDetectorResults();

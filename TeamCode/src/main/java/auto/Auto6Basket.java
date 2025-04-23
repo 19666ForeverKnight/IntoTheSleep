@@ -48,7 +48,7 @@ public class Auto6Basket extends OpMode {
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(7, 112, Math.toRadians(-90)));
         robot.autoInit(hardwareMap);
-        vision.Init(hardwareMap, telemetryA);
+        vision.init(hardwareMap, telemetryA);
         telemetryA.update();
     }
     @Override

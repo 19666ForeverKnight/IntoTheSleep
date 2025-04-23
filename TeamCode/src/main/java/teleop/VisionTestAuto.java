@@ -1,13 +1,10 @@
 package teleop;
 
-import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
-
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -26,7 +23,7 @@ public class VisionTestAuto extends OpMode {
     @Override
     public void init(){
         robot.autoInit(hardwareMap);
-        vision.Init(hardwareMap, telemetryA);
+        vision.initTest(hardwareMap, telemetryA);
         vision.limelight.pipelineSwitch(5);
         vision.goWork();
     }

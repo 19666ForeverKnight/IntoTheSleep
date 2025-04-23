@@ -45,7 +45,7 @@ public class Auto5Chamber extends OpMode {
         follower = new FollowerSubsystem(hardwareMap, telemetryA);
         follower.setStartingPose(new Pose(10, 63, Math.toRadians(0)));
         robot.chamberAutoInit(hardwareMap);
-        vision.Init(hardwareMap, telemetryA);
+        vision.init(hardwareMap, telemetryA);
         telemetryA.update();
     }
 
