@@ -46,5 +46,5 @@ public class FastPIDConst {
     public static final CustomPIDFCoefficients FastSecondaryHeadingPIDF = new CustomPIDFCoefficients(headingP2, headingI2, headingD2, headingF2);
 
     public static double centripetal = 0.0003;
-    public static double zeroPower = 3.5;
+    public static double zeroPower = 3.1;
 }
