@@ -87,6 +87,6 @@ public class RobotConstants {
     //Vision Constants
     public static final double CVSmoothing = 1.0;
     public enum AllianceColour{
-        Red, Blue
+        Red, Blue, Both
     }
 } 

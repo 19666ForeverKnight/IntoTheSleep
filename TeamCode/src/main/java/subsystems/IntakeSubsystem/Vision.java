@@ -46,7 +46,7 @@ public class Vision {
             List<DetectorResult> unfilteredResults = hxg.getDetectorResults();
             String detectorID = a.name().toLowerCase();
             for (DetectorResult result : unfilteredResults) {
-                if (result.getTargetYDegrees() > -1.16 && result.getTargetYDegrees() < 15 && Math.abs(result.getTargetXDegrees() - withoutX) > 5 && Math.abs(result.getTargetYDegrees() - withoutY) > 5 && (result.getClassName().equals(detectorID) || (includeYellow && result.getClassName().equals("yellow"))) && !result.getTargetCorners().isEmpty()) {
+                if (result.getTargetYDegrees() > -1.16 && result.getTargetYDegrees() < 15 && Math.abs(result.getTargetXDegrees() - withoutX) > 5 && Math.abs(result.getTargetYDegrees() - withoutY) > 5 && (detectorID.equals("both") || result.getClassName().equals(detectorID) || (includeYellow && result.getClassName().equals("yellow"))) && !result.getTargetCorners().isEmpty()) {
                     xDis = VisionUtil.xDistance(result.getTargetXDegrees(), result.getTargetYDegrees());
                     yDis = VisionUtil.yDistance(result.getTargetYDegrees());
                     turretDegree = 90 + VisionUtil.getIntakeDegree(xDis);
@@ -67,7 +67,7 @@ public class Vision {
             }
 
             for (DetectorResult result : unfilteredResults) {
-                if (result.getTargetYDegrees() > -1.16 && result.getTargetYDegrees() < 15 && Math.abs(result.getTargetXDegrees() - withoutX) > 5 && Math.abs(result.getTargetYDegrees() - withoutY) > 5 && (result.getClassName().equals(detectorID) || (includeYellow && result.getClassName().equals("yellow"))) && !result.getTargetCorners().isEmpty()) {
+                if (result.getTargetYDegrees() > -1.16 && result.getTargetYDegrees() < 15 && Math.abs(result.getTargetXDegrees() - withoutX) > 5 && Math.abs(result.getTargetYDegrees() - withoutY) > 5 && (detectorID.equals("both") || result.getClassName().equals(detectorID) || (includeYellow && result.getClassName().equals("yellow"))) && !result.getTargetCorners().isEmpty()) {
                     withoutX = result.getTargetXDegrees();
                     withoutY = result.getTargetYDegrees();
                     xDis = VisionUtil.xDistance(result.getTargetXDegrees(), result.getTargetYDegrees());

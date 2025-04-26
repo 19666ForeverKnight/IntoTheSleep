@@ -10,6 +10,7 @@ public class helperAndConverter {
         switch (allianceColour){
             case Red: return "red";
             case Blue: return "blue";
+            case Both: return "both";
         }
         return "";
     }
