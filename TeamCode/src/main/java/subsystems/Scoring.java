@@ -34,8 +34,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -192,8 +190,12 @@ public class Scoring {
     public void armToL1A() {
         setScoreArmPosition(SCORE_CLAW_ARM_L1A, SCORE_CLAW_FLIP_TRANS);
     }
-    public void armToTrans() {
+    public void armToPreTrans() {
         setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
+    }
+
+    public void armToTrans() {
+        setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS);
     }
 
     public int getLiftPosition() {
@@ -211,12 +213,12 @@ public class Scoring {
     public void threadStart(){
         if(isRunning) return;
         isRunning = true;
-        sch.schedule(this::liftMornitor,0,TimeUnit.MILLISECONDS);
+        sch.schedule(this::liftMonitor,0,TimeUnit.MILLISECONDS);
     }
     public void threadStop(){
         isRunning = false;
     }
-    public void liftMornitor(){
+    public void liftMonitor(){
         while(isRunning){
             int currPos = (liftLeft.getCurrentPosition() + liftRight.getCurrentPosition()) /2 ;
             double powerRate = Math.abs(currPos-liftTargetPos)/300.0;

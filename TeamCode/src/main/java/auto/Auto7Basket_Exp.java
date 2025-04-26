@@ -99,7 +99,7 @@ public class Auto7Basket_Exp extends OpMode {
                                         new WaitCommand(350),
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
@@ -133,7 +133,7 @@ public class Auto7Basket_Exp extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, new Vector2d(17, 127),0, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
@@ -167,7 +167,7 @@ public class Auto7Basket_Exp extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(100),
@@ -192,7 +192,7 @@ public class Auto7Basket_Exp extends OpMode {
                                 //todo：when we run it in auto， change this DriveToPoint method to 62.6, 97.5
                                 new DriveThreePoints(follower, new Vector2d(63, 91.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(0)),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
@@ -221,7 +221,7 @@ public class Auto7Basket_Exp extends OpMode {
                         new ParallelCommandGroup(
                                 new DriveThreePoints(follower, new Vector2d(64.5, 91.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(200),

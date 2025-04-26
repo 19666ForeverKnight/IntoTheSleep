@@ -8,6 +8,7 @@ import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT1;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT2;
 import static constants.RobotConstants.EXTEND_RIGHT_AUTO_COLLECT3;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
+import static constants.RobotConstants.INTAKE_CLAW_ARM_AUTO_INIT;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_RIGHT;
 import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
@@ -66,11 +67,12 @@ public class Robot {
         scoring.setScoreClawPosition(SCORE_CLAW_OPEN);
         intake.setClawPosition(INTAKE_CLAW_CLOSE);
         intake.setRotatePosition(INTAKE_CLAW_ROTATE_MID);
-        scoring.setScoreArmPosition(SCORE_CLAW_ARM_PREP_TRANS, SCORE_CLAW_FLIP_TRANS_PREP);
+        scoring.armToPreTrans();
         intake.toTransPos();
-        executor.schedule(() -> scoring.setScoreArmPosition(SCORE_CLAW_ARM_TRANS, SCORE_CLAW_FLIP_TRANS), 580, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> scoring.armToTrans(), 580, TimeUnit.MILLISECONDS);
         executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 770, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawOpen(), 930, TimeUnit.MILLISECONDS);
+        executor.schedule(() -> intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT), 1000, TimeUnit.MILLISECONDS);
     }
     public void collectAppleNoLift(){
         intake.intakeClawOpen();

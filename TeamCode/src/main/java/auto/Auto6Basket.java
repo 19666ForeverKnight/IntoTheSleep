@@ -86,7 +86,7 @@ public class Auto6Basket extends OpMode {
                                         new WaitCommand(350),
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(150),
@@ -119,7 +119,7 @@ public class Auto6Basket extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, new Vector2d(17, 127),0, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(150),
@@ -152,7 +152,7 @@ public class Auto6Basket extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, new Vector2d(18, 131),15, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(()-> !follower.isBusy()),
                         new WaitCommand(150),
@@ -175,7 +175,7 @@ public class Auto6Basket extends OpMode {
                         new ParallelCommandGroup(
                                 new DriveThreePoints(follower, new Vector2d(62.6, 97.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(1300),
@@ -202,7 +202,7 @@ public class Auto6Basket extends OpMode {
                         new ParallelCommandGroup(
                                 new DriveThreePoints(follower, new Vector2d(64.6, 97.5), new Vector2d(72.5, 115), 270, 0).setHoldEnd(false),
                                 new InstantCommand(() -> robot.scoring.liftBack()),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(1300),

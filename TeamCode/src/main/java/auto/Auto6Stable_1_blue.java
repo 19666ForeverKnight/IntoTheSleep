@@ -126,7 +126,7 @@ public class Auto6Stable_1_blue extends OpMode {
                                         new WaitCommand(350),
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(200),
@@ -158,7 +158,7 @@ public class Auto6Stable_1_blue extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, collect2, collect2Heading, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(200),
@@ -190,7 +190,7 @@ public class Auto6Stable_1_blue extends OpMode {
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
                                 new DriveToPoint(follower, collect3, collect3Heading, 0).setHoldEnd(true),
-                                new InstantCommand(() -> robot.scoring.armToTrans())
+                                new InstantCommand(() -> robot.scoring.armToPreTrans())
                         ),
                         new WaitUntilCommand(() -> !follower.isBusy()),
                         new WaitCommand(200),
@@ -219,7 +219,7 @@ public class Auto6Stable_1_blue extends OpMode {
                                         new WaitCommand(300),
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setExtendPercent(0)),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
@@ -251,7 +251,7 @@ public class Auto6Stable_1_blue extends OpMode {
                                         new WaitCommand(300),
                                         new InstantCommand(() -> robot.scoring.liftBack())
                                 ),
-                                new InstantCommand(() -> robot.scoring.armToTrans()),
+                                new InstantCommand(() -> robot.scoring.armToPreTrans()),
                                 new InstantCommand(() -> robot.intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT))
                         ),
                         new WaitCommand(500),

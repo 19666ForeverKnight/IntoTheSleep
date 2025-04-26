@@ -1,15 +1,11 @@
 package teleop;
 
-import static constants.RobotConstants.EXTEND_DELTA;
 import static constants.RobotConstants.EXTEND_LEFT_IN;
 import static constants.RobotConstants.EXTEND_LEFT_OUT;
 import static constants.RobotConstants.EXTEND_RIGHT_IN;
 import static constants.RobotConstants.EXTEND_RIGHT_OUT;
-import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_DOWN;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_INTAKE_UP;
 import static constants.RobotConstants.INTAKE_CLAW_ARM_TRANS;
-import static constants.RobotConstants.INTAKE_CLAW_CLOSE;
-import static constants.RobotConstants.INTAKE_CLAW_OPEN;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_LEFT_LIMIT;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_MID;
 import static constants.RobotConstants.INTAKE_CLAW_ROTATE_RIGHT_LIMIT;
@@ -26,7 +22,6 @@ import static constants.RobotConstants.SCORE_CLAW_ARM_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_CLOSE;
 import static constants.RobotConstants.SCORE_CLAW_FLIP_TRANS;
 import static constants.RobotConstants.SCORE_CLAW_OPEN;
-import static constants.RobotConstants.TURRET_DELTA;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -132,7 +127,7 @@ public class Competition extends OpMode {
             timer.reset();
             if (!chamber) {
                 back = true;
-                robot.scoring.armToTrans();
+                robot.scoring.armToPreTrans();
             }
         }
 
