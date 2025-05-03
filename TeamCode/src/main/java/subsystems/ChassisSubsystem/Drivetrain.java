@@ -40,7 +40,7 @@ public class Drivetrain {
     }
 
     public double getHeading() {
-        return Math.toDegrees(pinPoint.getHeading());
+        return pinPoint.getPosition().getHeading(AngleUnit.DEGREES);
     }
 
     public void driveFieldOriented(double y, double x, double rx, double p) {
