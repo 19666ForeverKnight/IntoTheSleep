@@ -30,7 +30,7 @@ public class A_Competition extends OpMode {
     private ElapsedTime timer = new ElapsedTime();
     private double x, y, rx, p = 1, extendPercent = 0, rotateDegree = 90, turretDegree = 90;
     private int basketIndex=0, liftPos = 0;
-    private boolean manual = false, basket = false, back = true, armDown = false, trans = false;
+    private boolean manual = false, basket = false, back = true, armDown = false, trans = false, ledOn = true;
     private final int[] basketPos = {LIFT_HIGH_BASKET, LIFT_LOW_BASKET};
     Gamepad prev = new Gamepad();
 
@@ -70,6 +70,12 @@ public class A_Competition extends OpMode {
 
         if (gamepad1.dpad_left && rotateDegree > 0) rotateDegree -= 1;
         else if (gamepad1.dpad_right && rotateDegree < 180) rotateDegree += 1;
+
+        if (gamepad1.touchpad && !prev.touchpad) {
+            ledOn = !ledOn;
+        }
+        if (ledOn) led.setPosition(1);
+        else led.setPosition(0);
 
         if (gamepad1.a && !prev.a) {
             if (armDown) {
