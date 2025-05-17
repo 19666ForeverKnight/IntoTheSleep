@@ -6,7 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 public class RobotConstants {
     // Intake Constants
     public static double INTAKE_CLAW_OPEN = .457;
-    public static double INTAKE_CLAW_CLOSE = 0.683;
+    public static double INTAKE_CLAW_CLOSE = 0.640;
     public static double INTAKE_CLAW_CLOSE_AUTO = INTAKE_CLAW_OPEN;
     public static double INTAKE_CLAW_OPEN_AUTO = INTAKE_CLAW_CLOSE;
 
@@ -45,26 +45,26 @@ public class RobotConstants {
     public static double EXTEND_RIGHT_AUTO_COLLECT3 = 0.972;
 
     // TeleOp Scoring Constants
-    public static double SCORE_CLAW_ARM_DROP_TELEOP = .571;
+    public static double SCORE_CLAW_ARM_DROP_TELEOP = 0.621;
 //    public static double SCORE_CLAW_ARM_TRANS = 0.213;
-    public static double SCORE_CLAW_ARM_TRANS = 0.295;
-    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.333;
+    public static double SCORE_CLAW_ARM_TRANS = 0.219;
+    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.264;
     public static double SCORE_CLAW_ARM_SPECIMEN = 0.782;
-    public static double SCORE_CLAW_ARM_HANG = 0.433;
-    public static double SCORE_CLAW_ARM_AUTO_INIT = .263;
-    public static double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.263;
+    public static double SCORE_CLAW_ARM_HANG = 0.432;
+    public static double SCORE_CLAW_ARM_AUTO_INIT = 0.181;
+    public static double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.181;
     public static double SCORE_CLAW_ARM_PARK = 0.0;
     public static double SCORE_CLAW_ARM_L1A = 0.29;
 
 
     // Common Scoring Constants
-    public static double SCORE_CLAW_FLIP_DROP = 0.617;
-    public static double SCORE_CLAW_FLIP_DROP_DIVE = 0.73;
+    public static double SCORE_CLAW_FLIP_DROP = 0.521;
+    public static double SCORE_CLAW_FLIP_DROP_DIVE = 0.641;
 //    public static double SCORE_CLAW_FLIP_TRANS = 0.228;
     public static double SCORE_CLAW_FLIP_TRANS = 0.21;
     public static double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
     public static double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.236;
-    public static double SCORE_CLAW_FLIP_HANG = 0.221;
+    public static double SCORE_CLAW_FLIP_HANG = 0.103;
     public static double SCORE_CLAW_FLIP_AUTO_INIT = .199;
     public static double SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT = 0.171;
 
