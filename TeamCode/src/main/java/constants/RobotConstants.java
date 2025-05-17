@@ -47,12 +47,12 @@ public class RobotConstants {
     // TeleOp Scoring Constants
     public static double SCORE_CLAW_ARM_DROP_TELEOP = 0.621;
 //    public static double SCORE_CLAW_ARM_TRANS = 0.213;
-    public static double SCORE_CLAW_ARM_TRANS = 0.219;
-    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.264;
-    public static double SCORE_CLAW_ARM_SPECIMEN = 0.782;
-    public static double SCORE_CLAW_ARM_HANG = 0.432;
+    public static double SCORE_CLAW_ARM_TRANS = 0.254;
+    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.362;
+    public static double SCORE_CLAW_ARM_SPECIMEN = 0.876;
+    public static double SCORE_CLAW_ARM_HANG = 0.381;
     public static double SCORE_CLAW_ARM_AUTO_INIT = 0.181;
-    public static double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.181;
+    public static double SCORE_CLAW_ARM_AUTO_CHAMBER_INIT = 0.194;
     public static double SCORE_CLAW_ARM_PARK = 0.0;
     public static double SCORE_CLAW_ARM_L1A = 0.29;
 
@@ -61,18 +61,18 @@ public class RobotConstants {
     public static double SCORE_CLAW_FLIP_DROP = 0.521;
     public static double SCORE_CLAW_FLIP_DROP_DIVE = 0.641;
 //    public static double SCORE_CLAW_FLIP_TRANS = 0.228;
-    public static double SCORE_CLAW_FLIP_TRANS = 0.21;
-    public static double SCORE_CLAW_FLIP_TRANS_PREP = 0.183;
-    public static double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.236;
-    public static double SCORE_CLAW_FLIP_HANG = 0.103;
+    public static double SCORE_CLAW_FLIP_TRANS = 0.127;
+    public static double SCORE_CLAW_FLIP_TRANS_PREP = 0.127;
+    public static double SCORE_CLAW_FLIP_READY_FOR_SPECIMEN = 0.195;
+    public static double SCORE_CLAW_FLIP_HANG = 0.219;
     public static double SCORE_CLAW_FLIP_AUTO_INIT = .199;
-    public static double SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT = 0.171;
+    public static double SCORE_CLAW_FLIP_AUTO_CHAMBER_INIT = 0.066;
 
 
     public static double SCORE_CLAW_OPEN = .609;
     public static double SCORE_CLAW_CLOSE = 0.24;
 
-    public static int LIFT_HIGH_CHAMBER = 80;
+    public static int LIFT_HIGH_CHAMBER = 200;
     public static int LIFT_LOW_CHAMBER = 0;
     public static int LIFT_HIGH_BASKET = 1300;
     public static int LIFT_LOW_BASKET = 400;
