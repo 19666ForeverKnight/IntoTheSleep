@@ -1,5 +1,10 @@
 package pedroPathing.constants;
 
+import static constants.Configs.LEFT_BACK;
+import static constants.Configs.LEFT_FRONT;
+import static constants.Configs.RIGHT_BACK;
+import static constants.Configs.RIGHT_FRONT;
+
 import com.pedropathing.localization.Localizers;
 import com.pedropathing.follower.FollowerConstants;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -8,10 +13,10 @@ public class FConstants {
     static {
         FollowerConstants.localizers = Localizers.PINPOINT;
 
-        FollowerConstants.leftFrontMotorName = "lf";
-        FollowerConstants.leftRearMotorName = "lb";
-        FollowerConstants.rightFrontMotorName = "rf";
-        FollowerConstants.rightRearMotorName = "rb";
+        FollowerConstants.leftFrontMotorName = LEFT_FRONT;
+        FollowerConstants.leftRearMotorName = LEFT_BACK;
+        FollowerConstants.rightFrontMotorName = RIGHT_FRONT;
+        FollowerConstants.rightRearMotorName = RIGHT_BACK;
 
         FollowerConstants.leftFrontMotorDirection = DcMotorSimple.Direction.FORWARD;
         FollowerConstants.leftRearMotorDirection = DcMotorSimple.Direction.FORWARD;

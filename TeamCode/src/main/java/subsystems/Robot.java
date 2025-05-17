@@ -72,7 +72,6 @@ public class Robot {
         executor.schedule(() -> scoring.armToTrans(), 580, TimeUnit.MILLISECONDS);
         executor.schedule(() -> scoring.setScoreClawPosition(SCORE_CLAW_CLOSE), 770, TimeUnit.MILLISECONDS);
         executor.schedule(() -> intake.intakeClawOpen(), 930, TimeUnit.MILLISECONDS);
-        executor.schedule(() -> intake.setArmPosition(INTAKE_CLAW_ARM_AUTO_INIT), 1000, TimeUnit.MILLISECONDS);
     }
     public void collectAppleNoLift(){
         intake.intakeClawOpen();

@@ -8,14 +8,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Configs {
 
     // Motor
-    public static String LEFT_FRONT = "lf";         // Control/Expansion [port]
-    public static String LEFT_BACK = "lb";
-    public static String RIGHT_FRONT = "rf";
-    public static String RIGHT_BACK = "rb";
+    public static String LEFT_FRONT = "leftFront";         // Control/Expansion [port]
+    public static String LEFT_BACK = "leftBack";
+    public static String RIGHT_FRONT = "rightFront";
+    public static String RIGHT_BACK = "rightBack";
 
-    public static String LIFT_LEFT = "ll";
-    public static String LIFT_RIGHT = "lr";
-    public static String LIFT_MIDDLE = "lm";
+    public static String LIFT_LEFT = "liftLeft";
+    public static String LIFT_RIGHT = "liftRight";
+    public static String LIFT_MIDDLE = "liftMid";
 
     // Servo
     /*
@@ -30,16 +30,16 @@ public class Configs {
      Expansion Hub 4 : ExtendLeft : el
      Expansion Hub 5 : ScoreClaw : sc
      */
-    public static String CLAW = "cla";
-    public static String CLAW_TURRET = "cy";
-    public static String CLAW_ROTATE = "cr";
-    public static String CLAW_ARM = "cpi";
-    public static String EXTEND_RIGHT = "er";
-    public static String EXTEND_LEFT = "el";
-    public static String SCORE_ARM = "sa";
-    public static String SCORE_ARM_PITCH = "sap";
-    public static String SCORE_CLAW = "sc";
-    public static String SWEEP = "sw";
+    public static String CLAW = "intakeClaw";
+    public static String CLAW_TURRET = "intakeTurret";
+    public static String CLAW_ROTATE = "intakeRotate";
+    public static String CLAW_ARM = "intakeArm";
+    public static String EXTEND_RIGHT = "extendRight";
+    public static String EXTEND_LEFT = "extendLeft";
+    public static String SCORE_ARM = "scoreArm";
+    public static String SCORE_ARM_PITCH = "scoreFlip";
+    public static String SCORE_CLAW = "scoreClaw";
+    public static String SWEEP = "sweep";
 
     //Sensor
     public static String Pinpoint = "pp";

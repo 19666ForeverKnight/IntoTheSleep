@@ -25,6 +25,6 @@ public class VisionUtil {
     }
     public static double getExtendPercent(double xDis, double yDis) {
         extendLength = yDis - Math.cos(Math.asin(xDis / 180.0)) * 180;
-        return (0.000002 * Math.pow(extendLength,3) - 0.0012 * Math.pow(extendLength, 2) + 0.4 * extendLength - 2.866) * 1.01;
+        return 0.000003 * Math.pow(extendLength,3) - 0.0015 * Math.pow(extendLength, 2) + 0.4261 * extendLength - 2.2061;
     }
 }

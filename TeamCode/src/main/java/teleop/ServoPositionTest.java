@@ -23,7 +23,7 @@ public class ServoPositionTest extends LinearOpMode {
     private DcMotorEx rightFront = null;
     private DcMotorEx rightBack = null;
     private double x, y, rx, p, posDelta = 0.0001;
-    private String[] names = {"cy", "cr", "cla", "cpi", "er", "sa", "sap", "sw", "el", "sc"};
+    private String[] names = {"extendLeft", "extendRight", "intakeClaw", "intakeRotate", "intakeTurret", "intakeArm", "scoreArm", "scoreFlip", "scoreClaw", "sweep"};
     private int index = 0, servoNum = names.length;
     private Servo[] servos = new Servo[servoNum];
     private double[] poses = new double[servoNum];
@@ -31,10 +31,10 @@ public class ServoPositionTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        leftFront = hardwareMap.get(DcMotorEx.class, "lf");
-        leftBack = hardwareMap.get(DcMotorEx.class, "lb");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rf");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rb");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
 
         leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         leftBack.setDirection(DcMotorEx.Direction.REVERSE);
