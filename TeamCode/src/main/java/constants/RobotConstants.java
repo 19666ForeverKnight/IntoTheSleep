@@ -48,7 +48,7 @@ public class RobotConstants {
     public static double SCORE_CLAW_ARM_DROP_TELEOP = 0.621;
 //    public static double SCORE_CLAW_ARM_TRANS = 0.213;
     public static double SCORE_CLAW_ARM_TRANS = 0.254;
-    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.362;
+    public static double SCORE_CLAW_ARM_PREP_TRANS = 0.322;
     public static double SCORE_CLAW_ARM_SPECIMEN = 0.876;
     public static double SCORE_CLAW_ARM_HANG = 0.381;
     public static double SCORE_CLAW_ARM_AUTO_INIT = 0.181;
